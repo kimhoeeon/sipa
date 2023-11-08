@@ -75,6 +75,22 @@ $(function(){
         });
     }
 
+    const exportButtons = document.querySelectorAll('button[data-kt-export]');
+    exportButtons.forEach(exportButton => {
+        exportButton.addEventListener('click', e => {
+            e.preventDefault();
+
+            // Get clicked export value
+            const exportValue = e.target.getAttribute('data-kt-export');
+            const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
+
+            // Trigger click event on hidden datatable export buttons
+            if(target){
+                target.click();
+            }
+        });
+    });
+
 });
 
 
@@ -254,31 +270,22 @@ function loadingBarShow(){
 
 function f_excel_export(tableId , name){
     let dataTbl = $('#' + tableId).DataTable();
-    let buttons = new $.fn.dataTable.Buttons(dataTbl, {
-        buttons:[
-            {
-                extend: 'excelHtml5',
-                title: name + '_목록_excel_' + getCurrentDate(),
-                autoFilter: true,
-                text: 'Export as Excel',
-                className: 'btn btn-success btn-active-light-success'
-            }
-        ]
-    }).container().appendTo($('#kt_datatable_excel_hidden_buttons'));
-
-    const exportButtons = document.querySelectorAll('button[data-kt-export]');
-    exportButtons.forEach(exportButton => {
-        exportButton.addEventListener('click', e => {
-            e.preventDefault();
-
-            // Get clicked export value
-            const exportValue = e.target.getAttribute('data-kt-export');
-            const target = document.querySelector('.dt-buttons .buttons-' + exportValue);
-
-            // Trigger click event on hidden datatable export buttons
-            target.click();
-        });
-    });
+    let dataCount = dataTbl.rows().count();
+    if(dataCount > 0){
+        let buttons = new $.fn.dataTable.Buttons(dataTbl, {
+            buttons:[
+                {
+                    extend: 'excelHtml5',
+                    title: name + '_목록_excel_' + getCurrentDate(),
+                    autoFilter: true,
+                    text: 'Export as Excel',
+                    className: 'btn btn-success btn-active-light-success'
+                }
+            ]
+        }).container().appendTo($('#kt_datatable_excel_hidden_buttons'));
+    }else{
+        showMessage('', 'info', 'Export as Excel', '엑셀로 추출할 데이터가 없습니다.', '');
+    }
 }
 
 function f_mng_uploadFile(formId, path) {
@@ -306,30 +313,6 @@ function f_mng_uploadFile(formId, path) {
 function modalClose(name){
     document.querySelector('input[type=text][name=' + name + ']').value = '';
     document.querySelector('input[type=file][name=file]').value = null;
-}
-
-function f_gift_file_upload_call(id, path) {
-
-    /* 경품사진 */
-    let giftPhotoFileList = document.getElementsByName('giftPhotoFile');
-    let photoIdx = parseInt($('.formTbBd:last').find('.addNum').text());
-    for(let i=0; i<giftPhotoFileList.length; i++){
-        let giftPhotoFile = giftPhotoFileList[i].value;
-        if (nvl(giftPhotoFile, '') !== '') {
-            f_company_file_upload(id, 'giftPhotoFile' + photoIdx, path);
-        }
-    }
-
-    /* 회사로고 */
-    let giftCompanyLogoFileList = document.getElementsByName('giftCompanyLogoFile');
-    let logoIdx = parseInt($('.formTbBd:last').find('.addNum').text());
-    for(let i=0; i<giftCompanyLogoFileList.length; i++){
-        let giftCompanyLogoFile = giftCompanyLogoFileList[i].value;
-        if (nvl(giftCompanyLogoFile, '') !== '') {
-            f_company_file_upload(id, 'giftCompanyLogoFile' + logoIdx, path);
-        }
-    }
-
 }
 
 async function f_company_file_upload(userId, elementId, path) {
@@ -511,7 +494,7 @@ function f_upload_modal_close(target_modal_id, target_modal_form_init_id){
 
 function f_file_remove(el, fileId){
     let jsonObj = {
-        "id": fileId
+        id: fileId
     }
 
     let resData = ajaxConnect('/file/upload/update.do', 'post', jsonObj);
@@ -589,3 +572,26 @@ function execDaumPostcode(address, addressDetail) {
         popupKey: 'popup1' //팝업창 Key값 설정 (영문+숫자 추천)
     });
 }
+
+/*
+@author https://github.com/macek/jquery-serialize-object
+*/
+$.fn.serializeObject = function () {
+    "use strict";
+    var result = {};
+    var extend = function (i, element) {
+        var node = result[element.name];
+        if ("undefined" !== typeof node && node !== null) {
+            if ($.isArray(node)) {
+                node.push(element.value);
+            } else {
+                result[element.name] = [node, element.value];
+            }
+        } else {
+            result[element.name] = element.value;
+        }
+    };
+
+    $.each(this.serializeArray(), extend);
+    return result;
+};

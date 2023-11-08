@@ -269,7 +269,7 @@ function f_pw_init(){
                 let email = ajaxConnectSimple('/getExhibitorEmail.do', 'post', jsonStr);
                 if(nvl(email,'') !== ''){
                     let jsonObj = {
-                        "subject": '[2024 경기국제보트쇼] 비밀번호 초기화 요청', //제목
+                        "subject": '[SIPA 스마트산업진흥협회] 비밀번호 초기화 요청', //제목
                         "body": "", //본문
                         "template": "12", //템플릿 번호
                         "receiver": [{"email": email}]
@@ -4565,7 +4565,7 @@ function makeJsonFormat(data){
     });
 
     returnJsonObj = {
-        "subject": '[2024 경기국제보트쇼] 참가업체 접수 완료', //제목
+        "subject": '[SIPA 스마트산업진흥협회] 참가업체 접수 완료', //제목
         "body": "", //본문
         "template": "6", //템플릿 번호
         "receiver": receiverArr

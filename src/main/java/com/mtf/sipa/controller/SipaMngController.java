@@ -1,8 +1,7 @@
 package com.mtf.sipa.controller;
 
 import com.mtf.sipa.constants.CommConstants;
-import com.mtf.sipa.dto.MailRequestDTO;
-import com.mtf.sipa.dto.ResponseDTO;
+import com.mtf.sipa.dto.*;
 import com.mtf.sipa.service.CommService;
 import com.mtf.sipa.service.SipaMngService;
 import com.oreilly.servlet.MultipartRequest;
@@ -28,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -86,7 +86,454 @@ public class SipaMngController {
         return mv;
     }
 
+    /**
+     * loginCheck model and view.
+     *
+     * @return the model and view
+     */
+    @RequestMapping(value = "/mng/login.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<AdminDTO> login(@RequestBody AdminDTO adminDTO, HttpSession session) {
+        System.out.println("SipaMngController > login");
+        AdminDTO result = sipaMngService.login(adminDTO, session);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @RequestMapping("/mng/logoutCheck.do")
+    public ModelAndView logoutCheck(HttpSession session, ModelAndView mv) {
+        System.out.println("SipaMngController > logoutCheck");
+        sipaMngService.logoutCheck(session);
+        mv.setViewName("/mng/index");
+        return mv;
+    }
+
+    //***************************************************************************
+    // board Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/mng/board/notice.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_notice() {
+        System.out.println("SipaMngController > mng_exhibitor_company");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/notice");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/notice/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<NoticeDTO>> mng_board_notice_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_center_board_notice_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<NoticeDTO> responseList = sipaMngService.processSelectNoticeList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/notice/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<NoticeDTO> mng_board_notice_selectSingle(@RequestBody NoticeDTO noticeDTO) {
+        System.out.println("SipaMngController > mng_board_notice_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        NoticeDTO response = sipaMngService.processSelectNoticeSingle(noticeDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/notice/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_notice_detail(String seq) {
+        System.out.println("SipaMngController > mng_board_notice_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            NoticeDTO noticeDTO = new NoticeDTO();
+            noticeDTO.setSeq(seq);
+            NoticeDTO info = sipaMngService.processSelectNoticeSingle(noticeDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/board/notice/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/notice/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_notice_delete(@RequestBody NoticeDTO noticeDTO) {
+        System.out.println("SipaMngController > mng_board_notice_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteNotice(noticeDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/notice/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_notice_update(@RequestBody NoticeDTO noticeDTO) {
+        System.out.println("SipaMngController > mng_center_board_notice_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateNotice(noticeDTO);
+
+        String fileIdList = noticeDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(noticeDTO.getSeq());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/notice/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_notice_insert(@RequestBody NoticeDTO noticeDTO) {
+        System.out.println("SipaMngController > mng_center_board_notice_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertNotice(noticeDTO);
+
+        String fileIdList = noticeDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/sipaNews.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_sipaNews() {
+        System.out.println("SipaMngController > mng_board_sipaNews");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/sipaNews");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/sipaNews/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<SipaNewsDTO>> mng_board_sipaNews_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_board_sipaNews_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<SipaNewsDTO> responseList = sipaMngService.processSelectSipaNewsList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/sipaNews/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_sipaNews_detail(String seq) {
+        System.out.println("SipaMngController > mng_board_sipaNews_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            SipaNewsDTO sipaNewsDTO = new SipaNewsDTO();
+            sipaNewsDTO.setSeq(seq);
+            SipaNewsDTO info = sipaMngService.processSelectSipaNewsSingle(sipaNewsDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/board/sipaNews/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/sipaNews/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<SipaNewsDTO> mng_board_notice_selectSingle(@RequestBody SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaMngController > mng_board_notice_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        SipaNewsDTO response = sipaMngService.processSelectSipaNewsSingle(sipaNewsDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/sipaNews/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_sipaNews_delete(@RequestBody SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaMngController > mng_board_sipaNews_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteSipaNews(sipaNewsDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/sipaNews/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_sipaNews_update(@RequestBody SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaMngController > mng_center_board_sipaNews_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateSipaNews(sipaNewsDTO);
+
+        String fileIdList = sipaNewsDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(sipaNewsDTO.getSeq());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/sipaNews/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_sipaNews_insert(@RequestBody SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaMngController > mng_center_board_sipaNews_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertSipaNews(sipaNewsDTO);
+
+        String fileIdList = sipaNewsDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/event.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_event() {
+        System.out.println("SipaMngController > mng_board_event");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/event");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/event/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<EventDTO>> mng_board_event_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_board_event_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<EventDTO> responseList = sipaMngService.processSelectEventList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/event/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<EventDTO> mng_board_event_selectSingle(@RequestBody EventDTO eventDTO) {
+        System.out.println("SipaMngController > mng_board_event_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        EventDTO response = sipaMngService.processSelectEventSingle(eventDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/event/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_event_delete(@RequestBody EventDTO eventDTO) {
+        System.out.println("SipaMngController > mng_board_event_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteEvent(eventDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/event/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_event_detail(String seq) {
+        System.out.println("SipaMngController > mng_board_event_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            EventDTO eventDTO = new EventDTO();
+            eventDTO.setSeq(seq);
+            EventDTO info = sipaMngService.processSelectEventSingle(eventDTO);
+            mv.addObject("info", info);
+        }
+
+        mv.setViewName("/mng/board/event/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/event/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_event_update(@RequestBody EventDTO eventDTO) {
+        System.out.println("SipaMngController > mng_center_board_event_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateEvent(eventDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/event/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_event_insert(@RequestBody EventDTO eventDTO) {
+        System.out.println("SipaMngController > mng_center_board_event_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertEvent(eventDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/faq.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_faq() {
+        System.out.println("SipaMngController > mng_board_faq");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/board/faq");
+        return mv;
+    }
+
+    //***************************************************************************
+    // popup Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/mng/popup/popup.do", method = RequestMethod.GET)
+    public ModelAndView mng_popup_popup() {
+        System.out.println("SipaMngController > mng_popup_popup");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/popup/popup");
+        return mv;
+    }
+
+    //***************************************************************************
+    // company Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/mng/company/businessNotice.do", method = RequestMethod.GET)
+    public ModelAndView mng_company_businessNotice() {
+        System.out.println("SipaMngController > mng_company_businessNotice");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/company/businessNotice");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/company/tenderNotice.do", method = RequestMethod.GET)
+    public ModelAndView mng_company_tenderNotice() {
+        System.out.println("SipaMngController > mng_company_tenderNotice");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/company/tenderNotice");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/company/issue.do", method = RequestMethod.GET)
+    public ModelAndView mng_company_issue() {
+        System.out.println("SipaMngController > mng_company_issue");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/company/issue");
+        return mv;
+    }
+
+    //***************************************************************************
+    // membership Folder
+    //***************************************************************************
+
+    @RequestMapping(value = "/mng/membership/director.do", method = RequestMethod.GET)
+    public ModelAndView mng_membership_director() {
+        System.out.println("SipaMngController > mng_membership_director");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/membership/director");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/membership/consultant.do", method = RequestMethod.GET)
+    public ModelAndView mng_membership_consultant() {
+        System.out.println("SipaMngController > mng_membership_consultant");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/membership/consultant");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/membership/adviser.do", method = RequestMethod.GET)
+    public ModelAndView mng_membership_adviser() {
+        System.out.println("SipaMngController > mng_membership_adviser");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/membership/adviser");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/membership/company.do", method = RequestMethod.GET)
+    public ModelAndView mng_membership_company() {
+        System.out.println("SipaMngController > mng_membership_company");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/membership/company");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/membership/organization.do", method = RequestMethod.GET)
+    public ModelAndView mng_membership_organization() {
+        System.out.println("SipaMngController > mng_membership_organization");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/membership/organization");
+        return mv;
+    }
+
+
     /*********************** file upload ***********************/
+
+    @RequestMapping(value = "/file/upload/save.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<FileResponseDTO> file_upload_save(@RequestBody FileDTO fileDTO) {
+        System.out.println("SipaMngController > file_upload_save");
+        System.out.println(fileDTO.toString());
+
+        FileResponseDTO responseDTO = sipaMngService.processInsertFileInfo(fileDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/file/upload/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<FileResponseDTO> file_upload_update(@RequestBody FileDTO fileDTO) {
+        System.out.println("SipaMngController > file_upload_save");
+        System.out.println(fileDTO.toString());
+
+        FileResponseDTO responseDTO = sipaMngService.processUpdateFileUseN(fileDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/file/upload/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<FileDTO>> file_upload_selectList(@RequestBody FileDTO fileDTO) {
+        System.out.println("SipaMngController > file_upload_selectList");
+        //System.out.println(newsletterDTO.toString());
+
+        List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+
+        return new ResponseEntity<>(fileList, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/file/upload.do", method = RequestMethod.POST)
     @ResponseBody

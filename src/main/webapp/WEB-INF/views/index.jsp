@@ -17,7 +17,7 @@
 
     <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css" rel="stylesheet">
+    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
 </head>
 

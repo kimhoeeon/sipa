@@ -7,11 +7,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="title" property="og:title" content="2024 경기국제보트쇼">
-    <meta name="description" property="og:description" content="2024 경기국제보트쇼">
-    <meta name="author" content="2024 경기국제보트쇼">
+    <meta name="title" property="og:title" content="SIPA 스마트산업진흥협회">
+    <meta name="description" property="og:description" content="SIPA 스마트산업진흥협회">
+    <meta name="author" content="SIPA 스마트산업진흥협회">
     <meta name="format-detection" content="telephone=no"/>
-    <title>2024 경기국제보트쇼 관리자</title>
+    <title>SIPA 스마트산업진흥협회 관리자</title>
     <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/mngStyle.css" rel="stylesheet">
 
@@ -61,7 +61,15 @@
     });
 </script>
 
-<c:import url="../inc/commonMngJS.jsp" charEncoding="UTF-8"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.all.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="<%request.getContextPath();%>/static/js/jui-core.js"></script>
+<script src="<%request.getContextPath();%>/static/js/jui-ui.min.js"></script>
+<script src="<%request.getContextPath();%>/static/js/jui-grid.js"></script>
+<script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
+
 </body>
 
 </html>

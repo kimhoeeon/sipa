@@ -15,6 +15,15 @@
     <meta name="format-detection" content="telephone=no" />
     <title>스마트산업진흥협회</title>
 
+    <!-- 캐시를 바로 만료시킴. -->
+    <meta http-equiv="Expires" content="-1" />
+
+    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.0) -->
+    <meta http-equiv="Pragma" content="no-cache" />
+
+    <!-- 페이지 로드시마다 페이지를 캐싱하지 않음. (HTTP 1.1) -->
+    <meta http-equiv="Cache-Control" content="no-cache" />
+
     <!-- swiper 외부 라이브러리 -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
@@ -23,7 +32,7 @@
 
     <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css" rel="stylesheet">
+    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
 </head>
 
@@ -216,9 +225,9 @@
 <script src="<%request.getContextPath();%>/static/js/jquery.ui.touch-punch.min.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery.number.min.js"></script>
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-<script src="<%request.getContextPath();%>/static/js/script.js"></script>
+<script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/main.js"></script>
+<script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

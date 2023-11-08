@@ -41,7 +41,8 @@ var KTQuillEditor = function () {
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         [{ 'color': [] }, { 'background': [] }],
         [{ 'align': [] }],
-        ['image']
+        ['image'],
+        ['link']
     ];
 
     // Init quill editor

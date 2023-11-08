@@ -89,7 +89,11 @@ let KTAppExhibitorMng = function () {
 
     function renderBoothTypeCell(data, type, row){
         let renderHTML = row.boothType;
-        renderHTML = renderHTML.toString().replaceAll(',','<br>');
+        if(nvl(renderHTML,'') !== ''){
+            renderHTML = renderHTML.toString().replaceAll(',','<br>');
+        }else{
+            renderHTML = '-';
+        }
         return renderHTML;
     }
 
@@ -2185,120 +2189,6 @@ let KTAppEventCompanyParticipant = function () {
     };
 }();
 
-let KTAppCenterBoardNotice = function () {
-    // Shared variables
-    let table;
-    let datatable;
-
-    // Private functions
-    let initDatatable = function () {
-        // Init datatable --- more info on datatables: https://datatables.net/manual/
-        datatable = $(table).DataTable({
-            'info': false,
-            'paging' : false,
-            'select': false,
-            'ordering': true,
-            'order': [[0, 'desc']],
-            'columnDefs': [
-                {
-                    'targets': '_all',
-                    'className': 'text-center'
-                },
-                {
-                    'targets': 2,
-                    'render': function (data) {
-                        if (data === 'KO') {
-                            return '국문'
-                        } else {
-                            return '영문'
-                        }
-                    }
-                },
-                {
-                    'targets': [3,4,5,6],
-                    'render': function (data) {
-                        if (data === '1') {
-                            return 'V'
-                        } else {
-                            return '-'
-                        }
-                    }
-                },
-                {
-                    'targets': 12,
-                    'data': 'actions',
-                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
-                },
-                { visible: false, targets: [1] }
-            ],
-            columns: [
-                { data: 'rownum' },
-                { data: 'id'},
-                { data: 'lang'},
-                { data: 'noticeGbn' },
-                { data: 'gbn1' },
-                { data: 'gbn2' },
-                { data: 'gbn3' },
-                { data: 'title' },
-                { data: 'writer' },
-                { data: 'writeDate' },
-                { data: 'finalRegiDttm' },
-                { data: 'viewCnt' },
-                { data: 'actions' }
-            ]
-        });
-    }
-
-    function renderActionsCell(data, type, row){
-        //console.log(row.id);
-        let rowId = row.id;
-        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
-        renderHTML += 'Actions';
-        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
-        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
-        renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
-        renderHTML += '<a onclick="f_notice_detail_modal_set(' + '\'' + rowId + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
-        renderHTML += '</div>';
-        renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_board_notice_modify_init_set(' + '\'' + rowId + '\'' + ')" class="menu-link px-3">수정</a>';
-        renderHTML += '</div>';
-        renderHTML += '<div class="menu-item px-3">';
-        renderHTML += '<a onclick="f_board_notice_remove(' + '\'' + rowId + '\'' + ')" class="menu-link px-3">삭제</a>';
-        renderHTML += '</div>';
-        renderHTML += '</div>';
-        return renderHTML;
-    }
-
-    // Public methods
-    return {
-        init: function () {
-            table = document.querySelector('#kt_center_board_notice_table');
-
-            if (!table) {
-                return;
-            }
-
-            initDatatable();
-
-            /* Data row clear */
-            let dataTbl = $('#kt_center_board_notice_table').DataTable();
-            dataTbl.clear();
-            dataTbl.draw(false);
-
-            dataTbl.on('order.dt search.dt', function () {
-                let i = dataTbl.rows().count();
-                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
-                    .every(function (cell) {
-                        this.data(i--);
-                    });
-            }).draw();
-
-            /* 조회 */
-            f_board_notice_search();
-        }
-    };
-}();
-
 let KTAppCenterBoardNewsletterKo = function () {
     // Shared variables
     let table;
@@ -4231,61 +4121,340 @@ let KTAppParticipantCompanyList = function () {
     };
 }();
 
+let KTAppBoardNotice = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data) {
+                        if (data === 'KO') {
+                            return '국문'
+                        } else {
+                            return '영문'
+                        }
+                    }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data) {
+                        if (data === '1') {
+                            return 'V'
+                        } else {
+                            return '-'
+                        }
+                    }
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'lang'},
+                { data: 'noticeGbn' },
+                { data: 'title' },
+                { data: 'writer' },
+                { data: 'writeDate' },
+                { data: 'finalRegiDttm' },
+                { data: 'viewCnt' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_notice_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_notice_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_notice_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_board_notice_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_board_notice_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_board_notice_search();
+        }
+    };
+}();
+
+let KTAppBoardSipaNews = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data) {
+                        if (data === 'KO') {
+                            return '국문'
+                        } else {
+                            return '영문'
+                        }
+                    }
+                },
+                {
+                    'targets': 3,
+                    'render': function (data) {
+                        if (data === '1') {
+                            return 'V'
+                        } else {
+                            return '-'
+                        }
+                    }
+                },
+                {
+                    'targets': 9,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'lang'},
+                { data: 'noticeGbn' },
+                { data: 'title' },
+                { data: 'writer' },
+                { data: 'writeDate' },
+                { data: 'finalRegiDttm' },
+                { data: 'viewCnt' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_sipa_news_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_sipa_news_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_sipa_news_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_board_sipa_news_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_board_sipa_news_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_board_sipa_news_search();
+        }
+    };
+}();
+
+let KTAppBoardEvent = function () {
+    // Shared variables
+    let table;
+    let datatable;
+
+    // Private functions
+    let initDatatable = function () {
+        // Init datatable --- more info on datatables: https://datatables.net/manual/
+        datatable = $(table).DataTable({
+            'info': false,
+            'paging' : false,
+            'select': false,
+            'ordering': true,
+            'order': [[0, 'desc']],
+            'columnDefs': [
+                {
+                    'targets': '_all',
+                    'className': 'text-center'
+                },
+                {
+                    'targets': 2,
+                    'render': function (data) {
+                        if (data === 'KO') {
+                            return '국문'
+                        } else {
+                            return '영문'
+                        }
+                    }
+                },
+                {
+                    'targets': 11,
+                    'data': 'actions',
+                    'render': function (data, type, row) { return renderActionsCell(data, type, row); }
+                },
+                { visible: false, targets: [1] }
+            ],
+            columns: [
+                { data: 'rownum' },
+                { data: 'seq'},
+                { data: 'lang'},
+                { data: 'title' },
+                { data: 'writer' },
+                { data: 'writeDate' },
+                { data: 'location' },
+                { data: 'startDate' },
+                { data: 'endDate' },
+                { data: 'initRegiDttm' },
+                { data: 'finalRegiDttm' },
+                { data: 'actions' }
+            ]
+        });
+    }
+
+    function renderActionsCell(data, type, row){
+        //console.log(row.id);
+        let seq = row.seq;
+        let renderHTML = '<button type="button" onclick="KTMenu.createInstances()" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">';
+        renderHTML += 'Actions';
+        renderHTML += '<i class="ki-duotone ki-down fs-5 ms-1"></i></button>';
+        renderHTML += '<div id="kt_menu" class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-150px py-4" data-kt-menu="true">';
+        renderHTML += '<div id="kt_menu_item" class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_event_detail_modal_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_modify_history">상세정보</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_event_modify_init_set(' + '\'' + seq + '\'' + ')" class="menu-link px-3">수정</a>';
+        renderHTML += '</div>';
+        renderHTML += '<div class="menu-item px-3">';
+        renderHTML += '<a onclick="f_board_event_remove(' + '\'' + seq + '\'' + ')" class="menu-link px-3">삭제</a>';
+        renderHTML += '</div>';
+        renderHTML += '</div>';
+        return renderHTML;
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            table = document.querySelector('#mng_board_event_table');
+
+            if (!table) {
+                return;
+            }
+
+            initDatatable();
+
+            /* Data row clear */
+            let dataTbl = $('#mng_board_event_table').DataTable();
+            dataTbl.clear();
+            dataTbl.draw(false);
+
+            dataTbl.on('order.dt search.dt', function () {
+                let i = dataTbl.rows().count();
+                dataTbl.cells(null, 0, { search: 'applied', order: 'applied' })
+                    .every(function (cell) {
+                        this.data(i--);
+                    });
+            }).draw();
+
+            /* 조회 */
+            f_board_event_search();
+        }
+    };
+}();
+
 // On document ready
 KTUtil.onDOMContentLoaded(function () {
 
-    // 전시회>참가자관리
-    KTAppExhibitorMng.init(); // /mng/exhibitor/participant/company.do
-    KTAppVisitorMng.init(); // /mng/exhibitor/participant/visitor.do
-    KTAppMemberMng.init(); // /mng/exhibitor/participant/member.do
-
-    // 전시회>이관정보
-    KTAppExhibitorTransferCompany.init(); // /mng/exhibitor/transfer/company.do
-    KTAppExhibitorTransferVisitor.init(); // /mng/exhibitor/transfer/visitor.do
-
-    // 전시회>참가신청서관리
-    KTAppExhibitorApplicationBooth.init(); // /mng/exhibitor/application/booth.do
-    KTAppExhibitorApplicationSign.init(); // /mng/exhibitor/application/sign.do
-    KTAppExhibitorApplicationUtility.init(); // /mng/exhibitor/application/utility.do
-    KTAppExhibitorApplicationPass.init(); // /mng/exhibitor/application/pass.do
-    KTAppExhibitorApplicationBuyer.init(); // /mng/exhibitor/application/buyer.do
-    KTAppExhibitorApplicationGift.init(); // /mng/exhibitor/application/gift.do
-    KTAppExhibitorApplicationBanner.init(); // /mng/exhibitor/application/banner.do
-    KTAppExhibitorApplicationOnline.init(); // /mng/exhibitor/application/online.do
-
-    // 부대행사>올해의제품
-    KTAppEventProductParticipant.init(); // /mng/event/product/participant.do
-    KTAppEventCompanyParticipant.init(); // /mng/event/company/participant.do
-
     // 정보센터>게시판관리
-    KTAppCenterBoardNotice.init(); // /mng/center/board/notice.do
-    KTAppCenterBoardNewsletterKo.init(); // /mng/center/board/newsletter_ko.do
-    KTAppCenterBoardNewsletterEn.init(); // /mng/center/board/newsletter_en.do
-    KTAppCenterBoardPress.init(); // /mng/center/board/press.do
-    KTAppCenterBoardFaq.init(); // /mng/center/board/faq.do
-    KTAppCenterBoardColumn.init(); // /mng/center/board/column.do
-    KTAppCenterBoardBrochure.init(); // /mng/center/board/brochure.do
-    KTAppCenterBoardDataroom.init(); // /mng/center/board/dataroom.do
-    KTAppCenterBoardGallery.init(); // /mng/center/board/gallery.do
-    KTAppCenterBoardKibstv.init(); // /mng/center/board/kibstv.do
-
-    // 정보센터>팝업관리
-    KTAppCenterPopupAdd.init(); // /mng/center/popup/add.do
-
-    // 정보센터>나의서류함
-    KTAppCenterDocumentDownload.init(); // /mng/center/document/download.do
-
-    // 정보센터>eDM관리
-    KTAppCenterEdmList.init(); // /mng/center/edm/list.do
-    KTAppCenterEdmUploadList.init(); //mng/center/edm/list/detail.do
-
-    // 요청사항>요청사항관리
-    KTAppRequestManagementList.init(); // /mng/request/management/list.do
-    KTAppRequestManagementAdd.init(); // /mng/request/management/add.do
-    KTAppRequestManagementQuestion.init(); // /mng/request/management/question.do
-
-    // 참가업체>참가업체관리
-    KTAppParticipantCompanyList.init(); // /mng/participant/company/list.do
-
+    // 공지사항
+    KTAppBoardNotice.init(); // /mng/board/notice.do
+    // SIPA-NEWS
+    KTAppBoardSipaNews.init(); // /mng/board/sipaNews.do
+    // 행사 게시판
+    KTAppBoardEvent.init(); // /mng/board/event.do
 
 });

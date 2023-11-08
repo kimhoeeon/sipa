@@ -2,11 +2,10 @@ package com.mtf.sipa.service.impl;
 
 import com.google.gson.JsonObject;
 import com.mtf.sipa.constants.CommConstants;
-import com.mtf.sipa.dto.AdminDTO;
-import com.mtf.sipa.dto.MailRequestDTO;
-import com.mtf.sipa.dto.ResponseDTO;
+import com.mtf.sipa.dto.*;
 import com.mtf.sipa.mapper.SipaMngMapper;
 import com.mtf.sipa.service.SipaMngService;
+import com.mtf.sipa.util.StringUtil;
 import lombok.Setter;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.CellType;
@@ -25,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -61,6 +61,491 @@ public class SipaMngServiceImpl implements SipaMngService {
         System.out.println("SipaMngServiceImpl > logoutCheck : ======");
         session.invalidate(); // 세션 초기화
     }
+
+    //***************************************************************************
+    // board
+    //***************************************************************************
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<NoticeDTO> processSelectNoticeList(SearchDTO searchDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectNoticeList");
+        return sipaMngMapper.selectNoticeList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public NoticeDTO processSelectNoticeSingle(NoticeDTO noticeDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectNoticeSingle");
+        return sipaMngMapper.selectNoticeSingle(noticeDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteNotice(NoticeDTO noticeDTO) {
+        System.out.println("SipaMngServiceImpl > processDeleteNotice");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(noticeDTO.getSeq() != null){
+                result = sipaMngMapper.deleteNotice(noticeDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + noticeDTO.getSeq();
+                }else{
+                    // file list useYn = N update
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setUserId(noticeDTO.getSeq());
+                    List<FileDTO> fileList = sipaMngMapper.selectFileUserIdList(fileDTO);
+                    for(FileDTO file : fileList){
+                        sipaMngMapper.updateFileUseN(file);
+                    }
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteNotice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateNotice(NoticeDTO noticeDTO) {
+        System.out.println("SipaMngServiceImpl > processUpdateNotice");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(noticeDTO.getSeq())){
+                if(StringUtil.isEmpty(noticeDTO.getNoticeGbn()) || "off".equals(noticeDTO.getNoticeGbn())){
+                    noticeDTO.setNoticeGbn("0");
+                }else{
+                    noticeDTO.setNoticeGbn("1");
+                }
+
+                String content = noticeDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+                noticeDTO.setContent(content);
+                result = sipaMngMapper.updateNotice(noticeDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + noticeDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateNotice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertNotice(NoticeDTO noticeDTO) {
+        System.out.println("SipaMngServiceImpl > processInsertNotice");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(StringUtil.isEmpty(noticeDTO.getNoticeGbn()) || "off".equals(noticeDTO.getNoticeGbn())){
+                noticeDTO.setNoticeGbn("0");
+            }else{
+                noticeDTO.setNoticeGbn("1");
+            }
+
+            String noticeSeq = sipaMngMapper.getNoticeSeq();
+            noticeDTO.setSeq(noticeSeq);
+
+            String content = noticeDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            noticeDTO.setContent(content);
+            result = sipaMngMapper.insertNotice(noticeDTO);
+
+            responseDTO.setCustomValue(noticeSeq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertNotice ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<SipaNewsDTO> processSelectSipaNewsList(SearchDTO searchDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectSipaNewsList");
+        return sipaMngMapper.selectSipaNewsList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public SipaNewsDTO processSelectSipaNewsSingle(SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectSipaNewsSingle");
+        return sipaMngMapper.selectSipaNewsSingle(sipaNewsDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteSipaNews(SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaMngServiceImpl > processDeleteSipaNews");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(sipaNewsDTO.getSeq() != null){
+                result = sipaMngMapper.deleteSipaNews(sipaNewsDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + sipaNewsDTO.getSeq();
+                }else{
+                    // file list useYn = N update
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setUserId(sipaNewsDTO.getSeq());
+                    List<FileDTO> fileList = sipaMngMapper.selectFileUserIdList(fileDTO);
+                    for(FileDTO file : fileList){
+                        sipaMngMapper.updateFileUseN(file);
+                    }
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteSipaNews ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateSipaNews(SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaMngServiceImpl > processUpdateSipaNews");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(sipaNewsDTO.getSeq())){
+                if(StringUtil.isEmpty(sipaNewsDTO.getNoticeGbn()) || "off".equals(sipaNewsDTO.getNoticeGbn())){
+                    sipaNewsDTO.setNoticeGbn("0");
+                }else{
+                    sipaNewsDTO.setNoticeGbn("1");
+                }
+
+                String content = sipaNewsDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+                sipaNewsDTO.setContent(content);
+                result = sipaMngMapper.updateSipaNews(sipaNewsDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + sipaNewsDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateSipaNews ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertSipaNews(SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaMngServiceImpl > processInsertSipaNews");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            if(StringUtil.isEmpty(sipaNewsDTO.getNoticeGbn()) || "off".equals(sipaNewsDTO.getNoticeGbn())){
+                sipaNewsDTO.setNoticeGbn("0");
+            }else{
+                sipaNewsDTO.setNoticeGbn("1");
+            }
+
+            String seq = sipaMngMapper.getSipaNewsSeq();
+            sipaNewsDTO.setSeq(seq);
+
+            String content = sipaNewsDTO.getContent().replaceAll("&lt;","<").replaceAll("&gt;",">").trim();
+            sipaNewsDTO.setContent(content);
+            result = sipaMngMapper.insertSipaNews(sipaNewsDTO);
+
+            responseDTO.setCustomValue(seq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertSipaNews ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<EventDTO> processSelectEventList(SearchDTO searchDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectEventList");
+        return sipaMngMapper.selectEventList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public EventDTO processSelectEventSingle(EventDTO eventDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectEventSingle");
+        return sipaMngMapper.selectEventSingle(eventDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeleteEvent(EventDTO eventDTO) {
+        System.out.println("SipaMngServiceImpl > processDeleteEvent");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(eventDTO.getSeq() != null){
+                result = sipaMngMapper.deleteEvent(eventDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + eventDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeleteEvent ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateEvent(EventDTO eventDTO) {
+        System.out.println("SipaMngServiceImpl > processUpdateEvent");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(eventDTO.getSeq())){
+                result = sipaMngMapper.updateEvent(eventDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + eventDTO.getSeq();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateEvent ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertEvent(EventDTO eventDTO) {
+        System.out.println("SipaMngServiceImpl > processInsertEvent");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String seq = sipaMngMapper.getEventSeq();
+            eventDTO.setSeq(seq);
+            result = sipaMngMapper.insertEvent(eventDTO);
+
+            responseDTO.setCustomValue(seq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertEvent ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    //***************************************************************************
+    // file
+    //***************************************************************************
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public FileResponseDTO processInsertFileInfo(FileDTO fileDTO) {
+        System.out.println("SipaMngServiceImpl > processInsertFileInfo");
+        FileResponseDTO responseDTO = new FileResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String fileId = sipaMngMapper.getFileId();
+            fileDTO.setId(fileId);
+            result = sipaMngMapper.insertFileInfo(fileDTO);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            responseDTO.setFileId(fileId);
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertFileInfo ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<FileDTO> processSelectFileUserIdList(FileDTO fileDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectFileUserIdList");
+        return sipaMngMapper.selectFileUserIdList(fileDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public FileResponseDTO processUpdateFileUseN(FileDTO fileDTO) {
+        System.out.println("SipaMngServiceImpl > processUpdateFileUseN");
+        FileResponseDTO responseDTO = new FileResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(fileDTO.getId())){
+
+                result = sipaMngMapper.updateFileUseN(fileDTO);
+
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Id : " + fileDTO.getId();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Id Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateFileUseN ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdateFileUserId(FileDTO fileDTO) {
+        System.out.println("SipaMngServiceImpl > processUpdateFileUserId");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(fileDTO.getId())){
+
+                result = sipaMngMapper.updateFileUserId(fileDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Id : " + fileDTO.getId();
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Id Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdateFileUserId ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+
+
+
 
     /*******************************************
      * Excel File Upload Service Impl

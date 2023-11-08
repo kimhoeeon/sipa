@@ -11,5 +11,396 @@
           AND password = <![CDATA[#{password}]]>
     </select>
 
+    <select id="selectNoticeList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectNoticeList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM notice
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectNoticeSingle" parameterType="com.mtf.sipa.dto.NoticeDTO" resultType="com.mtf.sipa.dto.NoticeDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectNoticeSingle */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM notice
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteNotice" parameterType="com.mtf.sipa.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteNotice */
+        DELETE FROM notice
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateNotice" parameterType="com.mtf.sipa.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateNotice */
+        UPDATE notice
+        SET lang = #{lang}
+        , notice_gbn = #{noticeGbn}
+        , title = <![CDATA[#{title}]]>
+        , content = <![CDATA[#{content}]]>
+        , writer = #{writer}
+        , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+        , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getNoticeSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getNoticeSeq */
+        SELECT CONCAT('N', LPAD(nextval('notice_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertNotice" parameterType="com.mtf.sipa.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertNotice */
+        INSERT INTO notice
+        ( seq
+        , lang
+        , notice_gbn
+        , title
+        , content
+        , writer
+        , write_date
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{noticeGbn}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , <![CDATA[#{fileIdList}]]>
+            , #{note}
+            , 'NOTICE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'NOTICE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectSipaNewsList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectSipaNewsList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , writer
+             , write_date
+             , final_regi_dttm
+             , view_cnt
+        FROM sipa_news
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY notice_gbn desc, init_regi_dttm desc, title asc
+    </select>
+
+    <select id="selectSipaNewsSingle" parameterType="com.mtf.sipa.dto.SipaNewsDTO" resultType="com.mtf.sipa.dto.SipaNewsDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectSipaNewsSingle */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM sipa_news
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteSipaNews" parameterType="com.mtf.sipa.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteSipaNews */
+        DELETE FROM sipa_news
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateSipaNews" parameterType="com.mtf.sipa.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateSipaNews */
+        UPDATE sipa_news
+        SET lang = #{lang}
+          , notice_gbn = #{noticeGbn}
+          , title = <![CDATA[#{title}]]>
+          , content = <![CDATA[#{content}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+        <if test='fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getSipaNewsSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getSipaNewsSeq */
+        SELECT CONCAT('S', LPAD(nextval('sipanews_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertSipaNews" parameterType="com.mtf.sipa.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertSipaNews */
+        INSERT INTO sipa_news
+        ( seq
+        , lang
+        , notice_gbn
+        , title
+        , content
+        , writer
+        , write_date
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{noticeGbn}
+            , <![CDATA[#{title}]]>
+            , <![CDATA[#{content}]]>
+            , #{writer}
+            , #{writeDate}
+            , <![CDATA[#{fileIdList}]]>
+            , #{note}
+            , 'SIPANEWS'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'SIPANEWS'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectEventList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.EventDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectEventList */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , location
+             , year
+             , start_date
+             , end_date
+             , init_regi_dttm
+             , final_regi_dttm
+        FROM event
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND title LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY write_date desc, title asc
+    </select>
+
+    <select id="selectEventSingle" parameterType="com.mtf.sipa.dto.EventDTO" resultType="com.mtf.sipa.dto.EventDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectEventSingle */
+        SELECT seq
+             , lang
+             , title
+             , writer
+             , write_date
+             , location
+             , year
+             , start_date
+             , end_date
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM event
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteEvent" parameterType="com.mtf.sipa.dto.EventDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteEvent */
+        DELETE FROM event
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateEvent" parameterType="com.mtf.sipa.dto.EventDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateEvent */
+        UPDATE event
+        SET lang = #{lang}
+          , title = <![CDATA[#{title}]]>
+          , writer = #{writer}
+          , write_date = #{writeDate}
+          , location = #{location}
+          <if test='startDate != null and startDate != ""'>
+          , year = substr(#{startDate}, 1, 4)
+          </if>
+          , start_date = #{startDate}
+          , end_date = #{endDate}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getEventSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getEventSeq */
+        SELECT CONCAT('E', LPAD(nextval('event_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertEvent" parameterType="com.mtf.sipa.dto.EventDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertEvent */
+        INSERT INTO event
+        ( seq
+        , lang
+        , title
+        , writer
+        , write_date
+        , location
+        , year
+        , start_date
+        , end_date
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , <![CDATA[#{title}]]>
+            , #{writer}
+            , #{writeDate}
+            , #{location}
+            , substr(#{startDate}, 1, 4)
+            , #{startDate}
+            , #{endDate}
+            , #{note}
+            , 'EVENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'EVENT'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="getFileId" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getFileId */
+        SELECT CONCAT('F', LPAD(nextval('file_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertFileInfo" parameterType="com.mtf.sipa.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertFileInfo */
+        INSERT INTO file
+        ( id
+        , user_id
+        , full_file_path
+        , full_path
+        , folder_path
+        , full_file_name
+        , uuid
+        , file_name
+        , file_yn
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{id}
+            , #{userId}
+            , <![CDATA[#{fullFilePath}]]>
+            , <![CDATA[#{fullPath}]]>
+            , <![CDATA[#{folderPath}]]>
+            , <![CDATA[#{fullFileName}]]>
+            , <![CDATA[#{uuid}]]>
+            , <![CDATA[#{fileName}]]>
+            , #{fileYn}
+            , #{note}
+            , 'FILE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'FILE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectFileUserIdList" parameterType="com.mtf.sipa.dto.FileDTO" resultType="com.mtf.sipa.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectFileUserIdList */
+        SELECT id
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM file
+        WHERE user_id = #{userId}
+          AND file_yn = 'Y'
+    </select>
+
+    <update id="updateFileUseN" parameterType="com.mtf.sipa.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateFileUseN */
+        UPDATE file
+        SET file_yn = 'N'
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateFileUserId" parameterType="com.mtf.sipa.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateFileUserId */
+        UPDATE file
+        SET user_id = #{userId}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE id = #{id}
+    </update>
+
 </mapper>
 

@@ -23,7 +23,7 @@
 
     <link href="<%request.getContextPath();%>/static/css/reset.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
-    <link href="<%request.getContextPath();%>/static/css/style.css" rel="stylesheet">
+    <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
 </head>
 
@@ -138,9 +138,9 @@
 <script src="<%request.getContextPath();%>/static/js/jquery.ui.touch-punch.min.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery.number.min.js"></script>
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-<script src="<%request.getContextPath();%>/static/js/script.js"></script>
+<script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
-<script src="<%request.getContextPath();%>/static/js/main.js"></script>
+<script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>
