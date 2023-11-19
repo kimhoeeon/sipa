@@ -374,7 +374,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/director.do"
+                                                                        <a href="/mng/member/ascdirectors.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">협회이사</span>
                                                                         </a>
@@ -384,7 +384,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/consultant.do"
+                                                                        <a href="/mng/member/adviser.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">고문위원</span>
                                                                         </a>
@@ -394,7 +394,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/adviser.do"
+                                                                        <a href="/mng/member/consultation.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자문위원</span>
                                                                         </a>
@@ -404,7 +404,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/company.do"
+                                                                        <a href="/mng/member/company.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">회원사</span>
                                                                         </a>
@@ -414,7 +414,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/organization.do"
+                                                                        <a href="/mng/member/partnership.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">협력기관</span>
                                                                         </a>
@@ -812,7 +812,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/director.do">
+                                            <a class="menu-link" href="/mng/member/ascdirectors.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -824,7 +824,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/consultant.do">
+                                            <a class="menu-link" href="/mng/member/adviser.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -836,7 +836,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/adviser.do">
+                                            <a class="menu-link" href="/mng/member/consultation.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -848,7 +848,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/company.do">
+                                            <a class="menu-link" href="/mng/member/company.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -860,7 +860,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/organization.do">
+                                            <a class="menu-link" href="/mng/member/partnership.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>

@@ -1,38 +1,26 @@
 /***
- * mng/board/event
- * 정보센터>게시판관리>행사 게시판
+ * mng/board/faq
+ * 정보센터>게시판관리>FAQ
  * */
 
 $(function(){
 
-    /* 행사 시작일 */
-    let startDatePicker = document.getElementById('startDate');
-    if(startDatePicker) {
-        startDatePicker.flatpickr({
-            enableTime: false,
-            dateFormat: "Y-m-d",
-            defaultDate: new Date()
-        });
-    }
-
-    /* 행사 종료일 */
-    let endDatePicker = document.getElementById('endDate');
-    if(endDatePicker) {
-        endDatePicker.flatpickr({
-            enableTime: false,
-            dateFormat: "Y-m-d"
-        });
-    }
+    // 파일 입력 변경에 대한 이벤트 핸들러 추가
+    $(document).on('change', '.upload_hidden', function () {
+        let fileName = $(this).val().split('\\').pop();
+        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
+        fileNameInput.val(fileName);
+    });
 
 });
 
-function f_board_event_search(){
+function f_board_faq_search(){
 
     /* 로딩페이지 */
     loadingBarShow();
 
     /* DataTable Data Clear */
-    let dataTbl = $('#mng_board_event_table').DataTable();
+    let dataTbl = $('#mng_board_faq_table').DataTable();
     dataTbl.clear();
     dataTbl.draw(false);
 
@@ -51,14 +39,14 @@ function f_board_event_search(){
         }
     }
 
-    let resData = ajaxConnect('/mng/board/event/selectList.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/board/faq/selectList.do', 'post', jsonObj);
     dataTbl.rows.add(resData).draw();
 
     /* 조회 카운트 입력 */
     document.getElementById('search_cnt').innerText = resData.length;
 
     /* DataTable Column tooltip Set */
-    let jb = $('#mng_board_event_table tbody td');
+    let jb = $('#mng_board_faq_table tbody td');
     let cnt = 0;
     jb.each(function(index, item){
         let itemText = $(item).text();
@@ -75,21 +63,21 @@ function f_board_event_search(){
     jb.tooltip();
 }
 
-function f_board_event_search_condition_init(){
+function f_board_faq_search_condition_init(){
     $('#search_box').val('').select2({minimumResultsForSearch: Infinity});
     $('#search_text').val('');
 
     /* 재조회 */
-    f_board_event_search();
+    f_board_faq_search();
 }
 
-function f_board_event_detail_modal_set(seq){
+function f_board_faq_detail_modal_set(seq){
     /* TM 및 잠재DB 목록 상세 조회 */
     let jsonObj = {
         seq: seq
     };
 
-    let resData = ajaxConnect('/mng/board/event/selectSingle.do', 'post', jsonObj);
+    let resData = ajaxConnect('/mng/board/faq/selectSingle.do', 'post', jsonObj);
 
     /* 공지사항 상세보기 Modal form Set */
     //console.log(resData);
@@ -103,20 +91,46 @@ function f_board_event_detail_modal_set(seq){
     document.querySelector('#md_title').value = resData.title;
     document.querySelector('#md_writer').value = resData.writer;
     document.querySelector('#md_write_date').value = resData.writeDate;
-    document.querySelector('#md_location').value = resData.location;
-    document.querySelector('#md_start_date').value = resData.startDate;
-    document.querySelector('#md_end_date').value = resData.endDate;
 
+    document.querySelector('#md_content').innerHTML = resData.content;
+    document.querySelector('#md_view_cnt').value = resData.viewCnt;
+
+    /* TM 및 잠재DB 목록 상세 조회 */
+    let jsonObj2 = {
+        userId: seq
+    };
+
+    let file_list_el = document.getElementById('file_list');
+    while (file_list_el.hasChildNodes()) {
+        file_list_el.removeChild(file_list_el.firstChild);
+    }
+
+    let fileData = ajaxConnect('/file/upload/selectList.do', 'post', jsonObj2);
+    if(nullToEmpty(fileData) !== ''){
+        for(let i=0; i<fileData.length; i++){
+            let file_list_el = document.getElementById('file_list');
+            let input_el = document.createElement('input');
+            input_el.type = 'text';
+            input_el.classList.add('form-control');
+            input_el.classList.add('form-control-lg');
+            input_el.classList.add('form-control-solid-bg');
+            input_el.classList.add('mb-2');
+            input_el.value = fileData[i].fileName;
+            input_el.readOnly = true;
+
+            file_list_el.append(input_el);
+        }
+    }
 }
 
-function f_board_event_remove(seq){
+function f_board_faq_remove(seq){
     //console.log('삭제버튼');
     if(nullToEmpty(seq) !== ""){
         let jsonObj = {
             seq: seq
         }
         Swal.fire({
-            title: '선택한 행사를 삭제하시겠습니까?',
+            title: '선택한 FAQ를 삭제하시겠습니까?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -126,24 +140,24 @@ function f_board_event_remove(seq){
         }).then((result) => {
             if (result.isConfirmed) {
 
-                let resData = ajaxConnect('/mng/board/event/delete.do', 'post', jsonObj);
+                let resData = ajaxConnect('/mng/board/faq/delete.do', 'post', jsonObj);
 
                 if (resData.resultCode === "0") {
-                    showMessage('', 'info', '행사 삭제', '행사가 삭제되었습니다.', '');
-                    f_board_event_search(); // 삭제 성공 후 재조회 수행
+                    showMessage('', 'info', 'FAQ 삭제', 'FAQ가 삭제되었습니다.', '');
+                    f_board_faq_search(); // 삭제 성공 후 재조회 수행
                 } else {
-                    showMessage('', 'error', '에러 발생', '행사 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
+                    showMessage('', 'error', '에러 발생', 'FAQ 삭제를 실패하였습니다. 관리자에게 문의해주세요. ' + resData.resultMessage, '');
                 }
             }
         });
     }
 }
 
-function f_board_event_modify_init_set(seq){
-    window.location.href = '/mng/board/event/detail.do?seq=' + seq;
+function f_board_faq_modify_init_set(seq){
+    window.location.href = '/mng/board/faq/detail.do?seq=' + seq;
 }
 
-function f_board_event_save(seq){
+function f_board_faq_save(seq){
     //console.log(id + '변경내용저장 클릭');
     Swal.fire({
         title: '입력된 정보를 저장하시겠습니까?',
@@ -157,17 +171,39 @@ function f_board_event_save(seq){
         if (result.isConfirmed) {
 
             /* form valid check */
-            let validCheck = f_board_event_valid();
+            let validCheck = f_board_faq_valid();
 
             if(validCheck){
+                /* File upload */
+
+                let fileIdList = '';
+                let uploadFileList = document.getElementById('uploadFileList').children;
+                let uploadFileListLen = uploadFileList.length;
+                for(let i=0; i<uploadFileListLen; i++){
+                    let fileId = uploadFileList[i].children[1].id;
+                    //console.log(fileId);
+                    fileIdList += fileId;
+                    if((i+1) !== uploadFileListLen){
+                        fileIdList += ',';
+                    }
+                }
+
+                if(fileIdList !== ''){
+                    let dataForm = document.getElementById('dataForm');
+                    let hidden_el = document.createElement('input');
+                    hidden_el.type = 'hidden';
+                    hidden_el.name = 'fileIdList';
+                    hidden_el.value = fileIdList;
+                    dataForm.append(hidden_el);
+                }
 
                 /* form data setting */
-                let data = f_board_event_form_data_setting();
+                let data = f_board_faq_form_data_setting();
 
                 /* Modify */
                 if(nvl(seq, '') !== ''){
                     $.ajax({
-                        url: '/mng/board/event/update.do',
+                        url: '/mng/board/faq/update.do',
                         method: 'POST',
                         async: false,
                         data: data,
@@ -176,18 +212,18 @@ function f_board_event_save(seq){
                         success: function (data) {
                             if (data.resultCode === "0") {
                                 Swal.fire({
-                                    title: '행사 정보 변경',
-                                    text: "행사 정보가 변경되었습니다.",
+                                    title: 'FAQ 정보 변경',
+                                    text: "FAQ 정보가 변경되었습니다.",
                                     icon: 'info',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        f_board_event_modify_init_set(seq); // 재조회
+                                        f_board_faq_modify_init_set(seq); // 재조회
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', '행사 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', 'FAQ 정보 변경을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
@@ -196,27 +232,27 @@ function f_board_event_save(seq){
                     })//ajax
                 }else { /* Insert */
                     $.ajax({
-                        url: '/mng/board/event/insert.do',
+                        url: '/mng/board/faq/insert.do',
                         method: 'POST',
                         async: false,
                         data: data,
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
-                            if (data.resultCode === '0') {
+                            if (data.resultCode === "0") {
                                 Swal.fire({
-                                    title: '행사 정보 등록',
-                                    text: "행사 정보가 등록되었습니다.",
+                                    title: 'FAQ 정보 등록',
+                                    text: "FAQ 정보가 등록되었습니다.",
                                     icon: 'info',
                                     confirmButtonColor: '#3085d6',
                                     confirmButtonText: '확인'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = '/mng/board/event.do'; // 목록으로 이동
+                                        window.location.href = '/mng/board/faq.do'; // 목록으로 이동
                                     }
                                 });
                             } else {
-                                showMessage('', 'error', '에러 발생', '행사 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
+                                showMessage('', 'error', '에러 발생', 'FAQ 정보 등록을 실패하였습니다. 관리자에게 문의해주세요. ' + data.resultMessage, '');
                             }
                         },
                         error: function (xhr, status) {
@@ -232,28 +268,25 @@ function f_board_event_save(seq){
 
 }
 
-function f_board_event_form_data_setting(){
+function f_board_faq_form_data_setting(){
 
     let form = JSON.parse(JSON.stringify($('#dataForm').serializeObject()));
 
-    let writer = form.writer;
-    if(nvl(writer,'') === ''){
-        form.writer = 'SIPA';
-    }
+    form.uploadFile = '';
 
     return JSON.stringify(form);
 }
 
-function f_board_event_valid(){
+function f_board_faq_valid(){
     let title = document.querySelector('#title').value;
-    let location = document.querySelector('#location').value;
-    let startDate = document.querySelector('#startDate').value;
-    let endDate = document.querySelector('#endDate').value;
+    let writer = document.querySelector('#writer').value;
+    let writeDate = document.querySelector('#writeDate').value;
+    let content = document.querySelector('#quill_content').value;
 
-    if(nvl(title,'') === ''){ showMessage('#title', 'error', '[행사 정보]', '행사명을 입력해 주세요.', ''); return false; }
-    if(nvl(location,'') === ''){ showMessage('', 'error', '[행사 정보]', '장소를 입력해 주세요.', ''); return false; }
-    if(nvl(startDate,'') === ''){ showMessage('', 'error', '[행사 정보]', '행사 시작일을 입력해 주세요.', ''); return false; }
-    if(nvl(endDate,'') === ''){ showMessage('', 'error', '[행사 정보]', '행사 종료일을 입력해 주세요.', ''); return false; }
+    if(nvl(title,"") === ""){ showMessage('#title', 'error', '[글 등록 정보]', '제목을 입력해 주세요.', ''); return false; }
+    if(nvl(writer,"") === ""){ showMessage('#writer', 'error', '[글 등록 정보]', '작성자를 입력해 주세요.', ''); return false; }
+    if(nvl(writeDate,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '작성일을 입력해 주세요.', ''); return false; }
+    if(nvl(content,"") === ""){ showMessage('', 'error', '[글 등록 정보]', '내용을 입력해 주세요.', ''); return false; }
 
     return true;
 }

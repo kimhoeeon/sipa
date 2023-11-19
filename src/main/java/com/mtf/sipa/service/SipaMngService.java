@@ -68,4 +68,54 @@ public interface SipaMngService {
     ResponseDTO processUpdateEvent(EventDTO eventDTO);
 
     ResponseDTO processInsertEvent(EventDTO eventDTO);
+
+    List<FaqDTO> processSelectFaqList(SearchDTO searchDTO);
+
+    FaqDTO processSelectFaqSingle(FaqDTO faqDTO);
+
+    ResponseDTO processDeleteFaq(FaqDTO faqDTO);
+
+    ResponseDTO processUpdateFaq(FaqDTO faqDTO);
+
+    ResponseDTO processInsertFaq(FaqDTO faqDTO);
+
+    List<AscdirectorsDTO> processSelectAscdirectorsList(SearchDTO searchDTO);
+
+    AscdirectorsDTO processSelectAscdirectorsSingle(AscdirectorsDTO ascdirectorsDTO);
+
+    ResponseDTO processDeleteAscdirectors(AscdirectorsDTO ascdirectorsDTO);
+
+    ResponseDTO processUpdateAscdirectors(AscdirectorsDTO ascdirectorsDTO);
+
+    ResponseDTO processInsertAscdirectors(AscdirectorsDTO ascdirectorsDTO);
+
+    List<AdviserDTO> processSelectAdviserList(SearchDTO searchDTO);
+
+    AdviserDTO processSelectAdviserSingle(AdviserDTO adviserDTO);
+
+    ResponseDTO processDeleteAdviser(AdviserDTO adviserDTO);
+
+    ResponseDTO processUpdateAdviser(AdviserDTO adviserDTO);
+
+    ResponseDTO processInsertAdviser(AdviserDTO adviserDTO);
+
+    List<ConsultationDTO> processSelectConsultationList(SearchDTO searchDTO);
+
+    ConsultationDTO processSelectConsultationSingle(ConsultationDTO consultationDTO);
+
+    ResponseDTO processDeleteConsultation(ConsultationDTO consultationDTO);
+
+    ResponseDTO processUpdateConsultation(ConsultationDTO consultationDTO);
+
+    ResponseDTO processInsertConsultation(ConsultationDTO consultationDTO);
+
+    List<CompanyDTO> processSelectCompanyList(SearchDTO searchDTO);
+
+    CompanyDTO processSelectCompanySingle(CompanyDTO companyDTO);
+
+    ResponseDTO processDeleteCompany(CompanyDTO companyDTO);
+
+    ResponseDTO processUpdateCompany(CompanyDTO companyDTO);
+
+    ResponseDTO processInsertCompany(CompanyDTO companyDTO);
 }

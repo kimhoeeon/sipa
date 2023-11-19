@@ -145,7 +145,7 @@ if (document.documentElement) {
                                  id="kt_app_header_menu" data-kt-menu="true">
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                     data-kt-menu-placement="bottom-start" class="menu-item here">
+                                     data-kt-menu-placement="bottom-start" class="menu-item">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-title">게시판 관리</span>
@@ -219,7 +219,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/board/event.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">행사 게시판</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -335,7 +335,7 @@ if (document.documentElement) {
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
                                 <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                                     data-kt-menu-placement="bottom-start" class="menu-item">
+                                     data-kt-menu-placement="bottom-start" class="menu-item here">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-title">회원사</span>
@@ -405,7 +405,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/member/company.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">회원사</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -622,7 +622,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -665,7 +665,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/board/event.do">
+                                            <a class="menu-link" href="/mng/board/event.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -794,7 +794,7 @@ if (document.documentElement) {
                                 </div>
                                 <!--end:Menu item-->
                                 <!--begin:Menu item-->
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion hover show">
                                     <!--begin:Menu link-->
                                     <span class="menu-link">
                                         <span class="menu-icon">
@@ -848,7 +848,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/member/company.do">
+                                            <a class="menu-link active" href="/mng/member/company.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -903,7 +903,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        행사 게시판</h1>
+                                        회원사</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -918,7 +918,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">정보센터</li>
+                                        <li class="breadcrumb-item text-muted">회원사</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -926,7 +926,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">게시판 관리</li>
+                                        <li class="breadcrumb-item text-muted">회원사 관리</li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
                                         <li class="breadcrumb-item">
@@ -934,7 +934,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">행사 게시판</li>
+                                        <li class="breadcrumb-item text-muted">회원사</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -943,7 +943,7 @@ if (document.documentElement) {
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
                                     <!--begin::Export dropdown-->
-                                    <button type="button" onclick="f_excel_export('mng_board_event_table', '행사_게시판')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                    <button type="button" onclick="f_excel_export('mng_member_company_table', '회원사')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
                                         <i class="ki-duotone ki-exit-down fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -974,7 +974,7 @@ if (document.documentElement) {
                                                 <!--begin::Select2-->
                                                 <select id="search_box" class="form-select form-select-solid" data-control="select2"
                                                         aria-label="- 언어 -" data-placeholder="- 언어 -"
-                                                        data-allow-clear="true" data-hide-search="true" onchange="f_board_event_search()">
+                                                        data-allow-clear="true" data-hide-search="true" onchange="f_member_company_search()">
                                                     <option></option>
                                                     <option disabled>- 언어 -</option>
                                                     <option value="" selected>전체</option>
@@ -995,48 +995,63 @@ if (document.documentElement) {
                                             <!--end::Search-->
                                             <!--begin:Action-->
                                             <div class="d-flex align-items-center">
-                                                <button type="button" onclick="f_board_event_search()" class="btn btn-primary me-5">Search</button>
-                                                <button type="button" onclick="f_board_event_search_condition_init()" class="btn btn-secondary me-5">
+                                                <button type="button" onclick="f_member_company_search()" class="btn btn-primary me-5">Search</button>
+                                                <button type="button" onclick="f_member_company_search_condition_init()" class="btn btn-secondary me-5">
                                                     <i class="ki-duotone ki-arrows-circle fs-3">
                                                         <i class="path1"></i>
                                                         <i class="path2"></i>
                                                     </i>검색조건 초기화</button>
                                             </div>
+                                        </div>
+                                        <!--end::Card title-->
+                                        <!--begin::Card toolbar-->
+                                        <div class="card-toolbar flex-row-fluid gap-5">
+                                            <%--begin::부스구분--%>
+                                            <div class="w-100 mw-150px">
+                                                <!--begin::Select2-->
+                                                <select id="gbn_type" class="form-select form-select-solid" data-control="select2"
+                                                        data-hide-search="true" data-allow-clear="true"
+                                                        data-placeholder="- 구분 -" onchange="f_search_condition_box_change()">
+                                                    <option></option>
+                                                    <option value="" disabled>- 구분 -</option>
+                                                    <option value="R">정회원</option>
+                                                    <option value="A">준회원</option>
+                                                </select>
+                                                <!--end::Select2-->
+                                            </div>
+                                            <%--end::부스구분--%>
+
                                             <!--end:Action-->
                                             <div class="ms-auto">
                                                 <!--begin::글쓰기-->
-                                                <a href="javascript:void(0);" onclick="f_board_event_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
+                                                <a href="javascript:void(0);" onclick="f_member_company_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
                                                 <!--end::글쓰기-->
                                             </div>
                                         </div>
-                                        <!--end::Card title-->
+                                        <!--end::Card toolbar-->
                                     </div>
                                     <!--end::Card header-->
                                     <!--begin::Card body-->
                                     <div class="card-body pt-0">
                                         <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
                                         <!--begin::Table-->
-                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_board_event_table">
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_member_company_table">
                                             <thead>
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="text-center min-w-50px">번호</th>
                                                     <th>seq</th>
                                                     <th class="text-center min-w-50px">언어</th>
-                                                    <th class="text-center min-w-150px">행사명</th>
-                                                    <th class="text-center min-w-125px">작성자</th>
-                                                    <th class="text-center min-w-150px">작성일시</th>
-                                                    <th class="text-center min-w-125px">장소</th>
-                                                    <th class="text-center min-w-125px">시작일</th>
-                                                    <th class="text-center min-w-125px">종료일</th>
-                                                    <th class="text-center min-w-150px">등록일시</th>
-                                                    <th class="text-center min-w-150px">수정일시</th>
+                                                    <th class="text-center min-w-50px">구분</th>
+                                                    <th class="text-center min-w-100px">회사명</th>
+                                                    <th class="text-center min-w-50px">대표자</th>
+                                                    <th class="text-center min-w-150px">주요사업</th>
+                                                    <th class="text-center min-w-150px">주요생산품</th>
+                                                    <th class="text-center min-w-150px">최종수정일시</th>
                                                     <th class="text-center min-w-100px">기능</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1093,7 +1108,7 @@ if (document.documentElement) {
                 <!--begin::Modal header-->
                 <div class="modal-header" style="background-color: #1e1e2d;">
                     <!--begin::Modal title-->
-                    <h2 style="color: #FFFFFF;">행사 게시판 상세보기</h2>
+                    <h2 style="color: #FFFFFF;">회원사 정보 상세보기</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
@@ -1125,13 +1140,35 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">행사명</label>
+                                <label class="form-label">회원 구분</label>
+                                <!--begin::Label-->
+                                <!--begin::Label-->
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check form-check-custom">
+                                        <input class="form-check-input form-control-solid-bg opacity-100" type="radio" id="gbnR" name="gbn" value="R" disabled/>
+                                        <label class="form-check-label opacity-100" for="gbnR">
+                                            정회원
+                                        </label>
+                                        <input class="form-check-input form-control-solid-bg ml20 opacity-100" type="radio" id="gbnA" name="gbn" value="A" disabled/>
+                                        <label class="form-check-label opacity-100" for="gbnA">
+                                            준회원
+                                        </label>
+                                    </div>
+                                </div>
+                                <!--begin::Label-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">회사명</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_title" placeholder="제목" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_name" placeholder="회사명" readonly>
                                 <!--end::Input-->
                                 <!--begin::Description-->
-                                <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
+                                    <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
                                 <!--end::Description-->
                             </div>
                             <!--end::Input group-->
@@ -1139,10 +1176,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">작성자</label>
+                                <label class="form-label">대표자명</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_writer" placeholder="작성자" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_ceo" placeholder="대표자명" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1150,10 +1187,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">작성일</label>
+                                <label class="form-label">홈페이지</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_write_date" placeholder="작성일" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_homepage" placeholder="홈페이지" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1161,10 +1198,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">장소</label>
+                                <label class="form-label">전화번호</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_location" placeholder="장소" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_tel" placeholder="전화번호" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1172,10 +1209,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">시작일</label>
+                                <label class="form-label">주소</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_start_date" placeholder="행사 시작일" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_address" placeholder="주소" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1183,10 +1220,32 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">종료일</label>
+                                <label class="form-label">주요 사업</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_end_date" placeholder="행사 종료일" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_business_type" placeholder="주요 사업" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">주요 생산품</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_business_item" placeholder="주요 생산품" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div id="file_list">
+                                <!--begin::Label-->
+                                <label class="form-label">첨부파일</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                    <%--<input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" readonly>--%>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1235,12 +1294,12 @@ if (document.documentElement) {
     <!--begin::Custom Javascript(used for common page)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/event.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/mng/company.js?ver=<%=System.currentTimeMillis()%>"></script>
 
     <script>
         document.addEventListener("keyup", function(event) {
             if (event.key === 'Enter') {
-                f_board_event_search();
+                f_member_company_search();
             }
         });
     </script>

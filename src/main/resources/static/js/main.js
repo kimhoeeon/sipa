@@ -4349,13 +4349,6 @@ function exibitloginFormSubmit() {
 
 function f_company_file_upload_call(id, path) {
 
-    /* 사업자 등록증 */
-    let companyLicenseFile = document.getElementById('companyLicenseFile').value;
-    if (nvl(companyLicenseFile, '') !== '') {
-        //console.log('사업자등록증 파일 업로드');
-        f_company_file_upload(id, 'companyLicenseFile', path);
-    }
-
     /* 로고 */
     let logoFile = document.getElementById('logoFile').value;
     if (nvl(logoFile, '') !== '') {
@@ -4363,27 +4356,6 @@ function f_company_file_upload_call(id, path) {
         f_company_file_upload(id, 'logoFile', path);
     }
 
-    /* 홍보이미지 */
-    let promotionImageFileList = document.getElementsByName('promotionImageFile');
-    for(let i=0; i<promotionImageFileList.length; i++){
-        let promotionImageFile = promotionImageFileList[i].value;
-        if (nvl(promotionImageFile, '') !== '') {
-            //console.log('홍보이미지 파일 업로드' + (i+1));
-            f_company_file_upload(id, 'promotionImageFile'+(i+1), path);
-        }
-    }
-
-    /* 제품사진 */
-    let productImageFileList = $('input[type=file][name=productImageFile]');
-    for(let i=0; i<productImageFileList.length; i++){
-        let productImageNum = productImageFileList[i].id;
-        productImageNum = productImageNum.toString().replace('productImageFile','');
-        let productImageFile = productImageFileList[i].value;
-        if (nvl(productImageFile, '') !== '') {
-            //console.log('제품사진 파일 업로드' + (i+1));
-            f_company_file_upload(id, 'productImageFile' + productImageNum, path);
-        }
-    }
 }
 
 function f_gift_file_upload_call(id, path) {

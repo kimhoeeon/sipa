@@ -415,6 +415,107 @@ public class SipaMngController {
         return mv;
     }
 
+    @RequestMapping(value = "/mng/board/faq/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<FaqDTO>> mng_board_faq_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_board_faq_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<FaqDTO> responseList = sipaMngService.processSelectFaqList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/faq/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<FaqDTO> mng_board_faq_selectSingle(@RequestBody FaqDTO faqDTO) {
+        System.out.println("SipaMngController > mng_board_faq_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        FaqDTO response = sipaMngService.processSelectFaqSingle(faqDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/faq/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_board_faq_delete(@RequestBody FaqDTO faqDTO) {
+        System.out.println("SipaMngController > mng_board_faq_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteFaq(faqDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/faq/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_board_faq_detail(String seq) {
+        System.out.println("SipaMngController > mng_board_faq_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            FaqDTO faqDTO = new FaqDTO();
+            faqDTO.setSeq(seq);
+            FaqDTO info = sipaMngService.processSelectFaqSingle(faqDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/board/faq/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/board/faq/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_faq_update(@RequestBody FaqDTO faqDTO) {
+        System.out.println("SipaMngController > mng_center_board_faq_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateFaq(faqDTO);
+
+        String fileIdList = faqDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(faqDTO.getSeq());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/board/faq/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_center_board_faq_insert(@RequestBody FaqDTO faqDTO) {
+        System.out.println("SipaMngController > mng_center_board_faq_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertFaq(faqDTO);
+
+        String fileIdList = faqDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     //***************************************************************************
     // popup Folder
     //***************************************************************************
@@ -456,48 +557,349 @@ public class SipaMngController {
     }
 
     //***************************************************************************
-    // membership Folder
+    // member Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/mng/membership/director.do", method = RequestMethod.GET)
-    public ModelAndView mng_membership_director() {
-        System.out.println("SipaMngController > mng_membership_director");
+    @RequestMapping(value = "/mng/member/ascdirectors.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_ascdirectors() {
+        System.out.println("SipaMngController > mng_member_ascdirectors");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/membership/director");
+        mv.setViewName("/mng/member/ascdirectors");
         return mv;
     }
 
-    @RequestMapping(value = "/mng/membership/consultant.do", method = RequestMethod.GET)
-    public ModelAndView mng_membership_consultant() {
-        System.out.println("SipaMngController > mng_membership_consultant");
+    @RequestMapping(value = "/mng/member/ascdirectors/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<AscdirectorsDTO>> mng_member_ascdirectors_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_member_ascdirectors_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<AscdirectorsDTO> responseList = sipaMngService.processSelectAscdirectorsList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/ascdirectors/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<AscdirectorsDTO> mng_member_ascdirectors_selectSingle(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
+        System.out.println("SipaMngController > mng_member_ascdirectors_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        AscdirectorsDTO response = sipaMngService.processSelectAscdirectorsSingle(ascdirectorsDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/ascdirectors/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_ascdirectors_delete(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
+        System.out.println("SipaMngController > mng_member_ascdirectors_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteAscdirectors(ascdirectorsDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/ascdirectors/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_ascdirectors_detail(String seq) {
+        System.out.println("SipaMngController > mng_member_ascdirectors_detail");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/membership/consultant");
+
+        if(seq != null && !"".equals(seq)){
+            AscdirectorsDTO ascdirectorsDTO = new AscdirectorsDTO();
+            ascdirectorsDTO.setSeq(seq);
+            AscdirectorsDTO info = sipaMngService.processSelectAscdirectorsSingle(ascdirectorsDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/member/ascdirectors/detail");
         return mv;
     }
 
-    @RequestMapping(value = "/mng/membership/adviser.do", method = RequestMethod.GET)
-    public ModelAndView mng_membership_adviser() {
-        System.out.println("SipaMngController > mng_membership_adviser");
+    @RequestMapping(value = "/mng/member/ascdirectors/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_ascdirectors_update(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
+        System.out.println("SipaMngController > mng_member_ascdirectors_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateAscdirectors(ascdirectorsDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/ascdirectors/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_ascdirectors_insert(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
+        System.out.println("SipaMngController > mng_member_ascdirectors_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertAscdirectors(ascdirectorsDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/adviser.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_adviser() {
+        System.out.println("SipaMngController > mng_member_adviser");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/membership/adviser");
+        mv.setViewName("/mng/member/adviser");
         return mv;
     }
 
-    @RequestMapping(value = "/mng/membership/company.do", method = RequestMethod.GET)
-    public ModelAndView mng_membership_company() {
-        System.out.println("SipaMngController > mng_membership_company");
+    @RequestMapping(value = "/mng/member/adviser/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<AdviserDTO>> mng_member_adviser_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_member_adviser_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<AdviserDTO> responseList = sipaMngService.processSelectAdviserList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/adviser/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<AdviserDTO> mng_member_adviser_selectSingle(@RequestBody AdviserDTO adviserDTO) {
+        System.out.println("SipaMngController > mng_member_adviser_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        AdviserDTO response = sipaMngService.processSelectAdviserSingle(adviserDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/adviser/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_adviser_delete(@RequestBody AdviserDTO adviserDTO) {
+        System.out.println("SipaMngController > mng_member_adviser_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteAdviser(adviserDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/adviser/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_adviser_detail(String seq) {
+        System.out.println("SipaMngController > mng_member_adviser_detail");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/membership/company");
+
+        if(seq != null && !"".equals(seq)){
+            AdviserDTO adviserDTO = new AdviserDTO();
+            adviserDTO.setSeq(seq);
+            AdviserDTO info = sipaMngService.processSelectAdviserSingle(adviserDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/member/adviser/detail");
         return mv;
     }
 
-    @RequestMapping(value = "/mng/membership/organization.do", method = RequestMethod.GET)
-    public ModelAndView mng_membership_organization() {
-        System.out.println("SipaMngController > mng_membership_organization");
+    @RequestMapping(value = "/mng/member/adviser/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_adviser_update(@RequestBody AdviserDTO adviserDTO) {
+        System.out.println("SipaMngController > mng_member_adviser_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateAdviser(adviserDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/adviser/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_adviser_insert(@RequestBody AdviserDTO adviserDTO) {
+        System.out.println("SipaMngController > mng_member_adviser_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertAdviser(adviserDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/consultation.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_consultation() {
+        System.out.println("SipaMngController > mng_member_consultation");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/membership/organization");
+        mv.setViewName("/mng/member/consultation");
         return mv;
     }
+
+    @RequestMapping(value = "/mng/member/consultation/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ConsultationDTO>> mng_member_consultation_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_member_consultation_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<ConsultationDTO> responseList = sipaMngService.processSelectConsultationList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/consultation/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ConsultationDTO> mng_member_consultation_selectSingle(@RequestBody ConsultationDTO consultationDTO) {
+        System.out.println("SipaMngController > mng_member_consultation_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        ConsultationDTO response = sipaMngService.processSelectConsultationSingle(consultationDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/consultation/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_consultation_delete(@RequestBody ConsultationDTO consultationDTO) {
+        System.out.println("SipaMngController > mng_member_consultation_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteConsultation(consultationDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/consultation/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_consultation_detail(String seq) {
+        System.out.println("SipaMngController > mng_member_consultation_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            ConsultationDTO consultationDTO = new ConsultationDTO();
+            consultationDTO.setSeq(seq);
+            ConsultationDTO info = sipaMngService.processSelectConsultationSingle(consultationDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/member/consultation/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/member/consultation/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_consultation_update(@RequestBody ConsultationDTO consultationDTO) {
+        System.out.println("SipaMngController > mng_member_consultation_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateConsultation(consultationDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/consultation/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_consultation_insert(@RequestBody ConsultationDTO consultationDTO) {
+        System.out.println("SipaMngController > mng_member_consultation_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertConsultation(consultationDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/company.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_company() {
+        System.out.println("SipaMngController > mng_member_company");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/member/company");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/member/company/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<CompanyDTO>> mng_member_company_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_member_company_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<CompanyDTO> responseList = sipaMngService.processSelectCompanyList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/company/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<CompanyDTO> mng_member_company_selectSingle(@RequestBody CompanyDTO companyDTO) {
+        System.out.println("SipaMngController > mng_member_company_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        CompanyDTO response = sipaMngService.processSelectCompanySingle(companyDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/company/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_company_delete(@RequestBody CompanyDTO companyDTO) {
+        System.out.println("SipaMngController > mng_member_company_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteCompany(companyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/company/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_company_detail(String seq) {
+        System.out.println("SipaMngController > mng_member_company_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            CompanyDTO companyDTO = new CompanyDTO();
+            companyDTO.setSeq(seq);
+            CompanyDTO info = sipaMngService.processSelectCompanySingle(companyDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/member/company/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/member/company/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_company_update(@RequestBody CompanyDTO companyDTO) {
+        System.out.println("SipaMngController > mng_member_company_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateCompany(companyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/company/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_company_insert(@RequestBody CompanyDTO companyDTO) {
+        System.out.println("SipaMngController > mng_member_company_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertCompany(companyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/partnership.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_partnership() {
+        System.out.println("SipaMngController > mng_member_partnership");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/member/partnership");
+        return mv;
+    }
+
 
 
     /*********************** file upload ***********************/
@@ -537,7 +939,7 @@ public class SipaMngController {
 
     @RequestMapping(value = "/file/upload.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity file_upload(HttpServletRequest uploadFile) {
+    public ResponseEntity<Map<String, String>> file_upload(HttpServletRequest uploadFile) {
         System.out.println("SipaMngController > file_upload");
         String gbn = uploadFile.getParameter("gbn");
 
@@ -1033,7 +1435,7 @@ public class SipaMngController {
 
     @RequestMapping(value = "/mng/excelUpload.do" , method = RequestMethod.POST , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
-    public ResponseEntity mng_excelUpload(MultipartHttpServletRequest request) {
+    public ResponseEntity<ResponseDTO> mng_excelUpload(MultipartHttpServletRequest request) {
         System.out.println("SipaMngController > mng_excelUpload");
         ResponseDTO responseDto = new ResponseDTO();
         String resultCode = CommConstants.RESULT_CODE_SUCCESS;
@@ -1064,20 +1466,20 @@ public class SipaMngController {
 
         responseDto.setResultCode(resultCode);
         responseDto.setResultMessage(resultMessage);
-        return new ResponseEntity(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     /*********************** mail send ***********************/
 
     @RequestMapping(value = "/mail/send.do", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity mail_send(@RequestBody MailRequestDTO mailRequestDTO) {
+    public ResponseEntity<ResponseDTO> mail_send(@RequestBody MailRequestDTO mailRequestDTO) {
         System.out.println("SipaMngController > mail_send");
         System.out.println(mailRequestDTO.toString());
 
         ResponseDTO responseDTO = sipaMngService.processMailSend(mailRequestDTO);
 
-        return new ResponseEntity(responseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
 }

@@ -366,7 +366,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/director.do"
+                                                                        <a href="/mng/member/ascdirectors.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">협회이사</span>
                                                                         </a>
@@ -376,7 +376,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/consultant.do"
+                                                                        <a href="/mng/member/adviser.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">고문위원</span>
                                                                         </a>
@@ -386,7 +386,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/adviser.do"
+                                                                        <a href="/mng/member/consultation.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">자문위원</span>
                                                                         </a>
@@ -396,7 +396,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/company.do"
+                                                                        <a href="/mng/member/company.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">회원사</span>
                                                                         </a>
@@ -406,7 +406,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/membership/organization.do"
+                                                                        <a href="/mng/member/partnership.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">협력기관</span>
                                                                         </a>
@@ -804,7 +804,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/director.do">
+                                            <a class="menu-link" href="/mng/member/ascdirectors.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -816,7 +816,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/consultant.do">
+                                            <a class="menu-link" href="/mng/member/adviser.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -828,7 +828,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/adviser.do">
+                                            <a class="menu-link" href="/mng/member/consultation.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -840,7 +840,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/company.do">
+                                            <a class="menu-link" href="/mng/member/company.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -852,7 +852,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/membership/organization.do">
+                                            <a class="menu-link" href="/mng/member/partnership.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -1089,7 +1089,7 @@ if (document.documentElement) {
                                                     <ul id="uploadFileList">
                                                         <c:forEach var="file" items="${fileList}">
                                                             <li class="mb-4">
-                                                                <a href="/file/download.do?path=center/board/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
+                                                                <a href="/file/download.do?path=board/sipaNews/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
                                                                 <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
                                                                 <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
                                                                     <i class="ki-duotone ki-abstract-11">

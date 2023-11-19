@@ -58,4 +58,64 @@ public interface SipaMngMapper {
     String getEventSeq();
 
     Integer insertEvent(EventDTO eventDTO);
+
+    List<FaqDTO> selectFaqList(SearchDTO searchDTO);
+
+    FaqDTO selectFaqSingle(FaqDTO faqDTO);
+
+    Integer deleteFaq(FaqDTO faqDTO);
+
+    Integer updateFaq(FaqDTO faqDTO);
+
+    String getFaqSeq();
+
+    Integer insertFaq(FaqDTO faqDTO);
+
+    List<AscdirectorsDTO> selectAscdirectorsList(SearchDTO searchDTO);
+
+    AscdirectorsDTO selectAscdirectorsSingle(AscdirectorsDTO ascdirectorsDTO);
+
+    Integer deleteAscdirectors(AscdirectorsDTO ascdirectorsDTO);
+
+    Integer updateAscdirectors(AscdirectorsDTO ascdirectorsDTO);
+
+    String getAscdirectorsSeq();
+
+    Integer insertAscdirectors(AscdirectorsDTO ascdirectorsDTO);
+
+    List<AdviserDTO> selectAdviserList(SearchDTO searchDTO);
+
+    AdviserDTO selectAdviserSingle(AdviserDTO adviserDTO);
+
+    Integer deleteAdviser(AdviserDTO adviserDTO);
+
+    Integer updateAdviser(AdviserDTO adviserDTO);
+
+    String getAdviserSeq();
+
+    Integer insertAdviser(AdviserDTO adviserDTO);
+
+    List<ConsultationDTO> selectConsultationList(SearchDTO searchDTO);
+
+    ConsultationDTO selectConsultationSingle(ConsultationDTO consultationDTO);
+
+    Integer deleteConsultation(ConsultationDTO consultationDTO);
+
+    Integer updateConsultation(ConsultationDTO consultationDTO);
+
+    String getConsultationSeq();
+
+    Integer insertConsultation(ConsultationDTO consultationDTO);
+
+    List<CompanyDTO> selectCompanyList(SearchDTO searchDTO);
+
+    CompanyDTO selectCompanySingle(CompanyDTO companyDTO);
+
+    Integer deleteCompany(CompanyDTO companyDTO);
+
+    Integer updateCompany(CompanyDTO companyDTO);
+
+    String getCompanySeq();
+
+    Integer insertCompany(CompanyDTO companyDTO);
 }

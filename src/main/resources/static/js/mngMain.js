@@ -10,7 +10,7 @@ $(function(){
     });
 
     // 연락처 입력 시 자동으로 - 삽입과 숫자만 입력
-    $('.onlyTel').on("keyup", function () {
+    $('.onlyTel').on("blur keyup", function () {
         $(this).val($(this).val().replaceAll(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3").replace("--", "-"));
     });
 
@@ -21,7 +21,7 @@ $(function(){
     });
 
     // 숫자, 소수점 입력
-    $('.onlyNumDec').on("keyup", function () {
+    $('.onlyNumDec').on("blur keyup", function () {
         var sanitizedValue = $(this).val().replace(/[^0-9.]/g, ''); // 숫자와 소수점 이외의 문자 제거
         var decimalParts = sanitizedValue.split("."); // 소수점을 기준으로 분할
 
@@ -318,7 +318,7 @@ function modalClose(name){
 async function f_company_file_upload(userId, elementId, path) {
     let uploadFileResponse = '';
     uploadFileResponse = await f_company_uploadFile(elementId, path);
-    if (nvl(uploadFileResponse, "") !== '') {
+    if (nvl(uploadFileResponse, '') !== '') {
         let fullFilePath = uploadFileResponse.replaceAll('\\', '/');
         // ./tomcat/webapps/upload/center/board/notice/b3eb661d-34de-4fd0-bc74-17db9fffc1bd_KIBS_TV_목록_excel_20230817151752.xlsx
 
