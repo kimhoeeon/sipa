@@ -901,6 +901,128 @@
             )
     </insert>
 
+    <select id="selectPartnershipList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectPartnershipList */
+        SELECT seq
+             , lang
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , logo
+             , intro
+             , field
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM partnership
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            AND company_name LIKE CONCAT('%',#{searchText},'%')
+        </if>
+        <if test='condition != null and condition != ""'>
+            AND lang = #{condition}
+        </if>
+        ORDER BY init_regi_dttm desc, company_name asc
+    </select>
+
+    <select id="selectPartnershipSingle" parameterType="com.mtf.sipa.dto.PartnershipDTO" resultType="com.mtf.sipa.dto.PartnershipDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectPartnershipSingle */
+        SELECT seq
+             , lang
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , logo
+             , intro
+             , field
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM partnership
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deletePartnership" parameterType="com.mtf.sipa.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deletePartnership */
+        DELETE FROM partnership
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updatePartnership" parameterType="com.mtf.sipa.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updatePartnership */
+        UPDATE partnership
+        SET lang = #{lang}
+          , company_name = #{companyName}
+          , company_ceo = #{companyCeo}
+          , company_homepage = <![CDATA[#{companyHomepage}]]>
+          , company_tel = #{companyTel}
+          , company_address = <![CDATA[#{companyAddress}]]>
+          , company_business_type = <![CDATA[#{companyBusinessType}]]>
+          , company_business_item = <![CDATA[#{companyBusinessItem}]]>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getPartnershipSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getPartnershipSeq */
+        SELECT CONCAT('P', LPAD(nextval('partnership_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertPartnership" parameterType="com.mtf.sipa.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertPartnership */
+        INSERT INTO partnership
+        ( seq
+        , lang
+        , company_name
+        , company_ceo
+        , company_homepage
+        , company_tel
+        , company_address
+        , company_business_type
+        , company_business_item
+        , logo
+        , intro
+        , field
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{lang}
+            , #{companyName}
+            , #{companyCeo}
+            , <![CDATA[#{companyHomepage}]]>
+            , #{companyTel}
+            , <![CDATA[#{companyAddress}]]>
+            , <![CDATA[#{companyBusinessType}]]>
+            , <![CDATA[#{companyBusinessItem}]]>
+            , #{logo}
+            , #{intro}
+            , #{field}
+            , #{note}
+            , 'PARTNER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'PARTNER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
     <select id="getFileId" resultType="java.lang.String">
         /* com.mtf.sipa.mapper.SipaMngMapper.getFileId */
         SELECT CONCAT('F', LPAD(nextval('file_seq'), '7', '0'))

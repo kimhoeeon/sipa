@@ -367,7 +367,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/member/ascdirectors.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">협회이사</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -407,7 +407,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/member/partnership.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">협력기관</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -804,7 +804,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/member/ascdirectors.do">
+                                            <a class="menu-link" href="/mng/member/ascdirectors.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -852,7 +852,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/member/partnership.do">
+                                            <a class="menu-link active" href="/mng/member/partnership.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -895,7 +895,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        협회이사</h1>
+                                        협력기관</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -926,7 +926,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">협회이사</li>
+                                        <li class="breadcrumb-item text-muted">협력기관</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -1198,7 +1198,7 @@ if (document.documentElement) {
                                                                 <c:if test="${file.note eq 'logo'}">로고 이미지 파일 : </c:if>
                                                                 <c:if test="${file.note eq 'intro'}">회사소개 이미지 파일 : </c:if>
                                                                 <c:if test="${file.note eq 'field'}">사업분야 이미지 파일 : </c:if>
-                                                                <a href="/file/download.do?path=member/ascdirectors/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
+                                                                <a href="/file/download.do?path=member/partnership/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
                                                                 <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
                                                                 <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
                                                                     <i class="ki-duotone ki-abstract-11">
@@ -1225,11 +1225,11 @@ if (document.documentElement) {
                                     <!--begin::Actions-->
                                     <div class="card-footer d-flex justify-content-between py-6 px-9">
                                         <div>
-                                            <a href="/mng/member/ascdirectors.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
+                                            <a href="/mng/member/partnership.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
                                         </div>
                                         <div>
-                                            <button type="button" onclick="f_member_ascdirectors_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                            <button type="button" onclick="f_member_ascdirectors_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
+                                            <button type="button" onclick="f_member_partnership_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
+                                            <button type="button" onclick="f_member_partnership_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
                                         </div>
                                     </div>
                                     <!--end::Actions-->
@@ -1296,7 +1296,7 @@ if (document.documentElement) {
 
     <!--begin::Custom Javascript(used for common page)-->
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/ascdirectors.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/mng/partnership.js?ver=<%=System.currentTimeMillis()%>"></script>
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->

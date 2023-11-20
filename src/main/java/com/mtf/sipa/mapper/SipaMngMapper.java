@@ -118,4 +118,16 @@ public interface SipaMngMapper {
     String getCompanySeq();
 
     Integer insertCompany(CompanyDTO companyDTO);
+
+    List<PartnershipDTO> selectPartnershipList(SearchDTO searchDTO);
+
+    PartnershipDTO selectPartnershipSingle(PartnershipDTO partnershipDTO);
+
+    Integer deletePartnership(PartnershipDTO partnershipDTO);
+
+    Integer updatePartnership(PartnershipDTO partnershipDTO);
+
+    String getPartnershipSeq();
+
+    Integer insertPartnership(PartnershipDTO partnershipDTO);
 }

@@ -118,4 +118,14 @@ public interface SipaMngService {
     ResponseDTO processUpdateCompany(CompanyDTO companyDTO);
 
     ResponseDTO processInsertCompany(CompanyDTO companyDTO);
+
+    List<PartnershipDTO> processSelectPartnershipList(SearchDTO searchDTO);
+
+    PartnershipDTO processSelectPartnershipSingle(PartnershipDTO partnershipDTO);
+
+    ResponseDTO processDeletePartnership(PartnershipDTO partnershipDTO);
+
+    ResponseDTO processUpdatePartnership(PartnershipDTO partnershipDTO);
+
+    ResponseDTO processInsertPartnership(PartnershipDTO partnershipDTO);
 }

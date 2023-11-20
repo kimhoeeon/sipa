@@ -1080,7 +1080,7 @@ if (document.documentElement) {
                                                 <!--begin::Label-->
                                                 <!--begin::Label-->
                                                 <div class="col-lg-8 d-flex align-items-center flex-wrap">
-                                                    <div class="form-check form-check-custom">
+                                                    <div class="form-check form-check-custom mb-3">
                                                         <input class="form-check-input form-control-solid-bg" type="checkbox" value="SW분과" id="companyBusinessType_1" name="companyBusinessType"
                                                                <c:if test="${fn:contains(info.companyBusinessType, 'SW분과')}">checked</c:if> />
                                                         <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_1">SW분과 </label>
@@ -1096,6 +1096,8 @@ if (document.documentElement) {
                                                         <input class="form-check-input form-control-solid-bg" type="checkbox" value="그린IT분과" id="companyBusinessType_5" name="companyBusinessType"
                                                                <c:if test="${fn:contains(info.companyBusinessType, '그린IT분과')}">checked</c:if> />
                                                         <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_5">그린IT분과 </label>
+                                                    </div>
+                                                    <div class="form-check form-check-custom">
                                                         <input class="form-check-input form-control-solid-bg" type="checkbox" value="건설분과" id="companyBusinessType_6" name="companyBusinessType"
                                                                <c:if test="${fn:contains(info.companyBusinessType, '건설분과')}">checked</c:if> />
                                                         <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_6">건설분과 </label>

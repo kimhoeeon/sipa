@@ -1038,6 +1038,124 @@ public class SipaMngServiceImpl implements SipaMngService {
         return responseDTO;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public List<PartnershipDTO> processSelectPartnershipList(SearchDTO searchDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectPartnershipList");
+        return sipaMngMapper.selectPartnershipList(searchDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public PartnershipDTO processSelectPartnershipSingle(PartnershipDTO partnershipDTO) {
+        System.out.println("SipaMngServiceImpl > processSelectPartnershipSingle");
+        return sipaMngMapper.selectPartnershipSingle(partnershipDTO);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processDeletePartnership(PartnershipDTO partnershipDTO) {
+        System.out.println("SipaMngServiceImpl > processDeletePartnership");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(partnershipDTO.getSeq() != null){
+                result = sipaMngMapper.deletePartnership(partnershipDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Delete Fail] Seq : " + partnershipDTO.getSeq();
+                }else{
+                    // file list useYn = N update
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setUserId(partnershipDTO.getSeq());
+                    List<FileDTO> fileList = sipaMngMapper.selectFileUserIdList(fileDTO);
+                    for(FileDTO file : fileList){
+                        sipaMngMapper.updateFileUseN(file);
+                    }
+                }
+                //System.out.println(result);
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processDeletePartnership ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processUpdatePartnership(PartnershipDTO partnershipDTO) {
+        System.out.println("SipaMngServiceImpl > processUpdatePartnership");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+            if(!StringUtil.isEmpty(partnershipDTO.getSeq())){
+
+                result = sipaMngMapper.updatePartnership(partnershipDTO);
+                if(result == 0){
+                    resultCode = CommConstants.RESULT_CODE_FAIL;
+                    resultMessage = "[Data Update Fail] Seq : " + partnershipDTO.getSeq();
+                }
+                //System.out.println(result);
+                responseDTO.setCustomValue(partnershipDTO.getSeq());
+            }else{
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Seq Not Found Error]";
+            }
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processUpdatePartnership ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+    @Override
+    public ResponseDTO processInsertPartnership(PartnershipDTO partnershipDTO) {
+        System.out.println("SipaMngServiceImpl > processInsertPartnership");
+        ResponseDTO responseDTO = new ResponseDTO();
+        String resultCode = CommConstants.RESULT_CODE_SUCCESS;
+        String resultMessage = CommConstants.RESULT_MSG_SUCCESS;
+        Integer result = 0;
+        try {
+
+            String seq = sipaMngMapper.getPartnershipSeq();
+            partnershipDTO.setSeq(seq);
+
+            result = sipaMngMapper.insertPartnership(partnershipDTO);
+
+            responseDTO.setCustomValue(seq);
+            if(result == 0){
+                resultCode = CommConstants.RESULT_CODE_FAIL;
+                resultMessage = "[Data Insert Fail]";
+            }
+            //System.out.println(result);
+        }catch (Exception e){
+            resultCode = CommConstants.RESULT_CODE_FAIL;
+            resultMessage = "[processInsertPartnership ERROR] " + CommConstants.RESULT_MSG_FAIL + " , " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        responseDTO.setResultCode(resultCode);
+        responseDTO.setResultMessage(resultMessage);
+        return responseDTO;
+    }
+
     //***************************************************************************
     // file
     //***************************************************************************
@@ -1143,10 +1261,6 @@ public class SipaMngServiceImpl implements SipaMngService {
         responseDTO.setResultMessage(resultMessage);
         return responseDTO;
     }
-
-
-
-
 
     /*******************************************
      * Excel File Upload Service Impl

@@ -900,7 +900,80 @@ public class SipaMngController {
         return mv;
     }
 
+    @RequestMapping(value = "/mng/member/partnership/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<PartnershipDTO>> mng_member_partnership_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_member_partnership_selectList");
+        //System.out.println(searchDTO.toString());
 
+        List<PartnershipDTO> responseList = sipaMngService.processSelectPartnershipList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/partnership/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<PartnershipDTO> mng_member_partnership_selectSingle(@RequestBody PartnershipDTO partnershipDTO) {
+        System.out.println("SipaMngController > mng_member_partnership_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        PartnershipDTO response = sipaMngService.processSelectPartnershipSingle(partnershipDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/partnership/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_partnership_delete(@RequestBody PartnershipDTO partnershipDTO) {
+        System.out.println("SipaMngController > mng_member_partnership_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeletePartnership(partnershipDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/partnership/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_member_partnership_detail(String seq) {
+        System.out.println("SipaMngController > mng_member_partnership_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            PartnershipDTO partnershipDTO = new PartnershipDTO();
+            partnershipDTO.setSeq(seq);
+            PartnershipDTO info = sipaMngService.processSelectPartnershipSingle(partnershipDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/member/partnership/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/member/partnership/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_partnership_update(@RequestBody PartnershipDTO partnershipDTO) {
+        System.out.println("SipaMngController > mng_member_ascdirectors_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdatePartnership(partnershipDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/member/partnership/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_member_partnership_insert(@RequestBody PartnershipDTO partnershipDTO) {
+        System.out.println("SipaMngController > mng_member_partnership_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertPartnership(partnershipDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 
     /*********************** file upload ***********************/
 

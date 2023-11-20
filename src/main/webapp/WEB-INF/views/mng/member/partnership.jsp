@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri ="http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <!--
 Author: Keenthemes
@@ -65,7 +64,9 @@ License: For each use you must have a valid license purchased only from above li
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
       data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
       data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
-      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
+      data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on"
+      class="app-default">
 <!--begin::Theme mode setup on page load-->
 <script>var defaultThemeMode = "light";
 var themeMode;
@@ -95,6 +96,13 @@ if (document.documentElement) {
 </c:if>
 
 <c:if test="${status eq 'logon'}">
+
+    <!--begin::Page loading(append to body)-->
+    <div class="page-loader flex-column bg-dark bg-opacity-25">
+        <span class="spinner-border text-primary" role="status"></span>
+        <span class="text-gray-800 fs-6 fw-semibold mt-5">Loading...</span>
+    </div>
+    <!--end::Page loading-->
 
     <!--begin::App-->
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
@@ -367,7 +375,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/member/ascdirectors.do"
-                                                                           class="menu-link active">
+                                                                           class="menu-link">
                                                                             <span class="menu-title">협회이사</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -407,7 +415,7 @@ if (document.documentElement) {
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
                                                                         <a href="/mng/member/partnership.do"
-                                                                           class="menu-link">
+                                                                           class="menu-link active">
                                                                             <span class="menu-title">협력기관</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
@@ -804,7 +812,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link active" href="/mng/member/ascdirectors.do">
+                                            <a class="menu-link" href="/mng/member/ascdirectors.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -852,7 +860,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/member/partnership.do">
+                                            <a class="menu-link active" href="/mng/member/partnership.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -895,7 +903,7 @@ if (document.documentElement) {
                                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                                     <!--begin::Title-->
                                     <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                                        협회이사</h1>
+                                        협력기관</h1>
                                     <!--end::Title-->
                                     <!--begin::Breadcrumb-->
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -926,7 +934,7 @@ if (document.documentElement) {
                                         </li>
                                         <!--end::Item-->
                                         <!--begin::Item-->
-                                        <li class="breadcrumb-item text-muted">협회이사</li>
+                                        <li class="breadcrumb-item text-muted">협력기관</li>
                                         <!--end::Item-->
                                     </ul>
                                     <!--end::Breadcrumb-->
@@ -934,14 +942,19 @@ if (document.documentElement) {
                                 <!--end::Page title-->
                                 <!--begin::Actions-->
                                 <div class="d-flex align-items-center gap-2 gap-lg-3">
-                                    <!--begin::Filter menu-->
-                                    <!--end::Filter menu-->
-                                    <!--begin::Secondary button-->
-                                    <!--end::Secondary button-->
-                                    <!--begin::Primary button-->
-                                    <!--end::Primary button-->
+                                    <!--begin::Export dropdown-->
+                                    <button type="button" onclick="f_excel_export('mng_member_partnership_table', '협력기관')" class="btn btn-success btn-active-light-success" data-kt-export="excel" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>Export as Excel</button>
+                                    <!--end::Export dropdown-->
                                 </div>
                                 <!--end::Actions-->
+
+                                <!--begin::Hide default export buttons-->
+                                <div id="kt_datatable_excel_hidden_buttons" class="d-none"></div>
+                                <!--end::Hide default export buttons-->
                             </div>
                             <!--end::Toolbar container-->
                         </div>
@@ -950,298 +963,98 @@ if (document.documentElement) {
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-full">
-                                <!--begin::Basic info-->
-                                <div class="card mb-5 mb-xl-10">
-                                    <!--begin::form-->
-                                    <form id="dataForm" method="post" onsubmit="return false;">
-                                        <%--공지사항 ID 값--%>
-                                        <input type="hidden" id="userSeq" name="seq" value="${info.seq}">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0">
-                                            <!--begin::Card title-->
-                                            <div class="card-title m-0">
-                                                <h3 class="fw-bold m-0">상세 정보</h3>
+                                <!--begin::Products-->
+                                <div class="card card-flush">
+                                    <!--begin::Card header-->
+                                    <div class="card-header align-items-center py-5 gap-2">
+                                        <!--begin::Card title-->
+                                        <div class="card-title w-100">
+                                            <%--begin::검색구분--%>
+                                            <div class="w-100 mw-150px">
+                                                <!--begin::Select2-->
+                                                <select id="search_box" class="form-select form-select-solid" data-control="select2"
+                                                        aria-label="- 언어 -" data-placeholder="- 언어 -"
+                                                        data-allow-clear="true" data-hide-search="true" onchange="f_member_partnership_search()">
+                                                    <option></option>
+                                                    <option disabled>- 언어 -</option>
+                                                    <option value="" selected>전체</option>
+                                                    <option value="KO">국문</option>
+                                                    <option value="EN">영문</option>
+                                                </select>
+                                                <!--end::Select2-->
                                             </div>
-                                            <!--end::Card title-->
+                                            <%--end::검색구분--%>
+                                            <!--begin::Search-->
+                                            <div class="d-flex align-items-center position-relative my-1 ml15 mr15">
+                                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="글 제목 입력"/>
+                                            </div>
+                                            <!--end::Search-->
+                                            <!--begin:Action-->
+                                            <div class="d-flex align-items-center">
+                                                <button type="button" onclick="f_member_partnership_search()" class="btn btn-primary me-5">Search</button>
+                                                <button type="button" onclick="f_member_partnership_search_condition_init()" class="btn btn-secondary me-5">
+                                                    <i class="ki-duotone ki-arrows-circle fs-3">
+                                                        <i class="path1"></i>
+                                                        <i class="path2"></i>
+                                                    </i>검색조건 초기화</button>
+                                            </div>
+                                            <!--end:Action-->
+                                            <div class="ms-auto">
+                                                <!--begin::글쓰기-->
+                                                <a href="javascript:void(0);" onclick="f_member_partnership_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
+                                                <!--end::글쓰기-->
+                                            </div>
                                         </div>
-                                        <!--end::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body border-top p-9">
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">언어</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <!--begin::Select2-->
-                                                    <select id="lang" name="lang" class="form-select form-select-solid" data-control="select2" aria-label="- 언어 -" data-placeholder="- 언어 -" data-hide-search="true">
-                                                        <option></option>
-                                                        <option disabled>- 언어 -</option>
-                                                        <c:if test="${info ne null}">
-                                                            <option value="KO" <c:if test="${info.lang eq 'KO'}">selected</c:if> >국문</option>
-                                                            <option value="EN" <c:if test="${info.lang eq 'EN'}">selected</c:if> >영문</option>
-                                                        </c:if>
-                                                        <c:if test="${info eq null}">
-                                                            <option value="KO" selected>국문</option>
-                                                            <option value="EN">영문</option>
-                                                        </c:if>
-                                                    </select>
-                                                    <!--end::Select2-->
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">회사명</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="companyName" name="companyName" class="form-control form-control-lg form-control-solid-bg" placeholder="회사명" value="${info.companyName}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">대표자명</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="companyCeo" name="companyCeo" class="form-control form-control-lg form-control-solid-bg" placeholder="대표자명" value="${info.companyCeo}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">홈페이지 주소</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="companyHomepage" name="companyHomepage" class="form-control form-control-lg form-control-solid-bg" placeholder="https://" value="${info.companyHomepage}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">전화번호</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="companyTel" name="companyTel" class="form-control form-control-lg form-control-solid-bg onlyTel" placeholder="전화번호" value="${info.companyTel}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">회사 주소</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="companyAddress" name="companyAddress" class="form-control form-control-lg form-control-solid-bg" placeholder="회사 주소" value="${info.companyAddress}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">주요 사업</label>
-                                                <!--begin::Label-->
-                                                <!--begin::Label-->
-                                                <div class="col-lg-8 d-flex align-items-center flex-wrap">
-                                                    <div class="form-check form-check-custom mb-3">
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="SW분과" id="companyBusinessType_1" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, 'SW분과')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_1">SW분과 </label>
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="HW분과" id="companyBusinessType_2" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, 'HW분과')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_2">HW분과 </label>
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="정보통신분과" id="companyBusinessType_3" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, '정보통신분과')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_3">정보통신분과 </label>
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="전력분과" id="companyBusinessType_4" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, '전력분과')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_4">전력분과 </label>
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="그린IT분과" id="companyBusinessType_5" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, '그린IT분과')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_5">그린IT분과 </label>
-                                                    </div>
-                                                    <div class="form-check form-check-custom">
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="건설분과" id="companyBusinessType_6" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, '건설분과')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_6">건설분과 </label>
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="IT예술문화분과" id="companyBusinessType_7" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, 'IT예술문화분과')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_7">IT예술문화분과 </label>
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="통합시스템분과" id="companyBusinessType_8" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, '통합시스템분과')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary mr15" for="companyBusinessType_8">통합시스템분과 </label>
-                                                        <input class="form-check-input form-control-solid-bg" type="checkbox" value="기타" id="companyBusinessType_9" name="companyBusinessType"
-                                                               <c:if test="${fn:contains(info.companyBusinessType, '기타')}">checked</c:if> />
-                                                        <label class="form-check-label text-hover-primary" for="companyBusinessType_9">기타 </label>
-                                                    </div>
-                                                </div>
-                                                <!--begin::Label-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">주요 생산품</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <input type="text" id="companyBusinessItem" name="companyBusinessItem" class="form-control form-control-lg form-control-solid-bg" placeholder="주요 생산품" value="${info.companyBusinessItem}"/>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">로고 이미지 파일</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <!--begin::Row-->
-                                                    <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-6">
-                                                            <input type="text" id="logo" name="logo" class="form-control form-control-lg form-control-solid-bg upload_name" placeholder="로고" disabled/>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-6">
-                                                            <input type="file" id="logoFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg, .png, .ai">
-                                                            <label class="btn btn-primary" for="logoFile">파일선택</label>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Row-->
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">회사소개 이미지 파일</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <!--begin::Row-->
-                                                    <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-6">
-                                                            <input type="text" id="intro" name="intro" class="form-control form-control-lg form-control-solid-bg upload_name" placeholder="회사소개" disabled/>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-6">
-                                                            <input type="file" id="introFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg, .png, .ai">
-                                                            <label class="btn btn-primary" for="introFile">파일선택</label>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Row-->
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">사업분야 이미지 파일</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <!--begin::Row-->
-                                                    <div class="row">
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-6">
-                                                            <input type="text" id="field" name="field" class="form-control form-control-lg form-control-solid-bg upload_name" placeholder="사업분야" disabled/>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                        <!--begin::Col-->
-                                                        <div class="col-lg-6">
-                                                            <input type="file" id="fieldFile" class="d-none upload_hidden" accept=".png, .jpg, .jpeg, .png, .ai">
-                                                            <label class="btn btn-primary" for="fieldFile">파일선택</label>
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Row-->
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <c:if test="${fileList ne null and not empty fileList}">
-                                            <!--begin::Input group-->
-                                            <div class="row mb-6">
-                                                <!--begin::Label-->
-                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일 목록</label>
-                                                <!--end::Label-->
-                                                <!--begin::Col-->
-                                                <div class="col-lg-8">
-                                                    <ul id="uploadFileList">
-                                                        <c:forEach var="file" items="${fileList}">
-                                                            <li class="mb-4">
-                                                                <c:if test="${file.note eq 'logo'}">로고 이미지 파일 : </c:if>
-                                                                <c:if test="${file.note eq 'intro'}">회사소개 이미지 파일 : </c:if>
-                                                                <c:if test="${file.note eq 'field'}">사업분야 이미지 파일 : </c:if>
-                                                                <a href="/file/download.do?path=member/ascdirectors/${file.folderPath}&fileName=${file.fullFileName}">${file.fileName}</a>
-                                                                <input type="hidden" name="uploadFile" id="${file.id}" value="${file.fullFilePath}">
-                                                                <button type="button" class="ml10" onclick="f_file_remove(this, '${file.id}')">
-                                                                    <i class="ki-duotone ki-abstract-11">
-                                                                        <i class="path1"></i>
-                                                                        <i class="path2"></i>
-                                                                    </i>
-                                                                </button>
-                                                            </li>
-                                                        </c:forEach>
-                                                    </ul>
-                                                </div>
-                                                <!--end::Col-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            </c:if>
-                                        </div>
-                                        <!--end::Card body-->
-                                    </form>
-                                    <!--end::form-->
-                                </div>
-                                <!--end::Basic info-->
-                                <!--begin::Basic info-->
-                                <div class="card mb-5 mb-xl-10">
-                                    <!--begin::Actions-->
-                                    <div class="card-footer d-flex justify-content-between py-6 px-9">
-                                        <div>
-                                            <a href="/mng/member/ascdirectors.do" class="btn btn-info btn-active-light-info" id="kt_list_btn">목록</a>
-                                        </div>
-                                        <div>
-                                            <button type="button" onclick="f_member_ascdirectors_modify_init_set('${info.seq}')" class="btn btn-danger btn-active-light-danger me-2">변경내용취소</button>
-                                            <button type="button" onclick="f_member_ascdirectors_save('${info.seq}')" class="btn btn-primary btn-active-light-primary" id="kt_save_submit">변경내용저장</button>
-                                        </div>
+                                        <!--end::Card title-->
                                     </div>
-                                    <!--end::Actions-->
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body pt-0">
+                                        <div class="fw-bold"><span class="mr10">검색결과</span><span id="search_cnt" style="color: #009ef7;">0</span> 개</div>
+                                        <!--begin::Table-->
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="mng_member_partnership_table">
+                                            <thead>
+                                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                    <th class="text-center min-w-50px">번호</th>
+                                                    <th>seq</th>
+                                                    <th class="text-center min-w-50px">언어</th>
+                                                    <th class="text-center min-w-100px">회사명</th>
+                                                    <th class="text-center min-w-50px">대표자</th>
+                                                    <th class="text-center min-w-150px">주요사업</th>
+                                                    <th class="text-center min-w-150px">주요생산품</th>
+                                                    <th class="text-center min-w-150px">최종수정일시</th>
+                                                    <th class="text-center min-w-100px">기능</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fw-semibold text-gray-600">
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!--end::Table-->
+                                    </div>
+                                    <!--end::Card body-->
                                 </div>
-                                <!--end::Basic info-->
+                                <!--end::Products-->
                             </div>
                             <!--end::Content container-->
                         </div>
                         <!--end::Content-->
                     </div>
                     <!--end::Content wrapper-->
-
                     <!--begin::Footer-->
                     <div id="kt_app_footer" class="app-footer">
                         <!--begin::Footer container-->
@@ -1264,6 +1077,147 @@ if (document.documentElement) {
         <!--end::Page-->
     </div>
     <!--end::App-->
+
+    <!--begin::Modal - 수정이력-->
+    <div class="modal fade" id="kt_modal_modify_history" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-1000px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header" style="background-color: #1e1e2d;">
+                    <!--begin::Modal title-->
+                    <h2 style="color: #FFFFFF;">협회이사 정보 상세보기</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-lg-10 px-lg-10">
+                    <div class="card card-flush py-4">
+
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0">
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">언어</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_lang" placeholder="언어" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">회사명</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_name" placeholder="회사명" readonly>
+                                <!--end::Input-->
+                                <!--begin::Description-->
+                                <%--<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>--%>
+                                <!--end::Description-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">대표자명</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_ceo" placeholder="대표자명" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">홈페이지</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_homepage" placeholder="홈페이지" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">전화번호</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_tel" placeholder="전화번호" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">주소</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_address" placeholder="주소" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">주요 사업</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_business_type" placeholder="주요 사업" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">주요 생산품</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_business_item" placeholder="주요 생산품" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div id="file_list">
+                                <!--begin::Label-->
+                                <label class="form-label">첨부파일</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <%--<input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" readonly>--%>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                        </div>
+                        <!--end::Card header-->
+                    </div>
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - 수정이력-->
 
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
@@ -1295,8 +1249,18 @@ if (document.documentElement) {
     <!--end::Custom Javascript-->
 
     <!--begin::Custom Javascript(used for common page)-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
     <script src="<%request.getContextPath();%>/static/js/mngMain.js?ver=<%=System.currentTimeMillis()%>"></script>
-    <script src="<%request.getContextPath();%>/static/js/mng/ascdirectors.js?ver=<%=System.currentTimeMillis()%>"></script>
+    <script src="<%request.getContextPath();%>/static/js/mng/partnership.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+    <script>
+        document.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                f_member_partnership_search();
+            }
+        });
+    </script>
+
     <!--end::Custom Javascript-->
 
     <!--end::Javascript-->
