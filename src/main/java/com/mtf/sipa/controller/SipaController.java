@@ -1,6 +1,9 @@
 package com.mtf.sipa.controller;
 
 import com.mtf.sipa.constants.CommConstants;
+import com.mtf.sipa.dto.BannerDTO;
+import com.mtf.sipa.dto.FileDTO;
+import com.mtf.sipa.dto.PopupDTO;
 import com.mtf.sipa.dto.ResponseDTO;
 import com.mtf.sipa.service.CommService;
 import com.mtf.sipa.service.SipaService;
@@ -19,11 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.*;
 
 @Controller
 public class SipaController {
@@ -62,6 +63,36 @@ public class SipaController {
     public ModelAndView main() {
         System.out.println("SipaController > main");
         ModelAndView mv = new ModelAndView();
+
+        /* 팝업파일정보 */
+        PopupDTO popupDTO = new PopupDTO();
+        popupDTO.setUseYn("Y");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String today = dateFormat.format(new Date());
+        popupDTO.setToday(today);
+        List<PopupDTO> popupList = sipaService.processSelectPopupList(popupDTO);
+        mv.addObject("popupList", popupList);
+
+        /* 배너 */
+        BannerDTO bannerDTO = new BannerDTO();
+        List<BannerDTO> bannerList = sipaService.processSelectBannerList(bannerDTO);
+        List<FileDTO> bannerFileList = new ArrayList<>();
+        if(bannerList != null){
+            for(int i=0; i<bannerList.size(); i++){
+                String fileIdList = bannerList.get(i).getFileIdList();
+                if(fileIdList != null){
+                    String[] fileIdSplit = bannerList.get(i).getFileIdList().split(",");
+                    for(int j=0; j<fileIdSplit.length; j++){
+                        FileDTO fileReq = new FileDTO();
+                        fileReq.setId(fileIdSplit[j]);
+                        FileDTO fileDTO = sipaService.processSelectFileIdSingle(fileReq);
+                        bannerFileList.add(fileDTO);
+                    }
+                }
+            }
+        }
+        mv.addObject("bannerList", bannerFileList);
+
         mv.setViewName("main");
         return mv;
     }

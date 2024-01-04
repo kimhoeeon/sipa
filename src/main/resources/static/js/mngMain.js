@@ -38,7 +38,19 @@ $(function(){
     $(document).on('change', '.upload_hidden', function () {
         let fileName = $(this).val().split('\\').pop();
         let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-        fileNameInput.val(fileName);
+
+        let _lastDot = fileName.lastIndexOf('.');
+        let realFileName = fileName.substring(0, _lastDot).toLowerCase();
+
+        // 파일명에 특수문자 체크
+        let pattern =   /[\{\}\/?,.;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+        if(pattern.test(String(realFileName)) ){
+            //alert("파일명에 허용된 특수문자는 '-', '_', '(', ')', '[', ']', '.' 입니다.");
+            fileNameInput.val('');
+            alert('파일명에 허용되지 않는 특수문자가 포함되어 있습니다.\n허용된 특수문자는 - _ ( ) [ ] 입니다.');
+        }else{
+            fileNameInput.val(realFileName);
+        }
     });
 
     let customDatepicker = document.getElementById("kt_td_picker_custom_icons");
@@ -341,15 +353,15 @@ async function f_company_file_upload(userId, elementId, path) {
         let note = elementId.replace('File', '');
 
         let jsonObj = {
-            "userId": userId,
-            "fullFilePath": fullFilePath.replaceAll(' ','').replaceAll('%20',''),
-            "fullPath": fullPath.replaceAll(' ','').replaceAll('%20',''),
-            "folderPath": folderPath.replaceAll(' ','').replaceAll('%20',''),
-            "fullFileName": fullFileName.replaceAll(' ','').replaceAll('%20',''),
-            "uuid": uuid,
-            "fileName": fileName.replaceAll(' ','').replaceAll('%20',''),
-            "fileYn": 'Y',
-            "note": note
+            userId: userId,
+            fullFilePath: fullFilePath.replaceAll(' ','').replaceAll('%20',''),
+            fullPath: fullPath.replaceAll(' ','').replaceAll('%20',''),
+            folderPath: folderPath.replaceAll(' ','').replaceAll('%20',''),
+            fullFileName: fullFileName.replaceAll(' ','').replaceAll('%20',''),
+            uuid: uuid,
+            fileName: fileName.replaceAll(' ','').replaceAll('%20',''),
+            fileYn: 'Y',
+            note: note
         };
         let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
         if (resData.resultCode === "0") {
@@ -420,20 +432,28 @@ async function f_attach_file_upload(userId, formId, path) {
                 // notice
 
                 let jsonObj = {
-                    "userId": userId,
-                    "fullFilePath": fullFilePath,
-                    "fullPath": fullPath,
-                    "folderPath": folderPath,
-                    "fullFileName": fullFileName,
-                    "uuid": uuid,
-                    "fileName": fileName,
-                    "fileYn": 'Y'
+                    userId: userId,
+                    fullFilePath: fullFilePath,
+                    fullPath: fullPath,
+                    folderPath: folderPath,
+                    fullFileName: fullFileName,
+                    uuid: uuid,
+                    fileName: fileName,
+                    fileYn: 'Y'
                 };
                 let resData = ajaxConnect('/file/upload/save.do', 'post', jsonObj);
                 if (resData.resultCode === "0") {
                     let ul_el = document.getElementById('uploadFileList');
                     let li_el = document.createElement('li');
                     let a_el = document.createElement('a');
+
+                    if(folderPath === 'banner'){
+                        let img_el = document.createElement('img');
+                        img_el.src = fullFilePath.replace('./tomcat/webapps','../../..');
+                        img_el.classList.add('w-350px','mr10');
+                        img_el.style.border = '1px solid #009ef7';
+                        li_el.append(img_el);
+                    }
 
                     /*a_el.href = 'javascript:f_file_download(' + '\'' + pureFileName + '\'' + ',' + '\'' + pureFilePath + '\'' +')';*/
                     a_el.href = '/file/download.do?path=' + path + '&fileName=' + fullFileName;

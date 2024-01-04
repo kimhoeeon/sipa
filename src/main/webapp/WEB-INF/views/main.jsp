@@ -34,6 +34,17 @@
     <link href="<%request.getContextPath();%>/static/css/font.css" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/style.css?ver=<%=System.currentTimeMillis()%>" rel="stylesheet">
     <link href="<%request.getContextPath();%>/static/css/responsive.css" rel="stylesheet">
+
+    <style>
+        .mainLayerPopup { display:none; position:fixed; width:auto; min-height:100px; top:74px; left:0px; padding:0px;  border:3px solid #242527; background:#fff; overflow:hidden; z-index:9999; }
+        .mainLayerPopup .popupBox { text-align: center; padding:35px 0 0; min-height:150px; height:100%}
+        .mainLayerPopup .popupBox img { display: block; margin: 0 0;}
+        .mainLayerPopup .popupClose {text-align:right; background:#111; padding:10px;}
+        .mainLayerPopup .popupClose input {vertical-align:middle;}
+        .mainLayerPopup .popupClose label {color:#fff; font-size:14px; vertical-align:middle;  margin-left:3px;}
+        .mainLayerPopup .popupClose a{color:#fff; width:15px; display:inline-block; vertical-align:middle; margin-left:10px; }
+        .mainLayerPopup .popupClose input[type="checkbox"] {border:1px solid #ccc; background:#fff; width: 20px; height: 20px; margin-right:5px; margin-bottom:5px; vertical-align: middle; border-radius: 0;}
+    </style>
 </head>
 
 <body>
@@ -49,21 +60,21 @@
                 <div class="swiper_box">
                     <div class="swiper swiper_main_slide">
                         <ul class="swiper-wrapper">
-                            <li class="swiper-slide">
+                            <c:forEach var="mainBanner" items="${bannerList}" begin="0" end="${bannerList.size()}" step="1" varStatus="status">
+                                <c:set var="bannerFilePathSrc" value="${fn:replace(mainBanner.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                <li class="swiper-slide">
+                                    <a href="">
+                                        <div class="thumb11 thumbBox">
+                                            <img src="${bannerFilePathSrc}" class="thumbImg" alt="메인 슬라이드_${status.index+1}">
+                                        </div>
+                                    </a>
+                                </li>
+                            </c:forEach>
+                            <%--<li class="swiper-slide">
                                 <a href="">
                                     <div class="thumb11 thumbBox"><img src="<%request.getContextPath();%>/static/img/main_slide01.jpg" class="thumbImg"></div>
                                 </a>
-                            </li>
-                            <li class="swiper-slide">
-                                <a href="">
-                                    <div class="thumb11 thumbBox"><img src="<%request.getContextPath();%>/static/img/main_slide01.jpg" class="thumbImg"></div>
-                                </a>
-                            </li>
-                            <li class="swiper-slide">
-                                <a href="">
-                                    <div class="thumb11 thumbBox"><img src="<%request.getContextPath();%>/static/img/main_slide01.jpg" class="thumbImg"></div>
-                                </a>
-                            </li>
+                            </li>--%>
                         </ul>
                     </div>
                     <div class="swiper-pagination main_pagination"></div>
@@ -228,6 +239,100 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<%-- 뒷배경 적용 시 주석 해제 <div id="mainLayerPopup" style="display: block;"></div>--%>
+<c:set var="imgLeftPosition" value="0"/>
+<c:forEach var="popup" items="${popupList}" begin="0" end="${popupList.size()}" step="1" varStatus="status">
+    <c:if test="${status.index eq 0}">
+        <c:set var="imgLeftPosition" value="${popup.leftPixel}"/>
+    </c:if>
+    <c:if test="${status.index > 0}">
+        <c:set var="imgLeftPosition" value="${imgLeftPosition + popup.leftPixel + popupList.get(status.index-1).widthPixel}"/>
+    </c:if>
+    <div class="mainLayerPopup" id="id_popup_${popup.seq}"
+         style="position:fixed; top:${popup.topPixel}px; left:${imgLeftPosition}px; width:${popup.widthPixel}px; display: none;">
+        <div class="popupBox" style="padding:0;">
+                ${fn:replace(fn:replace(popup.content,'&lt;','<'),'&gt;','>')}
+        </div>
+        <div class="popupClose">
+            <input type="checkbox" id="id_today_${popup.seq}" onclick="CloseMainPopup('${popup.seq}')">
+            <label for="id_today_${popup.seq}"> 오늘 하루 그만보기 </label>
+            <a href="javascript:CloseMainPopup('${popup.seq}');" style="margin-left:20px">
+                <img src="<%request.getContextPath();%>/static/img/close_w.png">
+            </a>
+        </div>
+    </div>
+</c:forEach>
+
+<script>
+
+    let cookie_first_name = 'popup_';
+
+    function ShowMainPopup(pop_id) {
+        let id_popup_name	= "id_popup_" + pop_id;
+        let cookie_name		= cookie_first_name + pop_id;
+
+        if( getStorage(cookie_name)){
+            return;
+        }
+        let popupEl = $('#'+id_popup_name);
+        let popupSize = popupEl.css('width').replace('px','');
+        let popupLeft = parseInt('${imgLeftPosition}');
+
+        let windowWidth = window.innerWidth;
+        if(windowWidth >= 900 && windowWidth <= 1024){
+            popupEl.css('width', (popupSize * 0.9) + 'px');
+            popupEl.css('left', (popupLeft * 0.9) + 'px');
+        }else if(windowWidth >= 769 && windowWidth <= 899) {
+            popupEl.css('width', (popupSize * 0.7) + 'px');
+            popupEl.css('left', (popupLeft * 0.7) + 'px');
+        }else if(windowWidth >= 481 && windowWidth <= 768) {
+            popupEl.css('width', (popupSize * 0.6) + 'px');
+            popupEl.css('left', (popupLeft * 0.1) + 'px');
+        }else if(windowWidth <= 480){
+            popupEl.css('width', (popupSize * 0.5) + 'px');
+            popupEl.css('left', '10px');
+        }
+
+        popupEl.show();
+    }
+
+    function CloseMainPopup(pop_id) {
+        let id_popup_name	= "id_popup_" + pop_id;
+        let id_today_name	= 'id_today_' + pop_id;
+        let cookie_name		= cookie_first_name + pop_id;
+
+        if( $(":input:checkbox[id='" + id_today_name + "']:checked").length > 0 ){
+            setStorage(cookie_name, 1);
+        }
+
+        $('#'+id_popup_name).hide();
+    }
+
+    function setStorage(name, exp){
+        // 만료 시간 구하기(exp를 ms단위로 변경)
+        let date = new Date();
+        date = date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+
+        // 로컬 스토리지에 저장하기
+        // (값을 따로 저장하지 않고 만료 시간을 저장)
+        localStorage.setItem(name, String(date));
+    }
+
+    function getStorage(name){
+        let now = new Date();
+        now = now.setTime(now.getTime());
+        // 현재 시각과 스토리지에 저장된 시각을 각각 비교하여
+        // 시간이 남아 있으면 true, 아니면 false 리턴
+        return parseInt(localStorage.getItem(name)) > now;
+    }
+
+    $(function(){
+        <c:forEach var="popup" items="${popupList}" begin="0" end="${popupList.size()}" step="1">
+        ShowMainPopup('${popup.seq}');
+        </c:forEach>
+    });
+</script>
 
 </body>
 </html>

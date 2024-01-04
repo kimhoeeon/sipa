@@ -520,32 +520,397 @@ public class SipaMngController {
     // popup Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/mng/popup/popup.do", method = RequestMethod.GET)
-    public ModelAndView mng_popup_popup() {
-        System.out.println("SipaMngController > mng_popup_popup");
+    @RequestMapping(value = "/mng/pop/popup.do", method = RequestMethod.GET)
+    public ModelAndView mng_pop_popup() {
+        System.out.println("SipaMngController > mng_pop_popup");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/popup/popup");
+        mv.setViewName("/mng/pop/popup");
         return mv;
+    }
+
+    @RequestMapping(value = "/mng/pop/popup/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<PopupDTO>> mng_pop_popup_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_pop_popup_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<PopupDTO> responseList = sipaMngService.processSelectPopupList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/popup/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_pop_popup_detail(String seq) {
+        System.out.println("SipaMngController > mng_pop_popup_detail");
+        ModelAndView mv = new ModelAndView();
+        PopupDTO response = sipaMngService.processSelectPopupSingle(seq);
+        mv.addObject("info",response);
+
+        mv.setViewName("/mng/pop/popup/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/pop/popup/modifySave.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_popup_modifySave(@RequestBody PopupDTO popupDTO) {
+        System.out.println("SipaMngController > mng_pop_popup_modifySave");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdatePopup(popupDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/popup/insertSave.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_popup_insertSave(@RequestBody PopupDTO popupDTO) {
+        System.out.println("SipaMngController > mng_pop_popup_insertSave");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertPopup(popupDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/popup/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_popup_delete(@RequestBody PopupDTO popupDTO) {
+        System.out.println("SipaMngController > mng_pop_popup_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeletePopup(popupDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner.do", method = RequestMethod.GET)
+    public ModelAndView mng_pop_banner() {
+        System.out.println("SipaMngController > mng_pop_banner");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/pop/banner");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<BannerDTO>> mng_pop_banner_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_pop_banner_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<BannerDTO> responseList = sipaMngService.processSelectBannerList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<BannerDTO> mng_pop_banner_selectSingle(@RequestBody BannerDTO bannerDTO) {
+        System.out.println("SipaMngController > mng_pop_banner_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        BannerDTO response = sipaMngService.processSelectBannerSingle(bannerDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_pop_banner_detail(String seq) {
+        System.out.println("SipaMngController > mng_pop_banner_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            BannerDTO bannerDTO = new BannerDTO();
+            bannerDTO.setSeq(seq);
+            BannerDTO info = sipaMngService.processSelectBannerSingle(bannerDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/pop/banner/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_banner_delete(@RequestBody BannerDTO bannerDTO) {
+        System.out.println("SipaMngController > mng_pop_banner_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteBanner(bannerDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_banner_update(@RequestBody BannerDTO bannerDTO) {
+        System.out.println("SipaMngController > mng_pop_banner_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateBanner(bannerDTO);
+
+        String fileIdList = bannerDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/pop/banner/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_pop_banner_insert(@RequestBody BannerDTO bannerDTO) {
+        System.out.println("SipaMngController > mng_pop_banner_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertBanner(bannerDTO);
+
+        String fileIdList = bannerDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //***************************************************************************
     // company Folder
     //***************************************************************************
 
-    @RequestMapping(value = "/mng/company/businessNotice.do", method = RequestMethod.GET)
-    public ModelAndView mng_company_businessNotice() {
-        System.out.println("SipaMngController > mng_company_businessNotice");
+    @RequestMapping(value = "/mng/company/bizanm.do", method = RequestMethod.GET)
+    public ModelAndView mng_company_bizanm() {
+        System.out.println("SipaMngController > mng_company_bizanm");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/company/businessNotice");
+        mv.setViewName("/mng/company/bizanm");
         return mv;
     }
 
-    @RequestMapping(value = "/mng/company/tenderNotice.do", method = RequestMethod.GET)
-    public ModelAndView mng_company_tenderNotice() {
-        System.out.println("SipaMngController > mng_company_tenderNotice");
+    @RequestMapping(value = "/mng/company/bizanm/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<BizanmDTO>> mng_company_bizanm_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_company_bizanm_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<BizanmDTO> responseList = sipaMngService.processSelectBizanmList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bizanm/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<BizanmDTO> mng_company_bizanm_selectSingle(@RequestBody BizanmDTO bizanmDTO) {
+        System.out.println("SipaMngController > mng_company_bizanm_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        BizanmDTO response = sipaMngService.processSelectBizanmSingle(bizanmDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bizanm/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_bizanm_delete(@RequestBody BizanmDTO bizanmDTO) {
+        System.out.println("SipaMngController > mng_company_bizanm_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteBizanm(bizanmDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bizanm/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_company_bizanm_detail(String seq) {
+        System.out.println("SipaMngController > mng_company_bizanm_detail");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("/mng/company/tenderNotice");
+
+        if(seq != null && !"".equals(seq)){
+            BizanmDTO bizanmDTO = new BizanmDTO();
+            bizanmDTO.setSeq(seq);
+            BizanmDTO info = sipaMngService.processSelectBizanmSingle(bizanmDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/company/bizanm/detail");
         return mv;
+    }
+
+    @RequestMapping(value = "/mng/company/bizanm/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_bizanm_update(@RequestBody BizanmDTO bizanmDTO) {
+        System.out.println("SipaMngController > mng_company_bizanm_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateBizanm(bizanmDTO);
+
+        String fileIdList = bizanmDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bizanm/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_bizanm_insert(@RequestBody BizanmDTO bizanmDTO) {
+        System.out.println("SipaMngController > mng_company_bizanm_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertBizanm(bizanmDTO);
+
+        String fileIdList = bizanmDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bidanm.do", method = RequestMethod.GET)
+    public ModelAndView mng_company_bidanm() {
+        System.out.println("SipaMngController > mng_company_bidanm");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/mng/company/bidanm");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/company/bidanm/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<BidanmDTO>> mng_company_bidanm_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_company_bidanm_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<BidanmDTO> responseList = sipaMngService.processSelectBidanmList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bidanm/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<BidanmDTO> mng_company_bidanm_selectSingle(@RequestBody BidanmDTO bidanmDTO) {
+        System.out.println("SipaMngController > mng_company_bidanm_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        BidanmDTO response = sipaMngService.processSelectBidanmSingle(bidanmDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bidanm/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_bidanm_delete(@RequestBody BidanmDTO bidanmDTO) {
+        System.out.println("SipaMngController > mng_company_bidanm_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteBidanm(bidanmDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bidanm/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_company_bidanm_detail(String seq) {
+        System.out.println("SipaMngController > mng_company_bidanm_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            BidanmDTO bidanmDTO = new BidanmDTO();
+            bidanmDTO.setSeq(seq);
+            BidanmDTO info = sipaMngService.processSelectBidanmSingle(bidanmDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/company/bidanm/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/company/bidanm/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_bidanm_update(@RequestBody BidanmDTO bidanmDTO) {
+        System.out.println("SipaMngController > mng_company_bidanm_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateBidanm(bidanmDTO);
+
+        String fileIdList = bidanmDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/bidanm/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_bidanm_insert(@RequestBody BidanmDTO bidanmDTO) {
+        System.out.println("SipaMngController > mng_company_bidanm_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertBidanm(bidanmDTO);
+
+        String fileIdList = bidanmDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mng/company/issue.do", method = RequestMethod.GET)
@@ -554,6 +919,107 @@ public class SipaMngController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/mng/company/issue");
         return mv;
+    }
+
+    @RequestMapping(value = "/mng/company/issue/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<IssueDTO>> mng_company_issue_selectList(@RequestBody SearchDTO searchDTO) {
+        System.out.println("SipaMngController > mng_company_issue_selectList");
+        //System.out.println(searchDTO.toString());
+
+        List<IssueDTO> responseList = sipaMngService.processSelectIssueList(searchDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/issue/selectSingle.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<IssueDTO> mng_company_issue_selectSingle(@RequestBody IssueDTO issueDTO) {
+        System.out.println("SipaMngController > mng_company_issue_selectSingle");
+        //System.out.println(searchDTO.toString());
+
+        IssueDTO response = sipaMngService.processSelectIssueSingle(issueDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/issue/delete.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_issue_delete(@RequestBody IssueDTO issueDTO) {
+        System.out.println("SipaMngController > mng_company_issue_delete");
+
+        ResponseDTO responseDTO = sipaMngService.processDeleteIssue(issueDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/issue/detail.do", method = RequestMethod.GET)
+    public ModelAndView mng_company_issue_detail(String seq) {
+        System.out.println("SipaMngController > mng_company_issue_detail");
+        ModelAndView mv = new ModelAndView();
+
+        if(seq != null && !"".equals(seq)){
+            IssueDTO issueDTO = new IssueDTO();
+            issueDTO.setSeq(seq);
+            IssueDTO info = sipaMngService.processSelectIssueSingle(issueDTO);
+            mv.addObject("info", info);
+
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setUserId(info.getSeq());
+            List<FileDTO> fileList = sipaMngService.processSelectFileUserIdList(fileDTO);
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/mng/company/issue/detail");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mng/company/issue/update.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_issue_update(@RequestBody IssueDTO issueDTO) {
+        System.out.println("SipaMngController > mng_company_issue_update");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processUpdateIssue(issueDTO);
+
+        String fileIdList = issueDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mng/company/issue/insert.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseDTO> mng_company_issue_insert(@RequestBody IssueDTO issueDTO) {
+        System.out.println("SipaMngController > mng_company_issue_insert");
+        //System.out.println(noticeDTO.toString());
+
+        ResponseDTO responseDTO = sipaMngService.processInsertIssue(issueDTO);
+
+        String fileIdList = issueDTO.getFileIdList();
+        if(fileIdList != null && !"".equals(fileIdList)){
+            String[] fileIdSplit = fileIdList.split(",");
+            for(int i=0; i<fileIdSplit.length; i++){
+                if(!"".equals(fileIdSplit[i])){
+                    FileDTO fileDTO = new FileDTO();
+                    fileDTO.setId(fileIdSplit[i]);
+                    fileDTO.setUserId(responseDTO.getCustomValue());
+                    ResponseDTO fileResponse = sipaMngService.processUpdateFileUserId(fileDTO);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //***************************************************************************

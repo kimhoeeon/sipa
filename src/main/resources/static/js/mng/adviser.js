@@ -5,13 +5,6 @@
 
 $(function(){
 
-    // 파일 입력 변경에 대한 이벤트 핸들러 추가
-    $(document).on('change', '.upload_hidden', function () {
-        let fileName = $(this).val().split('\\').pop();
-        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-        fileNameInput.val(fileName);
-    });
-
 });
 
 function f_member_adviser_search(){
@@ -232,6 +225,11 @@ function f_member_adviser_save(seq){
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
+
+                            /* file function */
+                            let tableSeq = data.customValue; //tableSeq return 값
+                            f_company_file_upload_call(tableSeq, 'member/adviser/' + tableSeq);
+
                             if (data.resultCode === "0") {
                                 Swal.fire({
                                     title: '고문위원 정보 등록',

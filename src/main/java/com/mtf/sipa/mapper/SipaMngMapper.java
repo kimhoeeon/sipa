@@ -130,4 +130,66 @@ public interface SipaMngMapper {
     String getPartnershipSeq();
 
     Integer insertPartnership(PartnershipDTO partnershipDTO);
+
+    List<PopupDTO> selectPopupList(SearchDTO searchDTO);
+
+    PopupDTO selectPopupSingle(String seq);
+
+    Integer getActivePopupCount(PopupDTO reqDTO);
+
+    Integer updatePopup(PopupDTO popupDTO);
+
+    String getPopupSeq();
+
+    Integer insertPopup(PopupDTO popupDTO);
+
+    Integer deletePopup(PopupDTO popupDTO);
+
+    List<BannerDTO> selectBannerList(SearchDTO searchDTO);
+
+    BannerDTO selectBannerSingle(BannerDTO bannerDTO);
+
+    Integer deleteBanner(BannerDTO bannerDTO);
+
+    Integer updateBanner(BannerDTO bannerDTO);
+
+    String getBannerSeq();
+
+    Integer insertBanner(BannerDTO bannerDTO);
+
+    List<BizanmDTO> selectBizanmList(SearchDTO searchDTO);
+
+    BizanmDTO selectBizanmSingle(BizanmDTO bizanmDTO);
+
+    Integer deleteBizanm(BizanmDTO bizanmDTO);
+
+    Integer updateBizanm(BizanmDTO bizanmDTO);
+
+    String getBizanmSeq();
+
+    Integer insertBizanm(BizanmDTO bizanmDTO);
+
+    List<BidanmDTO> selectBidanmList(SearchDTO searchDTO);
+
+    BidanmDTO selectBidanmSingle(BidanmDTO bidanmDTO);
+
+    Integer deleteBidanm(BidanmDTO bidanmDTO);
+
+    Integer updateBidanm(BidanmDTO bidanmDTO);
+
+    String getBidanmSeq();
+
+    Integer insertBidanm(BidanmDTO bidanmDTO);
+
+    List<IssueDTO> selectIssueList(SearchDTO searchDTO);
+
+    IssueDTO selectIssueSingle(IssueDTO issueDTO);
+
+    Integer deleteIssue(IssueDTO issueDTO);
+
+    Integer updateIssue(IssueDTO issueDTO);
+
+    String getIssueSeq();
+
+    Integer insertIssue(IssueDTO issueDTO);
 }

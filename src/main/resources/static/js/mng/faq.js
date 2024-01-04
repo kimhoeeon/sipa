@@ -5,13 +5,6 @@
 
 $(function(){
 
-    // 파일 입력 변경에 대한 이벤트 핸들러 추가
-    $(document).on('change', '.upload_hidden', function () {
-        let fileName = $(this).val().split('\\').pop();
-        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-        fileNameInput.val(fileName);
-    });
-
 });
 
 function f_board_faq_search(){
@@ -118,6 +111,11 @@ function f_board_faq_detail_modal_set(seq){
             input_el.value = fileData[i].fileName;
             input_el.readOnly = true;
 
+            let label_el = document.createElement('label');
+            label_el.classList.add('form-label');
+            label_el.innerText = '첨부파일';
+
+            file_list_el.append(label_el);
             file_list_el.append(input_el);
         }
     }
@@ -180,7 +178,7 @@ function f_board_faq_save(seq){
                 let uploadFileList = document.getElementById('uploadFileList').children;
                 let uploadFileListLen = uploadFileList.length;
                 for(let i=0; i<uploadFileListLen; i++){
-                    let fileId = uploadFileList[i].children[1].id;
+                    let fileId = uploadFileList[i].querySelector('input[type=hidden]').id;
                     //console.log(fileId);
                     fileIdList += fileId;
                     if((i+1) !== uploadFileListLen){

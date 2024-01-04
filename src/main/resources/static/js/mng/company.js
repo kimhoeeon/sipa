@@ -5,13 +5,6 @@
 
 $(function(){
 
-    // 파일 입력 변경에 대한 이벤트 핸들러 추가
-    $(document).on('change', '.upload_hidden', function () {
-        let fileName = $(this).val().split('\\').pop();
-        let fileNameInput = $(this).parent('div').siblings('div').find('.upload_name');
-        fileNameInput.val(fileName);
-    });
-
 });
 
 function f_member_company_search(){
@@ -128,14 +121,8 @@ function f_member_company_detail_modal_set(seq){
 
     let resData = ajaxConnect('/mng/member/company/selectSingle.do', 'post', jsonObj);
 
-    /* 공지사항 상세보기 Modal form Set */
+    /* 상세보기 Modal form Set */
     //console.log(resData);
-
-    if(resData.lang === 'KO'){
-        document.querySelector('#md_lang').value = '국문';
-    }else{
-        document.querySelector('#md_lang').value = '영문';
-    }
 
     $('input:radio[name=gbn]:input[value="' + resData.gbn + '"]').attr('checked', true);
 
@@ -161,6 +148,7 @@ function f_member_company_detail_modal_set(seq){
     if(nullToEmpty(fileData) !== ''){
         for(let i=0; i<fileData.length; i++){
             let file_list_el = document.getElementById('file_list');
+
             let input_el = document.createElement('input');
             input_el.type = 'text';
             input_el.classList.add('form-control');
@@ -170,11 +158,14 @@ function f_member_company_detail_modal_set(seq){
             input_el.value = fileData[i].fileName;
             input_el.readOnly = true;
 
-            let label_el = document.createElement('label');
-            label_el.classList.add('form-label');
-            label_el.innerText = '첨부파일';
+            if(fileData[i].note === 'logo'){
+                file_list_el.append('로고 이미지 파일');
+            }else if(fileData[i].note === 'intro'){
+                file_list_el.append('회사소개 이미지 파일');
+            }else if(fileData[i].note === 'field'){
+                file_list_el.append('사업분야 이미지 파일');
+            }
 
-            file_list_el.append(label_el);
             file_list_el.append(input_el);
         }
     }
@@ -235,7 +226,7 @@ function f_member_company_save(seq){
                 /* form data setting */
                 let data = f_member_company_form_data_setting();
 
-                console.log(data);
+                //console.log(data);
 
                 /* Modify */
                 if(nvl(seq, '') !== ''){
@@ -281,6 +272,11 @@ function f_member_company_save(seq){
                         dataType: 'json',
                         contentType: 'application/json; charset=utf-8',
                         success: function (data) {
+
+                            /* file function */
+                            let tableSeq = data.customValue; //tableSeq return 값
+                            f_company_file_upload_call(tableSeq, 'member/company/' + tableSeq);
+
                             if (data.resultCode === "0") {
                                 Swal.fire({
                                     title: '회원사 정보 등록',
@@ -344,6 +340,18 @@ function f_company_file_upload_call(id, path) {
     let logoFile = document.getElementById('logoFile').value;
     if (nvl(logoFile, '') !== '') {
         f_company_file_upload(id, 'logoFile', path);
+    }
+
+    /* 회사소개 */
+    let introFile = document.getElementById('introFile').value;
+    if (nvl(introFile, '') !== '') {
+        f_company_file_upload(id, 'introFile', path);
+    }
+
+    /* 사업분야 */
+    let fieldFile = document.getElementById('fieldFile').value;
+    if (nvl(fieldFile, '') !== '') {
+        f_company_file_upload(id, 'fieldFile', path);
     }
 
 }

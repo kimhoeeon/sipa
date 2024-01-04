@@ -128,4 +128,54 @@ public interface SipaMngService {
     ResponseDTO processUpdatePartnership(PartnershipDTO partnershipDTO);
 
     ResponseDTO processInsertPartnership(PartnershipDTO partnershipDTO);
+
+    List<PopupDTO> processSelectPopupList(SearchDTO searchDTO);
+
+    PopupDTO processSelectPopupSingle(String seq);
+
+    ResponseDTO processUpdatePopup(PopupDTO popupDTO);
+
+    ResponseDTO processInsertPopup(PopupDTO popupDTO);
+
+    ResponseDTO processDeletePopup(PopupDTO popupDTO);
+
+    List<BannerDTO> processSelectBannerList(SearchDTO searchDTO);
+
+    BannerDTO processSelectBannerSingle(BannerDTO bannerDTO);
+
+    ResponseDTO processDeleteBanner(BannerDTO bannerDTO);
+
+    ResponseDTO processUpdateBanner(BannerDTO bannerDTO);
+
+    ResponseDTO processInsertBanner(BannerDTO bannerDTO);
+
+    List<BizanmDTO> processSelectBizanmList(SearchDTO searchDTO);
+
+    BizanmDTO processSelectBizanmSingle(BizanmDTO bizanmDTO);
+
+    ResponseDTO processDeleteBizanm(BizanmDTO bizanmDTO);
+
+    ResponseDTO processUpdateBizanm(BizanmDTO bizanmDTO);
+
+    ResponseDTO processInsertBizanm(BizanmDTO bizanmDTO);
+
+    List<BidanmDTO> processSelectBidanmList(SearchDTO searchDTO);
+
+    BidanmDTO processSelectBidanmSingle(BidanmDTO bidanmDTO);
+
+    ResponseDTO processDeleteBidanm(BidanmDTO bidanmDTO);
+
+    ResponseDTO processUpdateBidanm(BidanmDTO bidanmDTO);
+
+    ResponseDTO processInsertBidanm(BidanmDTO bidanmDTO);
+
+    List<IssueDTO> processSelectIssueList(SearchDTO searchDTO);
+
+    IssueDTO processSelectIssueSingle(IssueDTO issueDTO);
+
+    ResponseDTO processDeleteIssue(IssueDTO issueDTO);
+
+    ResponseDTO processUpdateIssue(IssueDTO issueDTO);
+
+    ResponseDTO processInsertIssue(IssueDTO issueDTO);
 }

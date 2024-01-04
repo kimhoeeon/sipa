@@ -20,18 +20,16 @@
     <link rel="icon" href="<%request.getContextPath();%>/static/img/favicon.ico" type="image/x-icon" sizes="16X16" />
 </head>
 
-<body>
-<%-- 페이지 뒤로가기 막기 --%>
-<script>
-    history.pushState(null, null, location.href);
-    window.onpopstate = function (event) {
-        history.go(1);
-    };
+<script type="text/javascript">
+    window.history.forward();
+    function noBack(){window.history.forward();}
 </script>
+
+<body onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 
     <div id="main_container">
         <div id="login">
-            <form id="login_form" name="login_form" action="/mng/main.do" method="post" onsubmit="return false;">
+            <form id="login_form" name="login_form" action="/mng/main.do" method="get" onsubmit="return false;">
                 <div>
                     <p class="brand-logo">
                         <img src="<%request.getContextPath();%>/static/img/logo.png" class="mngLogo">

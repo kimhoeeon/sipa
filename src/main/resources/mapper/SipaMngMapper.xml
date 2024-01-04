@@ -66,7 +66,7 @@
         , content = <![CDATA[#{content}]]>
         , writer = #{writer}
         , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
         , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -168,7 +168,7 @@
           , content = <![CDATA[#{content}]]>
           , writer = #{writer}
           , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -376,7 +376,7 @@
           , content = <![CDATA[#{content}]]>
           , writer = #{writer}
           , write_date = #{writeDate}
-        <if test='fileIdList != ""'>
+        <if test='fileIdList != null and fileIdList != ""'>
             , file_id_list = <![CDATA[#{fileIdList}]]>
         </if>
           , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
@@ -419,6 +419,613 @@
             , 'FAQ'
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
             , 'FAQ'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectPopupList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.PopupDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectPopupList */
+        SELECT seq
+             , use_yn
+             , title
+             , published_date
+             , expiration_date
+             , width_pixel
+             , left_pixel
+             , top_pixel
+             , align
+             , writer
+             , content
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM popup
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "title"'>
+                AND title LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "all"'>
+                AND ( title LIKE CONCAT('%',#{searchText},'%')
+                OR content LIKE CONCAT('%',#{searchText},'%') )
+            </if>
+        </if>
+        <if test='useYn != null and useYn != "" and useYn == "Y"'>
+            AND use_yn = #{useYn}
+        </if>
+        ORDER BY published_date DESC, expiration_date DESC
+    </select>
+
+    <select id="selectPopupSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.PopupDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectPopupSingle */
+        SELECT seq
+             , use_yn
+             , title
+             , published_date
+             , expiration_date
+             , width_pixel
+             , left_pixel
+             , top_pixel
+             , align
+             , writer
+             , content
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM popup
+        WHERE seq = #{value}
+    </select>
+
+    <select id="getActivePopupCount" parameterType="com.mtf.sipa.dto.PopupDTO" resultType="java.lang.Integer">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getActivePopupCount */
+        SELECT COUNT(*)
+        FROM popup
+        WHERE 1=1
+          AND use_yn = #{useYn}
+          AND (published_date <![CDATA[<=]]> #{today}
+            AND expiration_date <![CDATA[>=]]> #{today})
+    </select>
+
+    <update id="updatePopup" parameterType="com.mtf.sipa.dto.PopupDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updatePopup */
+        UPDATE popup
+        SET use_yn = #{useYn}
+          , title = #{title}
+          , published_date = #{publishedDate}
+          , expiration_date = #{expirationDate}
+          , width_pixel = #{widthPixel}
+          , left_pixel = #{leftPixel}
+          , top_pixel = #{topPixel}
+          , align = #{align}
+          , writer = #{writer}
+          , content = <![CDATA[#{content}]]>
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="selectBannerList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.BannerDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectBannerList */
+        SELECT seq
+             , title
+             , view_seq
+             , writer
+             , write_date
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM banner
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition eq "title"'>
+                AND title LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "all"'>
+                AND title LIKE CONCAT('%',#{searchText},'%')
+            </if>
+        </if>
+        ORDER BY view_seq , write_date DESC
+    </select>
+
+    <select id="selectBannerSingle" parameterType="com.mtf.sipa.dto.BannerDTO" resultType="com.mtf.sipa.dto.BannerDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectBannerSingle */
+        SELECT seq
+             , title
+             , view_seq
+             , writer
+             , write_date
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM banner
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteBanner" parameterType="com.mtf.sipa.dto.BannerDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteBanner */
+        DELETE FROM banner
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateBanner" parameterType="com.mtf.sipa.dto.BannerDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateBanner */
+        UPDATE banner
+        SET title = #{title}
+          , view_seq = #{viewSeq}
+          , writer = #{writer}
+          , write_date = #{writeDate}
+        <if test='fileIdList != null and fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+        </if>
+          , note = #{note}
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getBannerSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getBannerSeq */
+        SELECT CONCAT('B', LPAD(nextval('banner_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertBanner" parameterType="com.mtf.sipa.dto.BannerDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertBanner */
+        INSERT INTO banner
+        ( seq
+        , title
+        , view_seq
+        , writer
+        , write_date
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{title}
+            , #{viewSeq}
+            , #{writer}
+            , #{writeDate}
+            , #{fileIdList}
+            , #{note}
+            , 'BANNER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'BANNER'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="getPopupSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getPopupSeq */
+        SELECT CONCAT('O', LPAD(nextval('popup_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertPopup" parameterType="com.mtf.sipa.dto.PopupDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertPopup */
+        INSERT INTO popup
+        ( seq
+        , use_yn
+        , title
+        , published_date
+        , expiration_date
+        , width_pixel
+        , left_pixel
+        , top_pixel
+        , align
+        , writer
+        , content
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{useYn}
+            , #{title}
+            , #{publishedDate}
+            , #{expirationDate}
+            , #{widthPixel}
+            , #{leftPixel}
+            , #{topPixel}
+            , #{align}
+            , #{writer}
+            , <![CDATA[#{content}]]>
+            , #{note}
+            , 'POPUP'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'POPUP'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <delete id="deletePopup" parameterType="com.mtf.sipa.dto.PopupDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deletePopup */
+        DELETE FROM popup
+        WHERE seq = #{seq}
+    </delete>
+
+    <select id="selectBizanmList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.BizanmDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectBizanmList */
+        SELECT seq
+             , support_field
+             , support_biz_name
+             , apply_start_date
+             , apply_end_date
+             , business_organization
+             , ministry_competent
+             , business_overview
+             , apply_way
+             , contact_tel
+             , content
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM bizanm
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition == "bizName"'>
+                AND support_biz_name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "bizOrg"'>
+                AND business_organization LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "content"'>
+                AND content LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "all"'>
+                AND ( support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                OR content LIKE CONCAT('%',#{searchText},'%') )
+            </if>
+        </if>
+        ORDER BY init_regi_dttm desc, apply_start_date asc
+    </select>
+
+    <select id="selectBizanmSingle" parameterType="com.mtf.sipa.dto.BizanmDTO" resultType="com.mtf.sipa.dto.BizanmDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectBizanmSingle */
+        SELECT seq
+             , support_field
+             , support_biz_name
+             , apply_start_date
+             , apply_end_date
+             , business_organization
+             , ministry_competent
+             , business_overview
+             , apply_way
+             , contact_tel
+             , content
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM bizanm
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteBizanm" parameterType="com.mtf.sipa.dto.BizanmDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteBizanm */
+        DELETE FROM bizanm
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateBizanm" parameterType="com.mtf.sipa.dto.BizanmDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateBizanm */
+        UPDATE bizanm
+        SET support_field = #{supportField}
+          , support_biz_name = #{supportBizName}
+          , apply_start_date = #{applyStartDate}
+          , apply_end_date = #{applyEndDate}
+          , business_organization = #{businessOrganization}
+          , ministry_competent = #{ministryCompetent}
+          , business_overview = <![CDATA[#{businessOverview}]]>
+          , apply_way = <![CDATA[#{applyWay}]]>
+          , contact_tel = #{contactTel}
+          , content = <![CDATA[#{content}]]>
+            <if test='fileIdList != null and fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+            </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getBizanmSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getBizanmSeq */
+        SELECT CONCAT('Z', LPAD(nextval('bizanm_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertBizanm" parameterType="com.mtf.sipa.dto.BizanmDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertBizanm */
+        INSERT INTO bizanm
+        ( seq
+        , support_field
+        , support_biz_name
+        , apply_start_date
+        , apply_end_date
+        , business_organization
+        , ministry_competent
+        , business_overview
+        , apply_way
+        , contact_tel
+        , content
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{supportField}
+            , #{supportBizName}
+            , #{applyStartDate}
+            , #{applyEndDate}
+            , #{businessOrganization}
+            , #{ministryCompetent}
+            , <![CDATA[#{businessOverview}]]>
+            , <![CDATA[#{applyWay}]]>
+            , #{contactTel}
+            , <![CDATA[#{content}]]>
+            , #{fileIdList}
+            , #{note}
+            , 'BIZANM'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'BIZANM'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectBidanmList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.BidanmDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectBidanmList */
+        SELECT seq
+             , support_biz_name
+             , apply_start_date
+             , apply_end_date
+             , business_organization
+             , ministry_competent
+             , business_overview
+             , apply_way
+             , contact_tel
+             , content
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM bidanm
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition == "bizName"'>
+                AND support_biz_name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "bizOrg"'>
+                AND business_organization LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "content"'>
+                AND content LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "all"'>
+                AND ( support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                OR content LIKE CONCAT('%',#{searchText},'%') )
+            </if>
+        </if>
+        ORDER BY init_regi_dttm desc, apply_start_date asc
+    </select>
+
+    <select id="selectBidanmSingle" parameterType="com.mtf.sipa.dto.BidanmDTO" resultType="com.mtf.sipa.dto.BidanmDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectBidanmSingle */
+        SELECT seq
+             , support_biz_name
+             , apply_start_date
+             , apply_end_date
+             , business_organization
+             , ministry_competent
+             , business_overview
+             , apply_way
+             , contact_tel
+             , content
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM bidanm
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteBidanm" parameterType="com.mtf.sipa.dto.BidanmDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteBidanm */
+        DELETE FROM bidanm
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateBidanm" parameterType="com.mtf.sipa.dto.BidanmDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateBidanm */
+        UPDATE bidanm
+        SET support_biz_name = #{supportBizName}
+          , apply_start_date = #{applyStartDate}
+          , apply_end_date = #{applyEndDate}
+          , business_organization = #{businessOrganization}
+          , ministry_competent = #{ministryCompetent}
+          , business_overview = <![CDATA[#{businessOverview}]]>
+          , apply_way = <![CDATA[#{applyWay}]]>
+          , contact_tel = #{contactTel}
+          , content = <![CDATA[#{content}]]>
+            <if test='fileIdList != null and fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+            </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getBidanmSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getBidanmSeq */
+        SELECT CONCAT('M', LPAD(nextval('bidanm_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertBidanm" parameterType="com.mtf.sipa.dto.BidanmDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertBidanm */
+        INSERT INTO bidanm
+        ( seq
+        , support_biz_name
+        , apply_start_date
+        , apply_end_date
+        , business_organization
+        , ministry_competent
+        , business_overview
+        , apply_way
+        , contact_tel
+        , content
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{supportBizName}
+            , #{applyStartDate}
+            , #{applyEndDate}
+            , #{businessOrganization}
+            , #{ministryCompetent}
+            , <![CDATA[#{businessOverview}]]>
+            , <![CDATA[#{applyWay}]]>
+            , #{contactTel}
+            , <![CDATA[#{content}]]>
+            , #{fileIdList}
+            , #{note}
+            , 'BIDANM'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'BIDANM'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            )
+    </insert>
+
+    <select id="selectIssueList" parameterType="com.mtf.sipa.dto.SearchDTO" resultType="com.mtf.sipa.dto.IssueDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.selectIssueList */
+        SELECT seq
+             , support_field
+             , support_biz_name
+             , ministry_competent
+             , content
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM issue
+        WHERE 1=1
+        <if test='searchText != null and searchText != ""'>
+            <if test='condition == "bizName"'>
+                AND support_biz_name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "content"'>
+                AND content LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "all"'>
+                AND ( support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                OR content LIKE CONCAT('%',#{searchText},'%') )
+            </if>
+        </if>
+        ORDER BY init_regi_dttm desc
+    </select>
+
+    <select id="selectIssueSingle" parameterType="com.mtf.sipa.dto.IssueDTO" resultType="com.mtf.sipa.dto.IssueDTO">
+        /*com.mtf.sipa.mapper.SipaMngMapper.selectIssueSingle */
+        SELECT seq
+             , support_field
+             , support_biz_name
+             , ministry_competent
+             , content
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM issue
+        WHERE seq = #{seq}
+    </select>
+
+    <delete id="deleteIssue" parameterType="com.mtf.sipa.dto.IssueDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.deleteIssue */
+        DELETE FROM issue
+        WHERE seq = #{seq}
+    </delete>
+
+    <update id="updateIssue" parameterType="com.mtf.sipa.dto.IssueDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.updateIssue */
+        UPDATE issue
+        SET support_field = #{supportField}
+          , support_biz_name = #{supportBizName}
+          , ministry_competent = #{ministryCompetent}
+          , content = <![CDATA[#{content}]]>
+            <if test='fileIdList != null and fileIdList != ""'>
+            , file_id_list = <![CDATA[#{fileIdList}]]>
+            </if>
+          , final_regi_dttm = DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+        WHERE seq = #{seq}
+    </update>
+
+    <select id="getIssueSeq" resultType="java.lang.String">
+        /* com.mtf.sipa.mapper.SipaMngMapper.getIssueSeq */
+        SELECT CONCAT('I', LPAD(nextval('issue_seq'), '7', '0'))
+        FROM DUAL
+    </select>
+
+    <insert id="insertIssue" parameterType="com.mtf.sipa.dto.IssueDTO">
+        /* com.mtf.sipa.mapper.SipaMngMapper.insertIssue */
+        INSERT INTO issue
+        ( seq
+        , support_field
+        , support_biz_name
+        , ministry_competent
+        , content
+        , file_id_list
+        , note
+        , init_regi_pic
+        , init_regi_dttm
+        , final_regi_pic
+        , final_regi_dttm
+        )
+        VALUES
+            ( #{seq}
+            , #{supportField}
+            , #{supportBizName}
+            , #{ministryCompetent}
+            , <![CDATA[#{content}]]>
+            , #{fileIdList}
+            , #{note}
+            , 'ISSUE'
+            , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
+            , 'ISSUE'
             , DATE_FORMAT(NOW(), '%Y-%m-%d %T')
             )
     </insert>
@@ -803,10 +1410,12 @@
         FROM company
         WHERE 1=1
         <if test='searchText != null and searchText != ""'>
-            AND company_name LIKE CONCAT('%',#{searchText},'%')
-        </if>
-        <if test='condition != null and condition != ""'>
-            AND lang = #{condition}
+            <if test='condition == "companyName"'>
+                AND company_name LIKE CONCAT('%',#{searchText},'%')
+            </if>
+            <if test='condition == "companyCeo"'>
+                AND company_ceo LIKE CONCAT('%',#{searchText},'%')
+            </if>
         </if>
         <if test='gbn != null and gbn != ""'>
             AND gbn = #{gbn}

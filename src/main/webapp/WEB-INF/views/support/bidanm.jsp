@@ -84,105 +84,105 @@
                 <ul class="tbody">
                     <li>
                         <div class="number">15</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span>- 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">14</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">13</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">12</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">11</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">10</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">09</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">08</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">07</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">06</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">05</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">04</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">03</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">02</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>
                     </li>
                     <li>
                         <div class="number">01</div>
-                        <div class="tit" onclick="location.href='bidanm_view.html'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
+                        <div class="tit" onclick="location.href='/support/bizanm/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="period"><span>2023.08.04</span><span> - 2023.09.11</span></div>
                         <div class="agency">산업통상자원부</div>
                         <div class="date">2023.08.03</div>

@@ -186,7 +186,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-350px active" id="kt_app_header_menu_pages_board">
+                                                <div class="tab-pane w-lg-300px active" id="kt_app_header_menu_pages_board">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -246,7 +246,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_popup">
+                                                <div class="tab-pane w-lg-300px" id="kt_app_header_menu_pages_popup">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -258,9 +258,19 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/popup/popup.do"
+                                                                        <a href="/mng/pop/popup.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">팝업 등록</span>
+                                                                        </a>
+                                                                        <!--end:Menu link-->
+                                                                    </div>
+                                                                    <!--end:Menu item-->
+                                                                    <!--begin:Menu item-->
+                                                                    <div class="menu-item p-0 m-0">
+                                                                        <!--begin:Menu link-->
+                                                                        <a href="/mng/pop/banner.do"
+                                                                           class="menu-link">
+                                                                            <span class="menu-title">배너 등록</span>
                                                                         </a>
                                                                         <!--end:Menu link-->
                                                                     </div>
@@ -276,7 +286,7 @@ if (document.documentElement) {
                                                 </div>
                                                 <!--end:Tab pane-->
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane w-lg-350px" id="kt_app_header_menu_pages_company">
+                                                <div class="tab-pane w-lg-300px" id="kt_app_header_menu_pages_company">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -288,7 +298,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/company/businessNotice.do"
+                                                                        <a href="/mng/company/bizanm.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">사업공고</span>
                                                                         </a>
@@ -298,7 +308,7 @@ if (document.documentElement) {
                                                                     <!--begin:Menu item-->
                                                                     <div class="menu-item p-0 m-0">
                                                                         <!--begin:Menu link-->
-                                                                        <a href="/mng/company/tenderNotice.do"
+                                                                        <a href="/mng/company/bidanm.do"
                                                                            class="menu-link">
                                                                             <span class="menu-title">입찰공고</span>
                                                                         </a>
@@ -362,7 +372,7 @@ if (document.documentElement) {
                                             <!--begin:Tab content-->
                                             <div class="tab-content py-4 py-lg-8 px-lg-7">
                                                 <!--begin:Tab pane-->
-                                                <div class="tab-pane active w-lg-250px" id="kt_app_header_menu_pages_membership">
+                                                <div class="tab-pane active w-lg-125px" id="kt_app_header_menu_pages_membership">
                                                     <!--begin:Row-->
                                                     <div class="row">
                                                         <!--begin:Col-->
@@ -712,11 +722,23 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/popup/popup.do">
+                                            <a class="menu-link" href="/mng/pop/popup.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
                                                 <span class="menu-title">팝업 등록</span>
+                                            </a>
+                                            <!--end:Menu link-->
+                                        </div>
+                                        <!--end:Menu item-->
+                                        <!--begin:Menu item-->
+                                        <div class="menu-item">
+                                            <!--begin:Menu link-->
+                                            <a class="menu-link" href="/mng/pop/banner.do">
+                                            <span class="menu-bullet">
+                                                <span class="bullet bullet-dot"></span>
+                                            </span>
+                                                <span class="menu-title">배너 등록</span>
                                             </a>
                                             <!--end:Menu link-->
                                         </div>
@@ -747,7 +769,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/company/businessNotice.do">
+                                            <a class="menu-link" href="/mng/company/bizanm.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -759,7 +781,7 @@ if (document.documentElement) {
                                         <!--begin:Menu item-->
                                         <div class="menu-item">
                                             <!--begin:Menu link-->
-                                            <a class="menu-link" href="/mng/company/tenderNotice.do">
+                                            <a class="menu-link" href="/mng/company/bidanm.do">
                                                 <span class="menu-bullet">
                                                     <span class="bullet bullet-dot"></span>
                                                 </span>
@@ -990,7 +1012,7 @@ if (document.documentElement) {
                                                     <span class="path1"></span>
                                                     <span class="path2"></span>
                                                 </i>
-                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="글 제목 입력"/>
+                                                <input type="text" id="search_text" name="search_text" value="" class="form-control form-control-solid w-250px ps-12" placeholder="검색어 입력"/>
                                             </div>
                                             <!--end::Search-->
                                             <!--begin:Action-->
@@ -1004,9 +1026,9 @@ if (document.documentElement) {
                                             </div>
                                             <!--end:Action-->
                                             <div class="ms-auto">
-                                                <!--begin::글쓰기-->
-                                                <a href="javascript:void(0);" onclick="f_member_ascdirectors_modify_init_set('');" class="btn btn-primary ms-auto">글쓰기</a>
-                                                <!--end::글쓰기-->
+                                                <!--begin::신규 등록-->
+                                                <a href="javascript:void(0);" onclick="f_member_ascdirectors_modify_init_set('');" class="btn btn-primary ms-auto">신규 등록</a>
+                                                <!--end::신규 등록-->
                                             </div>
                                         </div>
                                         <!--end::Card title-->

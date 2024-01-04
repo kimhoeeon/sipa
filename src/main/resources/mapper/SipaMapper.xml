@@ -3,5 +3,93 @@
 
 <mapper namespace="com.mtf.sipa.mapper.SipaMapper">
 
+    <select id="selectPopupList" parameterType="com.mtf.sipa.dto.PopupDTO" resultType="com.mtf.sipa.dto.PopupDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectPopupList */
+        SELECT seq
+             , use_yn
+             , title
+             , published_date
+             , expiration_date
+             , width_pixel
+             , left_pixel
+             , top_pixel
+             , align
+             , writer
+             , content
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM popup
+        WHERE 1=1
+          AND use_yn = #{useYn}
+          AND published_date <![CDATA[<=]]> #{today}
+          AND expiration_date <![CDATA[>=]]> #{today}
+    </select>
+
+    <select id="selectBannerList" parameterType="com.mtf.sipa.dto.BannerDTO" resultType="com.mtf.sipa.dto.BannerDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectBannerList */
+        SELECT seq
+             , title
+             , view_seq
+             , writer
+             , write_date
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM banner
+        WHERE 1=1
+        ORDER BY view_seq
+    </select>
+
+    <select id="selectFileIdSingle" parameterType="com.mtf.sipa.dto.FileDTO" resultType="com.mtf.sipa.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectFileIdSingle */
+        SELECT id
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , file_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM file
+        WHERE 1=1
+          AND id = #{id}
+          AND file_yn = 'Y'
+        LIMIT 1
+    </select>
+
+    <select id="selectFileList" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.FileDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectFileIdSingle */
+        SELECT id
+             , user_id
+             , full_file_path
+             , full_path
+             , folder_path
+             , full_file_name
+             , uuid
+             , file_name
+             , file_yn
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM file
+        WHERE user_id = #{value}
+          AND file_yn = 'Y'
+        ORDER BY LENGTH(note) ASC, note ASC
+    </select>
+
 </mapper>
 
