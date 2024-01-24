@@ -2063,8 +2063,8 @@ public class SipaMngServiceImpl implements SipaMngService {
             String subject = mailRequestDTO.getSubject();   //필수입력(템플릿 사용시 23 line 설명 참조)
             String body = mailRequestDTO.getBody().replaceAll("\"","'");		//필수입력, 템플릿 사용시 빈값을 입력 하시기 바랍니다. 예시) String body = "";
             //String sender = "business@meetingfan.com";        //필수입력(미팅팬 발송테스트용)
-            String sender = "kibs@kibs.com";        //필수입력(보트쇼 회사메일)
-            String sender_name = "경기국제보트쇼";
+            String sender = "sipa@sipa.or.kr";        //필수입력(보트쇼 회사메일)
+            String sender_name = "SIPA 스마트산업진흥협회";
             String username = "meetingfan";              //필수입력
             String key = "L7QNsEQIyrAzNHO";           //필수입력
 
@@ -2074,12 +2074,12 @@ public class SipaMngServiceImpl implements SipaMngService {
             for(int i=0; i<mailRequestDTO.getReceiver().size(); i++){
                 JsonObject jsonObject = new JsonObject();
                 MailRequestDTO.Receiver receiverInfo = mailRequestDTO.getReceiver().get(i);
-//                jsonObject.addProperty("name", receiverInfo.getName());
+                jsonObject.addProperty("name", receiverInfo.getName());
                 jsonObject.addProperty("email", receiverInfo.getEmail());
-//                jsonObject.addProperty("phone", receiverInfo.getPhone());
+                jsonObject.addProperty("phone", receiverInfo.getPhone());
                 jsonArray.add(jsonObject);
             }
-            String receiver = "{\"email\":\"" + mailRequestDTO.getReceiver().get(0).getEmail() + "\"}";
+            String receiver = "";/*""{\"email\":\"" + mailRequestDTO.getReceiver().get(0).getEmail() + "\"}";*/
             //receiver = "[" + jsonObject.toString() + "]";
             receiver = jsonArray.toJSONString();
 
@@ -2125,7 +2125,7 @@ public class SipaMngServiceImpl implements SipaMngService {
             // 첨부파일의 이름은 순차적(https://directsend.co.kr/test.png - image.png, https://directsend.co.kr/test1.png - image2.png) 와 같이 적용이 되며, file_name을 지정하지 않은 경우 마지막의 파일의 이름으로 메일에 보여집니다.
             //String file_name = "image.png|image2.png";
 
-            StringBuilder fileUrlSb = new StringBuilder();
+            /*StringBuilder fileUrlSb = new StringBuilder();
             String file_url = null;
             String file_name = null;
             String imageBaseUrl = "http://www.meetingfan.store/static/img/mail/";
@@ -2151,7 +2151,7 @@ public class SipaMngServiceImpl implements SipaMngService {
                     }
                 }
                 file_name = fileNameSb.toString();
-            }
+            }*/
 
             /* 여기까지 수정해주시기 바랍니다. */
 
@@ -2196,10 +2196,10 @@ public class SipaMngServiceImpl implements SipaMngService {
                     //+ ", \"option_return_url\":\"" + option_return_url + "\" "
 
                     // 첨부 파일이 있는 경우 주석 해제
-                    if(file_url != null && !"".equals(file_url)) {
+                    /*if(file_url != null && !"".equals(file_url)) {
                         urlParameters += ", \"file_url\":\"" + file_url + "\" "
                                 + ", \"file_name\":\"" + file_name + "\" ";
-                    }
+                    }*/
 
             urlParameters +=  ", \"key\":\"" + key + "\" ";
             urlParameters = "{"+ urlParameters  +"}";		//JSON 데이터

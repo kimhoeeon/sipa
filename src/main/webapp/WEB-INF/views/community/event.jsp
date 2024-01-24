@@ -63,14 +63,14 @@
         <div class="inner">
             <div class="calBox">
                 <div class="calYm">
-                            <span onClick="prevCalendar();" style="cursor:pointer;">
-                                <img src="<%request.getContextPath();%>/static/img/calendar_prev.png">
-                            </span>
+                    <span onClick="prevCalendar();" style="cursor:pointer;">
+                        <img src="<%request.getContextPath();%>/static/img/calendar_prev.png">
+                    </span>
                     <span id="calYear"></span>.
                     <span id="calMonth"></span>
                     <span onClick="nextCalendar();" style="cursor:pointer;">
-                                <img src="<%request.getContextPath();%>/static/img/calendar_next.png">
-                            </span>
+                        <img src="<%request.getContextPath();%>/static/img/calendar_next.png">
+                    </span>
                 </div>
                 <div class="calTable">
                     <table class="calendar">
@@ -97,15 +97,16 @@
     <!-- calendar_list -->
     <div class="calendar_list padding_b">
         <div class="inner">
-            <form class="search_date">
+            <form class="search_date" onsubmit="return false;">
                 <select class="form-control input-sm" id="year" name="year">
                 </select>
                 <select class="form-control input-sm" id="month" name="month">
                 </select>
-                <button type="submit" id="searchButton">검색</button>
+                <button type="button" onclick="eventList(1)" id="searchButton">검색</button>
             </form>
 
             <div class="cal_list_box board_list_box">
+                <span class="total" style="display: none;"></span>
                 <ul class="thead">
                     <li>
                         <div class="number">번호</div>
@@ -116,33 +117,33 @@
                     </li>
                 </ul>
                 <ul class="tbody">
-                    <li>
+                    <%--<li>
                         <div class="number">1</div>
                         <div class="tit">제목</div>
                         <div class="location">구로롯데호텔</div>
                         <div class="start">6월 7일</div>
                         <div class="end">6월 9일</div>
-                    </li>
-                    <li>
-                        <div class="number">2</div>
-                        <div class="tit">제목</div>
-                        <div class="location">구로롯데호텔</div>
-                        <div class="start">6월 7일</div>
-                        <div class="end">6월 9일</div>
-                    </li>
-                    <li>
-                        <div class="number">3</div>
-                        <div class="tit">제목</div>
-                        <div class="location">구로롯데호텔</div>
-                        <div class="start">6월 7일</div>
-                        <div class="end">6월 9일</div>
-                    </li>
+                    </li>--%>
                 </ul>
+            </div>
+
+            <div class="paging">
+                <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
+                <ol>
+                    <%--<li>
+                      <a class="this">1</a>
+                    </li>
+                    <li>
+                      <a class="other">2</a>
+                    </li>--%>
+                </ol>
+                <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
             </div>
         </div>
     </div>
     <!-- //calendar_list -->
-
 
 </div>
 
@@ -158,6 +159,8 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/event.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

@@ -40,16 +40,43 @@
                 <div class="sub_top_nav">
                     <span><img src="<%request.getContextPath();%>/static/img/icon_home.png"></span>
                     <span>회원사</span>
-                    <span>고문위원</span>
+                    <span>
+                        <c:if test="${info.gbn eq 'G'}">
+                            고문위원
+                        </c:if>
+                        <c:if test="${info.gbn eq 'J'}">
+                            자문위원
+                        </c:if>
+                    </span>
                 </div>
-                <div class="sub_top_tit">고문위원</div>
+                <div class="sub_top_tit">
+                    <c:if test="${info.gbn eq 'G'}">
+                        고문위원
+                    </c:if>
+                    <c:if test="${info.gbn eq 'J'}">
+                        자문위원
+                    </c:if>
+                </div>
             </div>
             <div class="sub_top_tab">
-                <div class="tabOptAct">고문위원</div>
+                <div class="tabOptAct">
+                    <c:if test="${info.gbn eq 'G'}">
+                        고문위원
+                    </c:if>
+                    <c:if test="${info.gbn eq 'J'}">
+                        자문위원
+                    </c:if>
+                </div>
                 <ul class="tabOptSel">
                     <li><a href="/member/ascdirectors.do">협회이사</a></li>
-                    <li class="active"><a href="/member/adviser.do">고문위원</a></li>
-                    <li><a href="/member/consultation.do">자문위원</a></li>
+                    <c:if test="${info.gbn eq 'G'}">
+                        <li class="active"><a href="/member/adviser.do">고문위원</a></li>
+                        <li><a href="/member/consultation.do">자문위원</a></li>
+                    </c:if>
+                    <c:if test="${info.gbn eq 'J'}">
+                        <li><a href="/member/adviser.do">고문위원</a></li>
+                        <li class="active"><a href="/member/consultation.do">자문위원</a></li>
+                    </c:if>
                     <li><a href="/member/regular.do">정회원</a></li>
                     <li><a href="/member/ascmembers.do">준회원</a></li>
                     <li><a href="/member/partnership.do">협력기관</a></li>
@@ -66,46 +93,69 @@
             <!-- member_detail_top -->
             <div class="member_dt_top">
                 <div class="box">
-                    <div class="name_box">고문위원 곽영길</div>
+                    <div class="name_box">${info.position} ${info.name}</div>
                     <div class="info_box">
                         <div class="img">
-                            <div class="thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser01.jpg"
-                                                               class="thumbImg">
+                            <div class="thumb34 thumbBox">
+                                <c:if test="${representImageFileInfo.fullFilePath ne null and representImageFileInfo.fullFilePath ne ''}">
+                                    <c:set var="representImageSrc" value="${fn:replace(representImageFileInfo.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                    <img src="${representImageSrc}" class="thumbImg">
+                                </c:if>
+                                <c:if test="${representImageFileInfo.fullFilePath eq null or representImageFileInfo.fullFilePath eq ''}">
+                                    <img src="<%request.getContextPath();%>/static/img/img_adviser03.jpg" class="thumbImg">
+                                </c:if>
                             </div>
                         </div>
                         <ul class="info">
                             <li>
                                 <div class="gubun">협회직위</div>
-                                <div class="cont">고문</div>
+                                <div class="cont">${info.position}</div>
                             </li>
                             <li>
                                 <div class="gubun">성명</div>
-                                <div class="cont">곽영길</div>
+                                <div class="cont">${info.name}</div>
                             </li>
                             <li>
                                 <div class="gubun">소속기관</div>
-                                <div class="cont">아주경제신문</div>
+                                <div class="cont">${info.organization}</div>
                             </li>
                             <li>
                                 <div class="gubun">직위</div>
-                                <div class="cont">대표이사</div>
+                                <div class="cont">${info.depart}</div>
                             </li>
                             <li>
                                 <div class="gubun">홈페이지</div>
-                                <div class="cont"><a href="https://www.ajunews.com/"
-                                                     target="_blank">https://www.ajunews.com/</a></div>
+                                <div class="cont">
+                                    <c:if test="${info.homepage ne null and info.homepage ne ''}">
+                                        <a href="${info.homepage}" target="_blank">${info.homepage}</a>
+                                    </c:if>
+                                    <c:if test="${info.homepage eq null or info.homepage eq ''}">
+                                        -
+                                    </c:if>
+                                </div>
                             </li>
                             <li>
                                 <div class="gubun">연락처</div>
-                                <div class="cont">02-0000-0000</div>
+                                <div class="cont">
+                                    <c:if test="${info.tel ne null and info.tel ne ''}">
+                                        ${info.tel}
+                                    </c:if>
+                                    <c:if test="${info.tel eq null or info.tel eq ''}">
+                                        -
+                                    </c:if>
+                                </div>
                             </li>
                             <li>
                                 <div class="gubun">약력사항</div>
                                 <div class="cont">
-                                    현,아주경제 대표이사, 발행인<br>
-                                    전,제일경제신문 대표이사<br>
-                                    전,파이낸셜뉴스 대표이사 상무<br>
-                                    전,문화일보 편집국 경제부장
+                                    <% pageContext.setAttribute("CRLF", "\r\n"); %>
+                                    <% pageContext.setAttribute("LF", "\n"); %>
+                                    <c:if test="${info.briefDescription ne null and info.briefDescription ne ''}">
+                                        ${fn:replace(fn:replace(fn:escapeXml(info.briefDescription), CRLF, '<br/>'), LF, '<br/>')}
+                                    </c:if>
+                                    <c:if test="${info.briefDescription eq null or info.briefDescription eq ''}">
+                                        -
+                                    </c:if>
                                 </div>
                             </li>
                         </ul>
@@ -117,7 +167,14 @@
             <!-- member_detail_btn -->
             <div class="member_dt_btn">
                 <div class="box">
-                    <div class="btn_box"><a href="" class="btnSt01">목록</a></div>
+                    <div class="btn_box">
+                        <c:if test="${info.gbn eq 'G'}">
+                            <a href="/member/adviser.do" class="btnSt01">목록</a>
+                        </c:if>
+                        <c:if test="${info.gbn eq 'J'}">
+                            <a href="/member/consultation.do" class="btnSt01">목록</a>
+                        </c:if>
+                    </div>
                 </div>
             </div>
             <!-- //member_detail_btn -->

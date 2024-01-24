@@ -710,6 +710,7 @@
              , ministry_competent
              , business_overview
              , apply_way
+             , apply_detail_link
              , contact_tel
              , content
              , file_id_list
@@ -739,6 +740,7 @@
           , ministry_competent = #{ministryCompetent}
           , business_overview = <![CDATA[#{businessOverview}]]>
           , apply_way = <![CDATA[#{applyWay}]]>
+          , apply_detail_link = <![CDATA[#{applyDetailLink}]]>
           , contact_tel = #{contactTel}
           , content = <![CDATA[#{content}]]>
             <if test='fileIdList != null and fileIdList != ""'>
@@ -766,6 +768,7 @@
         , ministry_competent
         , business_overview
         , apply_way
+        , apply_detail_link
         , contact_tel
         , content
         , file_id_list
@@ -785,6 +788,7 @@
             , #{ministryCompetent}
             , <![CDATA[#{businessOverview}]]>
             , <![CDATA[#{applyWay}]]>
+            , <![CDATA[#{applyDetailLink}]]>
             , #{contactTel}
             , <![CDATA[#{content}]]>
             , #{fileIdList}
@@ -806,6 +810,7 @@
              , ministry_competent
              , business_overview
              , apply_way
+             , apply_detail_link
              , contact_tel
              , content
              , file_id_list
@@ -844,6 +849,7 @@
              , ministry_competent
              , business_overview
              , apply_way
+             , apply_detail_link
              , contact_tel
              , content
              , file_id_list
@@ -872,6 +878,7 @@
           , ministry_competent = #{ministryCompetent}
           , business_overview = <![CDATA[#{businessOverview}]]>
           , apply_way = <![CDATA[#{applyWay}]]>
+          , apply_detail_link = <![CDATA[#{applyDetailLink}]]>
           , contact_tel = #{contactTel}
           , content = <![CDATA[#{content}]]>
             <if test='fileIdList != null and fileIdList != ""'>
@@ -898,6 +905,7 @@
         , ministry_competent
         , business_overview
         , apply_way
+        , apply_detail_link
         , contact_tel
         , content
         , file_id_list
@@ -916,6 +924,7 @@
             , #{ministryCompetent}
             , <![CDATA[#{businessOverview}]]>
             , <![CDATA[#{applyWay}]]>
+            , <![CDATA[#{applyDetailLink}]]>
             , #{contactTel}
             , <![CDATA[#{content}]]>
             , #{fileIdList}

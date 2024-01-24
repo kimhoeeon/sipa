@@ -1,10 +1,7 @@
 package com.mtf.sipa.controller;
 
 import com.mtf.sipa.constants.CommConstants;
-import com.mtf.sipa.dto.BannerDTO;
-import com.mtf.sipa.dto.FileDTO;
-import com.mtf.sipa.dto.PopupDTO;
-import com.mtf.sipa.dto.ResponseDTO;
+import com.mtf.sipa.dto.*;
 import com.mtf.sipa.service.CommService;
 import com.mtf.sipa.service.SipaService;
 import org.json.simple.JSONObject;
@@ -12,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,12 +68,12 @@ public class SipaController {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String today = dateFormat.format(new Date());
         popupDTO.setToday(today);
-        List<PopupDTO> popupList = sipaService.processSelectPopupList(popupDTO);
+        List<PopupDTO> popupList = sipaService.processSelectMainPopupList(popupDTO);
         mv.addObject("popupList", popupList);
 
         /* 배너 */
         BannerDTO bannerDTO = new BannerDTO();
-        List<BannerDTO> bannerList = sipaService.processSelectBannerList(bannerDTO);
+        List<BannerDTO> bannerList = sipaService.processSelectMainBannerList(bannerDTO);
         List<FileDTO> bannerFileList = new ArrayList<>();
         if(bannerList != null){
             for(int i=0; i<bannerList.size(); i++){
@@ -92,6 +90,22 @@ public class SipaController {
             }
         }
         mv.addObject("bannerList", bannerFileList);
+
+        /* SIPA-NEWS */
+        SipaNewsDTO sipaNewsDTO = new SipaNewsDTO();
+        sipaNewsDTO.setLang("KO");
+        List<SipaNewsDTO> sipaNewsList = sipaService.processSelectMainSipaNewsList(sipaNewsDTO);
+        mv.addObject("sipaNewsList", sipaNewsList);
+
+        /* 공지사항 */
+        NoticeDTO noticeDTO = new NoticeDTO();
+        noticeDTO.setLang("KO");
+        List<NoticeDTO> noticeList = sipaService.processSelectMainNoticeList(noticeDTO);
+        mv.addObject("noticeList", noticeList);
+
+        /* 회원사 소개 슬라이드 */
+        List<CompanyDTO> companyList = sipaService.processSelectMainCompanyList();
+        mv.addObject("companyList", companyList);
 
         mv.setViewName("main");
         return mv;
@@ -117,6 +131,28 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/community/event/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<EventDTO>> community_event_selectList(@RequestBody EventDTO eventDTO) {
+        System.out.println("SipaController > community_event_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<EventDTO> responseDTO = sipaService.processSelectEventListPaging(eventDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/community/event/calendar/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<EventDTO>> community_event_calendar_selectList(@RequestBody EventDTO eventDTO) {
+        System.out.println("SipaController > community_event_calendar_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<EventDTO> responseDTO = sipaService.processSelectEventCalendarList(eventDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/community/gallery.do", method = RequestMethod.GET)
     public ModelAndView community_gallery() {
         System.out.println("SipaController > community_gallery");
@@ -133,11 +169,31 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/community/notice/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<NoticeDTO>> community_notice_selectList(@RequestBody NoticeDTO noticeDTO) {
+        System.out.println("SipaController > community_notice_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<NoticeDTO> responseDTO = sipaService.processSelectNoticeListPaging(noticeDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/community/notice/detail.do", method = RequestMethod.GET)
-    public ModelAndView community_notice_detail() {
+    public ModelAndView community_notice_detail(String seq) {
         System.out.println("SipaController > community_notice_detail");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("community/notice/detail");
+
+        NoticeDTO info = sipaService.processSelectNoticeSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            mv.addObject("fileList", fileList);
+        }
+
+        mv.setViewName("/community/notice/detail");
         return mv;
     }
 
@@ -149,10 +205,30 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/community/news/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<SipaNewsDTO>> community_news_selectList(@RequestBody SipaNewsDTO sipaNewsDTO) {
+        System.out.println("SipaController > community_news_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<SipaNewsDTO> responseList = sipaService.processSelectNewsListPaging(sipaNewsDTO);
+
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/community/news/detail.do", method = RequestMethod.GET)
-    public ModelAndView community_news_detail() {
+    public ModelAndView community_news_detail(String seq) {
         System.out.println("SipaController > community_news_detail");
         ModelAndView mv = new ModelAndView();
+
+        SipaNewsDTO info = sipaService.processSelectNewsSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            mv.addObject("fileList", fileList);
+        }
+
         mv.setViewName("/community/news/detail");
         return mv;
     }
@@ -213,27 +289,45 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/member/ascdirectors/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<AscdirectorsDTO>> member_ascdirectors_selectList(@RequestBody AscdirectorsDTO ascdirectorsDTO) {
+        System.out.println("SipaController > member_ascdirectors_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<AscdirectorsDTO> responseDTO = sipaService.processSelectAscdirectorsListPaging(ascdirectorsDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/member/detailA.do", method = RequestMethod.GET)
-    public ModelAndView member_detailA() {
+    public ModelAndView member_detailA(String seq) {
         System.out.println("SipaController > member_detailA");
         ModelAndView mv = new ModelAndView();
+
+        // 협회이사
+        AscdirectorsDTO info = sipaService.processSelectAscdirectorsSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("logo".equals(fileInfo.getNote())){
+                        mv.addObject("logoFileInfo", fileInfo);
+                    }else if("intro".equals(fileInfo.getNote())){
+                        mv.addObject("introFileInfo", fileInfo);
+                    }else if("field".equals(fileInfo.getNote())){
+                        mv.addObject("fieldFileInfo", fileInfo);
+                    }
+                }
+            }
+
+            mv.addObject("fileList", fileList);
+
+        }
+
         mv.setViewName("/member/detailA");
-        return mv;
-    }
-
-    @RequestMapping(value = "/member/detailB.do", method = RequestMethod.GET)
-    public ModelAndView member_detailB() {
-        System.out.println("SipaController > member_detailB");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/detailB");
-        return mv;
-    }
-
-    @RequestMapping(value = "/member/detailC.do", method = RequestMethod.GET)
-    public ModelAndView member_detailC() {
-        System.out.println("SipaController > member_detailC");
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("/member/detailC");
         return mv;
     }
 
@@ -245,6 +339,41 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/member/adviser/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<AdviserDTO>> member_adviser_selectList(@RequestBody AdviserDTO adviserDTO) {
+        System.out.println("SipaController > member_adviser_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<AdviserDTO> responseDTO = sipaService.processSelectAdviserListPaging(adviserDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member/detailB.do", method = RequestMethod.GET)
+    public ModelAndView member_detailB(String seq) {
+        System.out.println("SipaController > member_detailB");
+        ModelAndView mv = new ModelAndView();
+
+        // 고문위원
+        AdviserDTO info = sipaService.processSelectAdviserSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("representImage".equals(fileInfo.getNote())){
+                        mv.addObject("representImageFileInfo", fileInfo);
+                    }
+                }
+            }
+        }
+
+        mv.setViewName("/member/detailB");
+        return mv;
+    }
+
     @RequestMapping(value = "/member/consultation.do", method = RequestMethod.GET)
     public ModelAndView member_consultation() {
         System.out.println("SipaController > member_consultation");
@@ -253,11 +382,63 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/member/consultation/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<ConsultationDTO>> member_consultation_selectList(@RequestBody ConsultationDTO consultationDTO) {
+        System.out.println("SipaController > member_consultation_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<ConsultationDTO> responseDTO = sipaService.processSelectConsultationListPaging(consultationDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/member/regular.do", method = RequestMethod.GET)
     public ModelAndView member_regular() {
         System.out.println("SipaController > member_regular");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/regular");
+        return mv;
+    }
+
+    @RequestMapping(value = "/member/regular/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<CompanyDTO>> member_regular_selectList(@RequestBody CompanyDTO companyDTO) {
+        System.out.println("SipaController > member_regular_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<CompanyDTO> responseDTO = sipaService.processSelectCompanyListPaging(companyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member/detailD.do", method = RequestMethod.GET)
+    public ModelAndView member_detailD(String seq) {
+        System.out.println("SipaController > member_detailD");
+        ModelAndView mv = new ModelAndView();
+
+        CompanyDTO info = sipaService.processSelectCompanySingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("logo".equals(fileInfo.getNote())){
+                        mv.addObject("logoFileInfo", fileInfo);
+                    }else if("intro".equals(fileInfo.getNote())){
+                        mv.addObject("introFileInfo", fileInfo);
+                    }else if("field".equals(fileInfo.getNote())){
+                        mv.addObject("fieldFileInfo", fileInfo);
+                    }
+                }
+            }
+
+            mv.addObject("fileList", fileList);
+
+        }
+
+        mv.setViewName("/member/detailD");
         return mv;
     }
 
@@ -269,11 +450,93 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/member/ascmembers/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<CompanyDTO>> member_ascmembers_selectList(@RequestBody CompanyDTO companyDTO) {
+        System.out.println("SipaController > member_ascmembers_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<CompanyDTO> responseDTO = sipaService.processSelectCompanyListPaging(companyDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member/detailC.do", method = RequestMethod.GET)
+    public ModelAndView member_detailC(String seq) {
+        System.out.println("SipaController > member_detailC");
+        ModelAndView mv = new ModelAndView();
+
+        CompanyDTO info = sipaService.processSelectCompanySingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("logo".equals(fileInfo.getNote())){
+                        mv.addObject("logoFileInfo", fileInfo);
+                    }else if("intro".equals(fileInfo.getNote())){
+                        mv.addObject("introFileInfo", fileInfo);
+                    }else if("field".equals(fileInfo.getNote())){
+                        mv.addObject("fieldFileInfo", fileInfo);
+                    }
+                }
+            }
+
+            mv.addObject("fileList", fileList);
+
+        }
+
+        mv.setViewName("/member/detailC");
+        return mv;
+    }
+
     @RequestMapping(value = "/member/partnership.do", method = RequestMethod.GET)
     public ModelAndView member_partnership() {
         System.out.println("SipaController > member_partnership");
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/partnership");
+        return mv;
+    }
+
+    @RequestMapping(value = "/member/partnership/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<PartnershipDTO>> member_partnership_selectList(@RequestBody PartnershipDTO partnershipDTO) {
+        System.out.println("SipaController > member_partnership_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<PartnershipDTO> responseDTO = sipaService.processSelectPartnershipListPaging(partnershipDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/member/detailE.do", method = RequestMethod.GET)
+    public ModelAndView member_detailE(String seq) {
+        System.out.println("SipaController > member_detailE");
+        ModelAndView mv = new ModelAndView();
+
+        PartnershipDTO info = sipaService.processSelectPartnershipSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("logo".equals(fileInfo.getNote())){
+                        mv.addObject("logoFileInfo", fileInfo);
+                    }else if("intro".equals(fileInfo.getNote())){
+                        mv.addObject("introFileInfo", fileInfo);
+                    }else if("field".equals(fileInfo.getNote())){
+                        mv.addObject("fieldFileInfo", fileInfo);
+                    }
+                }
+            }
+
+            mv.addObject("fileList", fileList);
+
+        }
+
+        mv.setViewName("/member/detailE");
         return mv;
     }
 
@@ -297,6 +560,17 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/service/faq/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<FaqDTO>> service_faq_selectList(@RequestBody FaqDTO faqDTO) {
+        System.out.println("SipaController > service_faq_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<FaqDTO> responseDTO = sipaService.processSelectFaqListPaging(faqDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/service/guide.do", method = RequestMethod.GET)
     public ModelAndView service_guide() {
         System.out.println("SipaController > service_guide");
@@ -317,10 +591,30 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/support/bidanm/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<BidanmDTO>> support_bidanm_selectList(@RequestBody BidanmDTO bidanmDTO) {
+        System.out.println("SipaController > support_bidanm_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<BidanmDTO> responseDTO = sipaService.processSelectBidanmListPaging(bidanmDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/support/bidanm/detail.do", method = RequestMethod.GET)
-    public ModelAndView support_bidanm_detail() {
+    public ModelAndView support_bidanm_detail(String seq) {
         System.out.println("SipaController > support_bidanm_detail");
         ModelAndView mv = new ModelAndView();
+
+        BidanmDTO info = sipaService.processSelectBidanmSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            mv.addObject("fileList", fileList);
+        }
+
         mv.setViewName("/support/bidanm/detail");
         return mv;
     }
@@ -333,10 +627,30 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/support/bizanm/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<BizanmDTO>> support_bizanm_selectList(@RequestBody BizanmDTO bizanmDTO) {
+        System.out.println("SipaController > support_bizanm_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<BizanmDTO> responseDTO = sipaService.processSelectBizanmListPaging(bizanmDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/support/bizanm/detail.do", method = RequestMethod.GET)
-    public ModelAndView support_bizanm_detail() {
+    public ModelAndView support_bizanm_detail(String seq) {
         System.out.println("SipaController > support_bizanm_detail");
         ModelAndView mv = new ModelAndView();
+
+        BizanmDTO info = sipaService.processSelectBizanmSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            mv.addObject("fileList", fileList);
+        }
+
         mv.setViewName("/support/bizanm/detail");
         return mv;
     }
@@ -349,10 +663,29 @@ public class SipaController {
         return mv;
     }
 
+    @RequestMapping(value = "/support/issue/selectList.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<List<IssueDTO>> support_issue_selectList(@RequestBody IssueDTO issueDTO) {
+        System.out.println("SipaController > support_issue_selectList");
+        //System.out.println(mainOnlineDTO.toString());
+
+        List<IssueDTO> responseDTO = sipaService.processSelectIssueListPaging(issueDTO);
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/support/issue/detail.do", method = RequestMethod.GET)
-    public ModelAndView support_issue_detail() {
+    public ModelAndView support_issue_detail(String seq) {
         System.out.println("SipaController > support_issue_detail");
         ModelAndView mv = new ModelAndView();
+
+        IssueDTO info = sipaService.processSelectIssueSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            mv.addObject("fileList", fileList);
+        }
         mv.setViewName("/support/issue/detail");
         return mv;
     }
@@ -373,6 +706,52 @@ public class SipaController {
     public ModelAndView eng_main() {
         System.out.println("SipaController > eng_main");
         ModelAndView mv = new ModelAndView();
+
+        /* 팝업파일정보 */
+        PopupDTO popupDTO = new PopupDTO();
+        popupDTO.setUseYn("Y");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String today = dateFormat.format(new Date());
+        popupDTO.setToday(today);
+        List<PopupDTO> popupList = sipaService.processSelectMainPopupList(popupDTO);
+        mv.addObject("popupList", popupList);
+
+        /* 배너 */
+        BannerDTO bannerDTO = new BannerDTO();
+        List<BannerDTO> bannerList = sipaService.processSelectMainBannerList(bannerDTO);
+        List<FileDTO> bannerFileList = new ArrayList<>();
+        if(bannerList != null){
+            for(int i=0; i<bannerList.size(); i++){
+                String fileIdList = bannerList.get(i).getFileIdList();
+                if(fileIdList != null){
+                    String[] fileIdSplit = bannerList.get(i).getFileIdList().split(",");
+                    for(int j=0; j<fileIdSplit.length; j++){
+                        FileDTO fileReq = new FileDTO();
+                        fileReq.setId(fileIdSplit[j]);
+                        FileDTO fileDTO = sipaService.processSelectFileIdSingle(fileReq);
+                        bannerFileList.add(fileDTO);
+                    }
+                }
+            }
+        }
+        mv.addObject("bannerList", bannerFileList);
+
+        /* SIPA-NEWS */
+        SipaNewsDTO sipaNewsDTO = new SipaNewsDTO();
+        sipaNewsDTO.setLang("EN");
+        List<SipaNewsDTO> sipaNewsList = sipaService.processSelectMainSipaNewsList(sipaNewsDTO);
+        mv.addObject("sipaNewsList", sipaNewsList);
+
+        /* 공지사항 */
+        NoticeDTO noticeDTO = new NoticeDTO();
+        noticeDTO.setLang("EN");
+        List<NoticeDTO> noticeList = sipaService.processSelectMainNoticeList(noticeDTO);
+        mv.addObject("noticeList", noticeList);
+
+        /* 회원사 소개 슬라이드 */
+        List<CompanyDTO> companyList = sipaService.processSelectMainCompanyList();
+        mv.addObject("companyList", companyList);
+
         mv.setViewName("/eng/main");
         return mv;
     }
@@ -414,9 +793,17 @@ public class SipaController {
     }
 
     @RequestMapping(value = "/eng/community/notice/detail.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_notice_detail() {
+    public ModelAndView eng_community_notice_detail(String seq) {
         System.out.println("SipaController > eng_community_notice_detail");
         ModelAndView mv = new ModelAndView();
+
+        NoticeDTO info = sipaService.processSelectNoticeSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            mv.addObject("fileList", fileList);
+        }
         mv.setViewName("/eng/community/notice/detail");
         return mv;
     }
@@ -430,9 +817,18 @@ public class SipaController {
     }
 
     @RequestMapping(value = "/eng/community/news/detail.do", method = RequestMethod.GET)
-    public ModelAndView eng_community_news_detail() {
+    public ModelAndView eng_community_news_detail(String seq) {
         System.out.println("SipaController > eng_community_news_detail");
         ModelAndView mv = new ModelAndView();
+
+        SipaNewsDTO info = sipaService.processSelectNewsSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            mv.addObject("fileList", fileList);
+        }
+
         mv.setViewName("/eng/community/news/detail");
         return mv;
     }
@@ -494,26 +890,147 @@ public class SipaController {
     }
 
     @RequestMapping(value = "/eng/member/detailA.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_detailA() {
+    public ModelAndView eng_member_detailA(String seq) {
         System.out.println("SipaController > eng_member_detailA");
         ModelAndView mv = new ModelAndView();
+
+        // 협회이사
+        AscdirectorsDTO info = sipaService.processSelectAscdirectorsSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("logo".equals(fileInfo.getNote())){
+                        mv.addObject("logoFileInfo", fileInfo);
+                    }else if("intro".equals(fileInfo.getNote())){
+                        mv.addObject("introFileInfo", fileInfo);
+                    }else if("field".equals(fileInfo.getNote())){
+                        mv.addObject("fieldFileInfo", fileInfo);
+                    }
+                }
+            }
+
+            mv.addObject("fileList", fileList);
+
+        }
+
         mv.setViewName("/eng/member/detailA");
         return mv;
     }
 
     @RequestMapping(value = "/eng/member/detailB.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_detailB() {
+    public ModelAndView eng_member_detailB(String seq) {
         System.out.println("SipaController > eng_member_detailB");
         ModelAndView mv = new ModelAndView();
+
+        // 고/자문위원
+        AdviserDTO info = sipaService.processSelectAdviserSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("representImage".equals(fileInfo.getNote())){
+                        mv.addObject("representImageFileInfo", fileInfo);
+                    }
+                }
+            }
+        }
+
         mv.setViewName("/eng/member/detailB");
         return mv;
     }
 
     @RequestMapping(value = "/eng/member/detailC.do", method = RequestMethod.GET)
-    public ModelAndView eng_member_detailC() {
-        System.out.println("SipaController > eng_member_detailC");
+    public ModelAndView eng_member_detailC(String seq) {
+        System.out.println("SipaController > member_detailC");
         ModelAndView mv = new ModelAndView();
+
+        CompanyDTO info = sipaService.processSelectCompanySingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("logo".equals(fileInfo.getNote())){
+                        mv.addObject("logoFileInfo", fileInfo);
+                    }else if("intro".equals(fileInfo.getNote())){
+                        mv.addObject("introFileInfo", fileInfo);
+                    }else if("field".equals(fileInfo.getNote())){
+                        mv.addObject("fieldFileInfo", fileInfo);
+                    }
+                }
+            }
+
+            mv.addObject("fileList", fileList);
+
+        }
+
         mv.setViewName("/eng/member/detailC");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/member/detailD.do", method = RequestMethod.GET)
+    public ModelAndView eng_member_detailD(String seq) {
+        System.out.println("SipaController > eng_member_detailD");
+        ModelAndView mv = new ModelAndView();
+
+        CompanyDTO info = sipaService.processSelectCompanySingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("logo".equals(fileInfo.getNote())){
+                        mv.addObject("logoFileInfo", fileInfo);
+                    }else if("intro".equals(fileInfo.getNote())){
+                        mv.addObject("introFileInfo", fileInfo);
+                    }else if("field".equals(fileInfo.getNote())){
+                        mv.addObject("fieldFileInfo", fileInfo);
+                    }
+                }
+            }
+
+            mv.addObject("fileList", fileList);
+
+        }
+
+        mv.setViewName("/eng/member/detailD");
+        return mv;
+    }
+
+    @RequestMapping(value = "/eng/member/detailE.do", method = RequestMethod.GET)
+    public ModelAndView eng_member_detailE(String seq) {
+        System.out.println("SipaController > eng_member_detailE");
+        ModelAndView mv = new ModelAndView();
+
+        PartnershipDTO info = sipaService.processSelectPartnershipSingle(seq);
+        mv.addObject("info", info);
+
+        if(info != null){
+            List<FileDTO> fileList = sipaService.processSelectFileList(info.getSeq());
+            if(fileList != null && !fileList.isEmpty()){
+                for(FileDTO fileInfo : fileList){
+                    if("logo".equals(fileInfo.getNote())){
+                        mv.addObject("logoFileInfo", fileInfo);
+                    }else if("intro".equals(fileInfo.getNote())){
+                        mv.addObject("introFileInfo", fileInfo);
+                    }else if("field".equals(fileInfo.getNote())){
+                        mv.addObject("fieldFileInfo", fileInfo);
+                    }
+                }
+            }
+
+            mv.addObject("fileList", fileList);
+
+        }
+
+        mv.setViewName("/eng/member/detailE");
         return mv;
     }
 

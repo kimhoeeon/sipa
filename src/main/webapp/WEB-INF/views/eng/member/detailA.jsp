@@ -66,38 +66,47 @@
             <!-- member_detail_top -->
             <div class="member_dt_top">
                 <div class="box">
-                    <div class="name_box">(주)시스원</div>
+                    <div class="name_box">${info.companyName}</div>
                     <div class="info_box">
                         <div class="img">
-                            <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors02.jpg"
-                                                                class="thumbImg">
+                            <div class="thumb169 thumbBox">
+                                <c:choose>
+                                    <c:when test = "${logoFileInfo ne null and logoFileInfo ne ''}">
+                                        <c:set var="logoImgSrc" value="${fn:replace(logoFileInfo.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                        <img src="${logoImgSrc}" alt="logo_image">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="<%request.getContextPath();%>/static/img/img_nologo.jpg" alt="no_logo_image">
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                         <ul class="info">
                             <li>
                                 <div class="gubun">Representative</div>
-                                <div class="cont">이갑수</div>
+                                <div class="cont">${info.companyCeo}</div>
                             </li>
                             <li>
                                 <div class="gubun">Homepage</div>
-                                <div class="cont"><a href="https://www.sysone.co.kr"
-                                                     target="_blank">https://www.sysone.co.kr</a></div>
+                                <div class="cont">
+                                    <a href="${info.companyHomepage}" target="_blank">${info.companyHomepage}</a>
+                                </div>
                             </li>
                             <li>
                                 <div class="gubun">Phone number</div>
-                                <div class="cont">02-0000-0000</div>
+                                <div class="cont">${info.companyTel}</div>
                             </li>
                             <li>
                                 <div class="gubun">Address</div>
-                                <div class="cont">서울시 용산구 한강대로98길3, KCC IT타워 10층</div>
+                                <div class="cont">${info.companyAddress}</div>
                             </li>
                             <li>
                                 <div class="gubun">Business</div>
-                                <div class="cont">정보통신분과</div>
+                                <div class="cont">${info.companyBusinessType}</div>
                             </li>
                             <li>
                                 <div class="gubun">Production</div>
-                                <div class="cont">IT서비스, 출입통제시스템 등</div>
+                                <div class="cont">${info.companyBusinessItem}</div>
                             </li>
                         </ul>
                     </div>
@@ -110,7 +119,15 @@
                 <div class="box">
                     <div class="title_box"><span>Company</span></div>
                     <div class="cont_box">
-                        <img src="<%request.getContextPath();%>/static/img/img_member_detail01.jpg">
+                        <c:choose>
+                            <c:when test = "${introFileInfo ne null and introFileInfo ne ''}">
+                                <c:set var="introImgSrc" value="${fn:replace(introFileInfo.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                <img src="${introImgSrc}" alt="intro_image">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="<%request.getContextPath();%>/static/img/no_image.png" alt="no_intro_image">
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -121,7 +138,15 @@
                 <div class="box">
                     <div class="title_box"><span>Business field</span></div>
                     <div class="cont_box">
-                        <img src="<%request.getContextPath();%>/static/img/img_member_detail02.jpg">
+                        <c:choose>
+                            <c:when test = "${fieldFileInfo ne null and fieldFileInfo ne ''}">
+                                <c:set var="fieldImgSrc" value="${fn:replace(fieldFileInfo.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                <img src="${fieldImgSrc}" alt="field_image">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="<%request.getContextPath();%>/static/img/no_image.png" alt="no_image">
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -130,7 +155,7 @@
             <!-- member_detail_btn -->
             <div class="member_dt_btn">
                 <div class="box">
-                    <div class="btn_box"><a href="" class="btnSt01">List</a></div>
+                    <div class="btn_box"><a href="/eng/member/ascdirectors.do" class="btnSt01">List</a></div>
                 </div>
             </div>
             <!-- //member_detail_btn -->

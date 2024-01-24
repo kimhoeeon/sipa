@@ -59,71 +59,29 @@
     <!-- board_faq -->
     <div class="board_faq padding_tb">
         <div class="inner">
+            <span class="total" style="display: none;"></span>
             <ul class="box">
-                <li>
+                <%--<li>
                     <div class="ask">자주묻는질문</div>
                     <div class="answer">
                         자주묻는질문 답변
                     </div>
-                </li>
-                <li>
-                    <div class="ask">자주묻는질문</div>
-                    <div class="answer">
-                        자주묻는질문 답변
-                    </div>
-                </li>
-                <li>
-                    <div class="ask">자주묻는질문</div>
-                    <div class="answer">
-                        자주묻는질문 답변
-                    </div>
-                </li>
-                <li>
-                    <div class="ask">자주묻는질문</div>
-                    <div class="answer">
-                        자주묻는질문 답변
-                    </div>
-                </li>
-                <li>
-                    <div class="ask">자주묻는질문</div>
-                    <div class="answer">
-                        자주묻는질문 답변
-                    </div>
-                </li>
-                <li>
-                    <div class="ask">자주묻는질문</div>
-                    <div class="answer">
-                        자주묻는질문 답변
-                    </div>
-                </li>
-                <li>
-                    <div class="ask">자주묻는질문</div>
-                    <div class="answer">
-                        자주묻는질문 답변
-                    </div>
-                </li>
-                <li>
-                    <div class="ask">자주묻는질문</div>
-                    <div class="answer">
-                        자주묻는질문 답변
-                    </div>
-                </li>
-                <li>
-                    <div class="ask">자주묻는질문</div>
-                    <div class="answer">
-                        자주묻는질문 답변
-                    </div>
-                </li>
+                </li>--%>
             </ul>
 
             <div class="paging">
-                <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                 <ol>
-                    <li><a href="" class="this">1</a></li>
-                    <li><a href="" class="other">2</a></li>
-                    <li><a href="" class="other">3</a></li>
+                    <%--<li>
+                      <a class="this">1</a>
+                    </li>
+                    <li>
+                      <a class="other">2</a>
+                    </li>--%>
                 </ol>
-                <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
             </div>
         </div>
     </div>
@@ -144,6 +102,8 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/faq.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

@@ -40,7 +40,9 @@
                 <div class="sub_top_nav">
                     <span><img src="<%request.getContextPath();%>/static/img/icon_home.png"></span>
                     <span>회원사</span>
-                    <span>협회이사</span>
+                    <span>
+                        협회이사
+                    </span>
                 </div>
                 <div class="sub_top_tit">협회이사</div>
             </div>
@@ -66,38 +68,47 @@
             <!-- member_detail_top -->
             <div class="member_dt_top ">
                 <div class="box">
-                    <div class="name_box">(주)시스원</div>
+                    <div class="name_box">${info.companyName}</div>
                     <div class="info_box">
                         <div class="img">
-                            <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors02.jpg"
-                                                                class="thumbImg">
+                            <div class="thumb169 thumbBox">
+                                <c:choose>
+                                    <c:when test = "${logoFileInfo ne null and logoFileInfo ne ''}">
+                                        <c:set var="logoImgSrc" value="${fn:replace(logoFileInfo.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                        <img src="${logoImgSrc}" alt="로고_이미지">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="<%request.getContextPath();%>/static/img/img_nologo.jpg" alt="로고_이미지_없음">
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                         <ul class="info">
                             <li>
                                 <div class="gubun">대표자</div>
-                                <div class="cont">이갑수</div>
+                                <div class="cont">${info.companyCeo}</div>
                             </li>
                             <li>
                                 <div class="gubun">홈페이지</div>
-                                <div class="cont"><a href="https://www.sysone.co.kr"
-                                                     target="_blank">https://www.sysone.co.kr</a></div>
+                                <div class="cont">
+                                    <a href="${info.companyHomepage}" target="_blank">${info.companyHomepage}</a>
+                                </div>
                             </li>
                             <li>
                                 <div class="gubun">전화번호</div>
-                                <div class="cont">02-0000-0000</div>
+                                <div class="cont">${info.companyTel}</div>
                             </li>
                             <li>
                                 <div class="gubun">주소</div>
-                                <div class="cont">서울시 용산구 한강대로98길3, KCC IT타워 10층</div>
+                                <div class="cont">${info.companyAddress}</div>
                             </li>
                             <li>
                                 <div class="gubun">주요사업</div>
-                                <div class="cont">정보통신분과</div>
+                                <div class="cont">${info.companyBusinessType}</div>
                             </li>
                             <li>
                                 <div class="gubun">주요생산품</div>
-                                <div class="cont">IT서비스, 출입통제시스템 등</div>
+                                <div class="cont">${info.companyBusinessItem}</div>
                             </li>
                         </ul>
                     </div>
@@ -110,7 +121,15 @@
                 <div class="box">
                     <div class="title_box"><span>회사소개</span></div>
                     <div class="cont_box">
-                        <img src="<%request.getContextPath();%>/static/img/img_member_detail01.jpg">
+                        <c:choose>
+                            <c:when test = "${introFileInfo ne null and introFileInfo ne ''}">
+                                <c:set var="introImgSrc" value="${fn:replace(introFileInfo.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                <img src="${introImgSrc}" alt="회사소개_이미지">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="<%request.getContextPath();%>/static/img/no_image.png" alt="회사소개_이미지_없음">
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -121,7 +140,15 @@
                 <div class="box">
                     <div class="title_box"><span>사업분야</span></div>
                     <div class="cont_box">
-                        <img src="<%request.getContextPath();%>/static/img/img_member_detail02.jpg">
+                        <c:choose>
+                            <c:when test = "${fieldFileInfo ne null and fieldFileInfo ne ''}">
+                                <c:set var="fieldImgSrc" value="${fn:replace(fieldFileInfo.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                <img src="${fieldImgSrc}" alt="사업분야_이미지">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="<%request.getContextPath();%>/static/img/no_image.png" alt="사업분야_이미지_없음">
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -130,7 +157,7 @@
             <!-- member_detail_btn -->
             <div class="member_dt_btn">
                 <div class="box">
-                    <div class="btn_box"><a href="" class="btnSt01">목록</a></div>
+                    <div class="btn_box"><a href="/member/ascdirectors.do" class="btnSt01">목록</a></div>
                 </div>
             </div>
             <!-- //member_detail_btn -->

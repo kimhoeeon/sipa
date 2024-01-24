@@ -1182,6 +1182,19 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">공고 자세히 보기 링크</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" id="applyDetailLink" name="applyDetailLink" class="form-control form-control-lg form-control-solid-bg" placeholder="https://" value="${info.applyDetailLink}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
                                                 <label class="col-lg-4 col-form-label fw-semibold fs-6">첨부파일</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->

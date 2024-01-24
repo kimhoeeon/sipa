@@ -30,4 +30,6 @@ public class ConsultationDTO extends AbstractPagingRequestVo {
 
     String prevId;
     String nextId;
+
+    String representFilePath;
 }

@@ -40,16 +40,43 @@
                 <div class="sub_top_nav">
                     <span><img src="<%request.getContextPath();%>/static/img/icon_home.png"></span>
                     <span>Member</span>
-                    <span>Adviser</span>
+                    <span>
+                        <c:if test="${info.gbn eq 'G'}">
+                            Adviser
+                        </c:if>
+                        <c:if test="${info.gbn eq 'J'}">
+                            Consultant
+                        </c:if>
+                    </span>
                 </div>
-                <div class="sub_top_tit">Adviser</div>
+                <div class="sub_top_tit">
+                    <c:if test="${info.gbn eq 'G'}">
+                        Adviser
+                    </c:if>
+                    <c:if test="${info.gbn eq 'J'}">
+                        Consultant
+                    </c:if>
+                </div>
             </div>
             <div class="sub_top_tab">
-                <div class="tabOptAct">Adviser</div>
+                <div class="tabOptAct">
+                    <c:if test="${info.gbn eq 'G'}">
+                        Adviser
+                    </c:if>
+                    <c:if test="${info.gbn eq 'J'}">
+                        Consultant
+                    </c:if>
+                </div>
                 <ul class="tabOptSel">
                     <li><a href="/eng/member/ascdirectors.do">Board of Directors</a></li>
-                    <li class="active"><a href="/eng/member/adviser.do">Adviser</a></li>
-                    <li><a href="/eng/member/consultation.do">Consultant</a></li>
+                    <c:if test="${info.gbn eq 'G'}">
+                        <li class="active"><a href="/eng/member/adviser.do">Adviser</a></li>
+                        <li><a href="/eng/member/consultation.do">Consultant</a></li>
+                    </c:if>
+                    <c:if test="${info.gbn eq 'J'}">
+                        <li><a href="/eng/member/adviser.do">Adviser</a></li>
+                        <li class="active"><a href="/eng/member/consultation.do">Consultant</a></li>
+                    </c:if>
                     <li><a href="/eng/member/regular.do">Regular Member</a></li>
                     <li><a href="/eng/member/ascmembers.do">Associate Member</a></li>
                     <li><a href="/eng/member/partnership.do">Cooperative Organization</a></li>
@@ -66,46 +93,77 @@
             <!-- member_detail_top -->
             <div class="member_dt_top">
                 <div class="box">
-                    <div class="name_box">고문위원 곽영길</div>
+                    <div class="name_box">
+                        <c:if test="${info.gbn eq 'G'}">
+                            Adviser
+                        </c:if>
+                        <c:if test="${info.gbn eq 'J'}">
+                            Consultant
+                        </c:if>
+                        ${info.name}
+                    </div>
                     <div class="info_box">
                         <div class="img">
-                            <div class="thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser01.jpg"
-                                                               class="thumbImg">
+                            <div class="thumb34 thumbBox">
+                                <c:if test="${representImageFileInfo.fullFilePath ne null and representImageFileInfo.fullFilePath ne ''}">
+                                    <c:set var="representImageSrc" value="${fn:replace(representImageFileInfo.fullFilePath, './tomcat/webapps', '../../..')}" />
+                                    <img src="${representImageSrc}" class="thumbImg">
+                                </c:if>
+                                <c:if test="${representImageFileInfo.fullFilePath eq null or representImageFileInfo.fullFilePath eq ''}">
+                                    <img src="<%request.getContextPath();%>/static/img/img_adviser03.jpg" class="thumbImg">
+                                </c:if>
                             </div>
                         </div>
                         <ul class="info">
                             <li>
                                 <div class="gubun">Association position</div>
-                                <div class="cont">고문</div>
+                                <div class="cont">${info.position}</div>
                             </li>
                             <li>
                                 <div class="gubun">Name</div>
-                                <div class="cont">곽영길</div>
+                                <div class="cont">${info.name}</div>
                             </li>
                             <li>
                                 <div class="gubun">Affiliation</div>
-                                <div class="cont">아주경제신문</div>
+                                <div class="cont">${info.organization}</div>
                             </li>
                             <li>
                                 <div class="gubun">Position</div>
-                                <div class="cont">대표이사</div>
+                                <div class="cont">${info.depart}</div>
                             </li>
                             <li>
                                 <div class="gubun">Homepage</div>
-                                <div class="cont"><a href="https://www.ajunews.com/"
-                                                     target="_blank">https://www.ajunews.com/</a></div>
+                                <div class="cont">
+                                    <c:if test="${info.homepage ne null and info.homepage ne ''}">
+                                        <a href="${info.homepage}" target="_blank">${info.homepage}</a>
+                                    </c:if>
+                                    <c:if test="${info.homepage eq null or info.homepage eq ''}">
+                                        -
+                                    </c:if>
+                                </div>
                             </li>
                             <li>
                                 <div class="gubun">Phone number</div>
-                                <div class="cont">02-0000-0000</div>
+                                <div class="cont">
+                                    <c:if test="${info.tel ne null and info.tel ne ''}">
+                                        ${info.tel}
+                                    </c:if>
+                                    <c:if test="${info.tel eq null or info.tel eq ''}">
+                                        -
+                                    </c:if>
+                                </div>
                             </li>
                             <li>
                                 <div class="gubun">Brief history</div>
                                 <div class="cont">
-                                    현,아주경제 대표이사, 발행인<br>
-                                    전,제일경제신문 대표이사<br>
-                                    전,파이낸셜뉴스 대표이사 상무<br>
-                                    전,문화일보 편집국 경제부장
+                                    <% pageContext.setAttribute("CRLF", "\r\n"); %>
+                                    <% pageContext.setAttribute("LF", "\n"); %>
+                                    <c:if test="${info.briefDescription ne null and info.briefDescription ne ''}">
+                                        ${fn:replace(fn:replace(fn:escapeXml(info.briefDescription), CRLF, '<br/>'), LF, '<br/>')}
+                                    </c:if>
+                                    <c:if test="${info.briefDescription eq null or info.briefDescription eq ''}">
+                                        -
+                                    </c:if>
                                 </div>
                             </li>
                         </ul>
@@ -117,7 +175,14 @@
             <!-- member_detail_btn -->
             <div class="member_dt_btn">
                 <div class="box">
-                    <div class="btn_box"><a href="" class="btnSt01">List</a></div>
+                    <div class="btn_box">
+                        <c:if test="${info.gbn eq 'G'}">
+                            <a href="/eng/member/adviser.do" class="btnSt01">List</a>
+                        </c:if>
+                        <c:if test="${info.gbn eq 'J'}">
+                            <a href="/eng/member/consultation.do" class="btnSt01">List</a>
+                        </c:if>
+                    </div>
                 </div>
             </div>
             <!-- //member_detail_btn -->

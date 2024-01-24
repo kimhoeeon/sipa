@@ -10,8 +10,7 @@ $(function(){
     if(startDatePicker) {
         startDatePicker.flatpickr({
             enableTime: false,
-            dateFormat: "Y-m-d",
-            defaultDate: new Date()
+            dateFormat: "Y-m-d"
         });
     }
 

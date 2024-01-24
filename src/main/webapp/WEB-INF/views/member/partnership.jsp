@@ -62,113 +62,31 @@
     <!-- member_list -->
     <div class="member_s padding_tb">
         <div class="inner">
+            <span class="total" style="display: none;"></span>
             <ul class="member_list guide4">
-                <li>
+                <%--<li>
                     <a href="/member/detailC.do">
                         <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership01.jpg" class="thumbImg"></div>
                         <div class="txt">
                             <div class="name">고려대학교</div>
                         </div>
                     </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership02.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">국가사이버안전연합회</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership03.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">대한전자공학회</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership04.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">서경대학교</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership05.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">서울벤처정보대학원대학교</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership06.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">세명대학교</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership07.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">순천향대학교</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership08.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">숭실대학교</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership09.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">유한대학교</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership10.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">전자부품연구원</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership11.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">전자신문</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailC.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_partnership12.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">충북대학교</div>
-                        </div>
-                    </a>
-                </li>
+                </li>--%>
             </ul>
 
             <div class="paging">
-                <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                 <ol>
-                    <li><a href="" class="this">1</a></li>
-                    <li><a href="" class="other">2</a></li>
-                    <li><a href="" class="other">3</a></li>
+                    <%--<li>
+                      <a class="this">1</a>
+                    </li>
+                    <li>
+                      <a class="other">2</a>
+                    </li>--%>
                 </ol>
-                <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
             </div>
         </div>
     </div>
@@ -189,6 +107,8 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/partnership.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

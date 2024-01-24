@@ -532,7 +532,7 @@ let KTAppPopBanner = function () {
                     'className': 'text-center'
                 },
                 {
-                    'targets': 7,
+                    'targets': 8,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -544,6 +544,7 @@ let KTAppPopBanner = function () {
                 { data: 'title' },
                 { data: 'viewSeq' },
                 { data: 'writer' },
+                { data: 'writeDate' },
                 { data: 'initRegiDttm' },
                 { data: 'finalRegiDttm' },
                 { data: 'actions' }

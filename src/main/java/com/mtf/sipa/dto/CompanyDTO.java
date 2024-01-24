@@ -32,4 +32,6 @@ public class CompanyDTO extends AbstractPagingRequestVo {
 
     String prevId;
     String nextId;
+
+    String logoFilePath;
 }

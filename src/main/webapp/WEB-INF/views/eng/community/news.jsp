@@ -60,115 +60,44 @@
     <!-- board_gallery -->
     <div class="board_gallery padding_tb">
         <div class="inner">
-            <form class="search_box">
-                <select>
-                    <option>Title</option>
-                    <option>Contents</option>
-                    <option>Title+Contents</option>
+            <form class="search_box" onsubmit="return false;">
+                <select id="search_box">
+                    <option value="TITLE" selected>Title</option>
+                    <option value="CONTENT">Contents</option>
+                    <option value="ALL">Title+Contents</option>
                 </select>
                 <div class="input">
-                    <input type="text" placeholder="Please enter a search term.">
-                    <button type="submit"><img src="<%request.getContextPath();%>/static/img/icon_search.png"></button>
+                    <input type="text" id="search_text" placeholder="Please enter a search term.">
+                    <button type="button" onclick="newsList(1)"><img src="<%request.getContextPath();%>/static/img/icon_search.png"></button>
                 </div>
             </form>
 
             <div class="board_gallery_box">
+                <span class="total" style="display: none;"></span>
                 <ul>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
+                    <%--<li onclick="location.href='/eng/community/news/detail.do'">
                         <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
                         <div class="txt_box">
                             <div class="tit">SIPA-NEWS 제목 노출</div>
                             <div class="date">2023.08.04</div>
                         </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
-                    <li onclick="location.href='/eng/community/news/detail.do'">
-                        <div class="thumbBox thumb75"><img src="<%request.getContextPath();%>/static/img/img_sample.jpg" class="thumbImg"></div>
-                        <div class="txt_box">
-                            <div class="tit">SIPA-NEWS 제목 노출</div>
-                            <div class="date">2023.08.04</div>
-                        </div>
-                    </li>
+                    </li>--%>
                 </ul>
             </div>
 
             <div class="paging">
-                <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                 <ol>
-                    <li><a href="" class="this">1</a></li>
-                    <li><a href="" class="other">2</a></li>
-                    <li><a href="" class="other">3</a></li>
+                    <%--<li>
+                      <a class="this">1</a>
+                    </li>
+                    <li>
+                      <a class="other">2</a>
+                    </li>--%>
                 </ol>
-                <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
             </div>
         </div>
     </div>
@@ -188,6 +117,8 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/news.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

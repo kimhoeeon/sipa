@@ -206,7 +206,7 @@
         <div class="inner">
             <div class="sub_bd_tit_m">문의처</div>
             <div class="reg_inquiry_box">
-                <div class="big">SIPA 사무국</div>
+                <div class="big">SIPA 사무처</div>
                 <div class="small">
                     <p><span class="txt_bold">Tel</span>02-867-3637</p>
                     <p><span class="txt_bold">E-mail</span>sipa@sipa.or.kr</p>

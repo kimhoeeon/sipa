@@ -62,113 +62,31 @@
     <!-- member_list -->
     <div class="member_s padding_tb">
         <div class="inner">
+            <span class="total" style="display: none;"></span>
             <ul class="member_list guide4">
-                <li>
+                <%--<li>
                     <a href="/eng/member/detailA.do">
                         <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular01.jpg" class="thumbImg"></div>
                         <div class="txt">
                             <div class="name">(주)가교테크</div>
                         </div>
                     </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular02.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)글로텍</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular03.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)기광전기</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular04.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)나라컨트롤</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular05.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)나우이엔지</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular06.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)네오넥스소프트</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular07.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">닥스콘(주)</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular08.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)닥터킵</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular09.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">대윤계기산업(주)</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular10.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">동양산업(주)</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular11.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">동진제약</div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_regular12.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)디지엔스</div>
-                        </div>
-                    </a>
-                </li>
+                </li>--%>
             </ul>
 
             <div class="paging">
-                <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                 <ol>
-                    <li><a href="" class="this">1</a></li>
-                    <li><a href="" class="other">2</a></li>
-                    <li><a href="" class="other">3</a></li>
+                    <%--<li>
+                      <a class="this">1</a>
+                    </li>
+                    <li>
+                      <a class="other">2</a>
+                    </li>--%>
                 </ol>
-                <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
             </div>
         </div>
     </div>
@@ -189,6 +107,8 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/regular.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

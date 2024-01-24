@@ -107,59 +107,60 @@
     <div class="contact_input padding_b">
         <div class="inner">
 
-            <div class="ct_input_box">
-                <div class="ct_input_tit">
-                    <div class="tit">01. Basic Information</div>
-                    <div class="cmnt"><img src="<%request.getContextPath();%>/static/img/icon_contact_star.png">Required input</div>
-                </div>
-                <ul>
-                    <li class="w50">
-                        <div class="gubun req">Company Name</div>
-                        <div class="input">
-                            <input type="text" placeholder="Company Name">
-                        </div>
-                    </li>
-                    <li class="w50">
-                        <div class="gubun req">Country</div>
-                        <div class="input">
-                            <script src="<%request.getContextPath();%>/static/js/country.js"></script>
-                            <select name="country" style="width: 100%;"></select>
-                        </div>
-                    </li>
-                    <li class="w50">
-                        <div class="gubun req">Industry</div>
-                        <div class="input">
-                            <input type="text" placeholder="Industry">
-                        </div>
-                    </li>
-                    <li class="w50">
-                        <div class="gubun req">Contact Name</div>
-                        <div class="input">
-                            <input type="text" placeholder="Contact Name">
-                        </div>
-                    </li>
-                    <li class="w50">
-                        <div class="gubun req">Position</div>
-                        <div class="input">
-                            <input type="text" placeholder="Position">
-                        </div>
-                    </li>
-                    <li class="w50">
-                        <div class="gubun req">Contact</div>
-                        <div class="input">
-                            <input type="tel" placeholder="Please enter numbers only." class="onlyTel">
-                        </div>
-                    </li>
-                    <li class="w100">
-                        <div class="gubun req">Email Address</div>
-                        <div class="input">
-                            <input type="email" placeholder="Email Address">
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <form id="contactForm" onsubmit="return false;">
 
-            <div class="ct_input_box">
+                <div class="ct_input_box">
+                    <div class="ct_input_tit">
+                        <div class="tit">01. Basic Information</div>
+                        <div class="cmnt"><img src="<%request.getContextPath();%>/static/img/icon_contact_star.png">Required input</div>
+                    </div>
+                    <ul>
+                        <li class="w50">
+                            <div class="gubun req">Company Name</div>
+                            <div class="input">
+                                <input type="text" id="companyName" name="companyName" placeholder="Company Name">
+                            </div>
+                        </li>
+                        <li class="w50">
+                            <div class="gubun req">Country</div>
+                            <div class="input">
+                                <select id="country" name="country" style="width: 100%;"></select>
+                            </div>
+                        </li>
+                        <li class="w50">
+                            <div class="gubun req">Industry</div>
+                            <div class="input">
+                                <input type="text" id="bizType" name="bizType" placeholder="Industry">
+                            </div>
+                        </li>
+                        <li class="w50">
+                            <div class="gubun req">Contact Name</div>
+                            <div class="input">
+                                <input type="text" id="chargePersonName" name="chargePersonName" placeholder="Contact Name">
+                            </div>
+                        </li>
+                        <li class="w50">
+                            <div class="gubun req">Position</div>
+                            <div class="input">
+                                <input type="text" id="position" name="position" placeholder="Position">
+                            </div>
+                        </li>
+                        <li class="w50">
+                            <div class="gubun req">Contact</div>
+                            <div class="input">
+                                <input type="tel" id="phone" name="phone" placeholder="Please enter numbers only." class="onlyTel">
+                            </div>
+                        </li>
+                        <li class="w100">
+                            <div class="gubun req">Email Address</div>
+                            <div class="input">
+                                <input type="email" id="email" name="email" placeholder="Email Address ex) xxxx@naver.com">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="ct_input_box">
                 <div class="ct_input_tit">
                     <div class="tit">02. Details of inquiry</div>
                 </div>
@@ -167,30 +168,109 @@
                     <li class="w100">
                         <div class="gubun req">Content of inquiry</div>
                         <div class="input">
-                            <textarea placeholder="Content of inquiry"></textarea>
+                            <textarea id="content" name="content" placeholder="Content of inquiry"></textarea>
                         </div>
                     </li>
                     <li class="w100">
                         <div class="gubun">Item</div>
                         <div class="input">
-                            <label><input type="radio" name="visitRoute">Internet search</label>
-                            <label><input type="radio" name="visitRoute">Media</label>
-                            <label><input type="radio" name="visitRoute">Introduction of acquaintances</label>
-                            <label><input type="radio" name="visitRoute">Existing member companies</label>
-                            <label><input type="radio" name="visitRoute">Other</label>
+                            <label><input type="radio" name="visitRoute" value="Internet search">Internet search</label>
+                            <label><input type="radio" name="visitRoute" value="Media">Media</label>
+                            <label><input type="radio" name="visitRoute" value="Introduction of acquaintances">Introduction of acquaintances</label>
+                            <label><input type="radio" name="visitRoute" value="Existing member companies">Existing member companies</label>
+                            <label><input type="radio" name="visitRoute" value="Other">Other</label>
                         </div>
                     </li>
                     <li class="w100">
+                        <!-- 약관 -->
+                        <div class="privacy_box">
+                            <div class="box">
+                                <div class="box">
+                                    The Smart Industry Promotion Association (hereinafter referred to as the "Company") values your personal information and complies with the Act on Promotion of Information and Communication Network Utilization and Information Protection.<br>
+                                    The company will inform you of the purpose and method of the personal information provided by you through the privacy policy and what measures are being taken to protect your personal information.<br><br>
+
+                                    <div class="privacy_tit">■ Personal Information Items to Collect</div>
+
+                                    The company is collecting the following personal information for consultation and application for membership.<br><br>
+
+                                    ο Collection items: Company name, region, type of business, name of person in charge, position, contact information, e-mail address<br>
+                                    ο How to collect personal information: Home page form<br><br>
+
+                                    <div class="privacy_tit">■ Purpose of collection and use of personal information</div>
+
+                                    The company utilizes the collected personal information for the following purposes.<br><br>
+
+                                    Statistics on identification, personal identification, age verification, communication of notices, use in marketing and advertising, frequency of access, or use of members' services according to the use of membership services<br><br>
+
+                                    <div class="privacy_tit">■ Period of possession and use of personal information</div>
+
+                                    After the purpose of collecting and using personal information has been achieved, the Company shall destroy such information without delay without exception.<br><br>
+
+                                    <div class="privacy_tit">■ Procedures and methods for destroying personal information</div>
+
+                                    In principle, the company destroys personal information without delay after the purpose of collecting and using it has been achieved. The procedure and method of destruction are as follows.<br><br>
+
+                                    Procedure for destroying ο<br>
+                                    The information you entered for membership registration, etc. is transferred to a separate DB after the purpose is achieved (a separate filing box for paper) and is stored for a certain period of time according to internal policies and other relevant laws and regulations (see retention and usage period).<br><br>
+
+                                    Personal information transferred to a separate DB will not be used for any purpose other than being held unless it is by law.<br><br>
+
+                                    Method of destroying ο<br>
+                                    - Personal information stored in electronic file format is deleted using a technical method that cannot be reproduced.<br><br>
+
+                                    <div class="privacy_tit">■ Provision of personal information</div>
+
+                                    In principle, the company does not provide users' personal information to the outside world. However, exceptions are made in the following cases.<br>
+                                    - If users have agreed in advance<br>
+                                    - Where there is a request from an investigative agency in accordance with the provisions of laws and regulations or in accordance with the procedures and methods prescribed by laws and regulations for the purpose of investigation<br><br>
+
+                                    <div class="privacy_tit">■ Matters concerning the installation and operation of an automatic personal information collection device and its refusal</div>
+
+                                    The company operates cookies and more that store and find your information from time to time. A cookie is a tiny text file that the server that runs its website sends to your browser and is stored on your computer's hard disk. The company uses cookies for the following purposes.<br><br>
+
+                                    ▶ Use of cookies, etc<br>
+                                    - Provide target marketing and personalized services by analyzing access frequency and visit time, identifying user preferences and areas of interest, tracking self-travel, and identifying the degree of participation in various events and the number of visits<br><br>
+
+                                    You have options for installing cookies. Therefore, you can allow all cookies by setting options on your web browser, go through checks whenever cookies are saved, or refuse to save all cookies.<br><br>
+
+                                    ▶ How to deny cookie settings<br>
+                                    For example, as a way to deny cookie settings, you can allow all cookies by selecting the options in your web browser, check every time you save cookies, or refuse to save all cookies.<br><br>
+
+                                    Example of how to set up (for Internet Explorer)<br>
+                                    : Tools at the top of your web browser > Internet Options > Privacy<br><br>
+
+                                    However, if you refuse to install cookies, there may be difficulties in providing the service.<br><br>
+
+                                    <div class="privacy_tit">■ Civil service regarding personal information</div>
+
+                                    In order to protect the customer's personal information and to handle complaints related to personal information, the company has designated relevant departments and personal information management managers as follows.<br><br>
+
+                                    Name of person in charge of personal information management: Kim Hye-kyung<br>
+                                    Email: sipa@sipa.or.kr<br><br>
+
+                                    You can report any personal information protection-related complaints to the person in charge of personal information management or the department in charge of using the company's services. The company will promptly and sufficiently respond to users' reports.<br><br>
+
+                                    If you need to report or consult about other personal information infringement, please contact the following institution.<br>
+                                    1. Personal Dispute Mediation Committee (www.1336.or.kr/1336)<br>
+                                    2. Information Protection Mark Certification Committee (www.eprivacy.or.kr/02-580-0533 ~4)<br>
+                                    3. Internet Crime Investigation Center of the Supreme Prosecutors' Office (http://icic.sppo.go.kr/02-3480-3600)<br>
+                                    4. Cyber Terrorism Response Center of the National Police Agency (www.ctrc.go.kr/02-392-0330)
+                                </div>
+                            </div>
+                        </div>
+                        <!-- //약관 -->
                         <div class="input privacy">
-                            <label><input type="checkbox" name="visitRoute"><span class="txt_bold">Consent to
+                            <label><input type="checkbox" name="privateYn" value="Agree"><span class="txt_bold">Consent to
                                         Collection and Use of Personal Information</span></label>
                         </div>
                     </li>
                 </ul>
             </div>
 
+            </form>
+
             <div class="ct_input_btn">
-                <a href="" class="btnSt01">Register</a>
+                <a href="javascript:void(0);" onclick="f_community_contact_mail_send('EN');" class="btnSt01">Register</a>
             </div>
 
         </div>
@@ -210,6 +290,7 @@
 <script src="<%request.getContextPath();%>/static/js/jquery.number.min.js"></script>
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
+<script src="<%request.getContextPath();%>/static/js/country.js"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
 

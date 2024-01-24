@@ -60,51 +60,123 @@
     <div class="board_view padding_tb">
         <div class="inner">
 
+            <%--<% pageContext.setAttribute("CRLF", "\r\n"); %>
+            <% pageContext.setAttribute("LF", "\n"); %>--%>
+
             <div class="board_view_box">
                 <div class="board_view_top">
-                    <div class="cate">기술</div>
-                    <div class="tit">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                    <div class="date">2023.08.03</div>
+                    <div class="cate">${info.supportField}</div>
+                    <div class="tit">${info.supportBizName}</div>
+                    <div class="date">${fn:replace(fn:split(info.initRegiDttm,' ')[0], '-', '.')}</div>
                 </div>
                 <div class="board_view_info">
                     <div class="board_view_info_box">
                         <p class="gubun">소관부처</p>
-                        <p class="txt">-</p>
+                        <p class="txt">
+                            <c:choose>
+                                <c:when test="${info.ministryCompetent ne null and info.ministryCompetent ne ''}">
+                                    ${info.ministryCompetent}
+                                </c:when>
+                                <c:otherwise>
+                                    -
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
                     </div>
                     <div class="board_view_info_box">
                         <p class="gubun">사업수행기관</p>
-                        <p class="txt">산업통상자원부</p>
+                        <p class="txt">
+                            <c:choose>
+                                <c:when test="${info.businessOrganization ne null and info.businessOrganization ne ''}">
+                                    ${info.businessOrganization}
+                                </c:when>
+                                <c:otherwise>
+                                    -
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
                     </div>
                     <div class="board_view_info_box">
                         <p class="gubun">신청기간</p>
-                        <p class="txt">2023.08.04 - 2023.09.11</p>
+                        <p class="txt">
+                            <c:choose>
+                                <c:when test="${info.applyStartDate ne '-' and info.applyEndDate ne '-'}">
+                                    ${info.applyStartDate} - ${info.applyEndDate}
+                                </c:when>
+                                <c:otherwise>
+                                    상시
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
                     </div>
                     <div class="board_view_info_box">
                         <p class="gubun">사업개요</p>
-                        <p class="txt">-</p>
+                        <p class="txt">
+                            <%--${fn:replace(fn:replace(fn:escapeXml(info.businessOverview), CRLF, '<br/>'), LF, '<br/>')}--%>
+                            <c:choose>
+                                <c:when test="${info.businessOverview ne null and info.businessOverview ne ''}">
+                                    ${info.businessOverview}
+                                </c:when>
+                                <c:otherwise>
+                                    -
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
                     </div>
                     <div class="board_view_info_box">
                         <p class="gubun">신청방법</p>
-                        <p class="txt">-</p>
+                        <p class="txt">
+                            <%--${fn:replace(fn:replace(fn:escapeXml(info.applyWay), CRLF, '<br/>'), LF, '<br/>')}--%>
+                            <c:choose>
+                                <c:when test="${info.applyWay ne null and info.applyWay ne ''}">
+                                    ${info.applyWay}
+                                </c:when>
+                                <c:otherwise>
+                                    -
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
                     </div>
                     <div class="board_view_info_box">
                         <p class="gubun">문의처</p>
-                        <p class="txt">02-0000-0000</p>
+                        <p class="txt">
+                            <c:choose>
+                                <c:when test="${info.contactTel ne null and info.contactTel ne ''}">
+                                    ${info.contactTel}
+                                </c:when>
+                                <c:otherwise>
+                                    -
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
                     </div>
                 </div>
                 <div class="board_view_cont">
-                    <img src="<%request.getContextPath();%>/static/img/img_sample.jpg">
+                    <c:choose>
+                        <c:when test="${info.content ne null and info.content ne ''}">
+                            ${info.content}
+                        </c:when>
+                        <c:otherwise>
+                            -
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <div class="board_view_info">
                     <div class="board_view_info_box">
                         <p class="gubun">첨부파일</p>
                         <p class="txt">
-                            <a href="" class="file">파일명.pdf</a>
-                            <a href="" class="file">파일명.pdf</a>
-                        </p>
+                        <c:if test="${not empty fileList}">
+                            <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
+                                <a href="/file/download.do?path=company/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}" class="file">${fileInfo.fileName}</a>
+                            </c:forEach>
+                        </c:if>
+                        <c:if test="${empty fileList}">
+                            첨부파일 없음
+                        </c:if>
+                    </p>
                     </div>
                     <div class="btn_box">
-                        <a href="" class="btn_detail btnSt01" target="_blank">공고 자세히보기</a>
+                        <a href="${info.applyDetailLink}" class="btn_detail btnSt01" target="_blank">공고 자세히보기</a>
                     </div>
                 </div>
                 <div class="board_view_btn">

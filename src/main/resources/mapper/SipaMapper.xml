@@ -3,8 +3,8 @@
 
 <mapper namespace="com.mtf.sipa.mapper.SipaMapper">
 
-    <select id="selectPopupList" parameterType="com.mtf.sipa.dto.PopupDTO" resultType="com.mtf.sipa.dto.PopupDTO">
-        /* com.mtf.sipa.mapper.SipaMapper.selectPopupList */
+    <select id="selectMainPopupList" parameterType="com.mtf.sipa.dto.PopupDTO" resultType="com.mtf.sipa.dto.PopupDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectMainPopupList */
         SELECT seq
              , use_yn
              , title
@@ -28,8 +28,8 @@
           AND expiration_date <![CDATA[>=]]> #{today}
     </select>
 
-    <select id="selectBannerList" parameterType="com.mtf.sipa.dto.BannerDTO" resultType="com.mtf.sipa.dto.BannerDTO">
-        /* com.mtf.sipa.mapper.SipaMapper.selectBannerList */
+    <select id="selectMainBannerList" parameterType="com.mtf.sipa.dto.BannerDTO" resultType="com.mtf.sipa.dto.BannerDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectMainBannerList */
         SELECT seq
              , title
              , view_seq
@@ -44,6 +44,794 @@
         FROM banner
         WHERE 1=1
         ORDER BY view_seq
+    </select>
+
+    <select id="selectMainSipaNewsList" parameterType="com.mtf.sipa.dto.SipaNewsDTO" resultType="com.mtf.sipa.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectMainSipaNewsList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM sipa_news
+        WHERE lang = #{lang}
+        ORDER BY notice_gbn desc, write_date desc
+        LIMIT 3
+    </select>
+
+    <select id="selectMainNoticeList" parameterType="com.mtf.sipa.dto.NoticeDTO" resultType="com.mtf.sipa.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectMainNoticeList */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM notice
+        WHERE lang = #{lang}
+        ORDER BY notice_gbn desc, write_date desc
+        LIMIT 3
+    </select>
+
+    <select id="selectMainCompanyList" resultType="com.mtf.sipa.dto.CompanyDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectMainCompanyList */
+        SELECT r.*
+        FROM ( SELECT c.seq
+                    , c.gbn
+                    , c.company_name
+                    , c.company_ceo
+                    , c.company_homepage
+                    , c.company_tel
+                    , c.company_address
+                    , c.company_business_type
+                    , c.company_business_item
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = c.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note = 'logo'
+                        LIMIT 1) AS logoFilePath
+                    , c.note
+                    , c.init_regi_pic
+                    , c.init_regi_dttm
+                    , c.final_regi_pic
+                    , c.final_regi_dttm
+               FROM company c
+               WHERE 1=1
+                 AND c.company_ceo IS NOT NULL
+                 AND c.company_ceo != '-'
+                 AND c.company_homepage != ''
+                 AND c.company_tel != ''
+                 AND c.company_business_type != ''
+                 AND c.company_business_item != ''
+               ORDER BY c.company_name
+               ) r
+        WHERE r.logoFilePath IS NOT NULL
+        LIMIT 20
+    </select>
+
+    <select id="selectAscdirectorsListPaging" parameterType="com.mtf.sipa.dto.AscdirectorsDTO" resultType="com.mtf.sipa.dto.AscdirectorsDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectAscdirectorsListPaging */
+        SELECT r.*
+        FROM ( SELECT a.seq
+                    , a.company_name
+                    , a.company_ceo
+                    , a.company_homepage
+                    , a.company_tel
+                    , a.company_address
+                    , a.company_business_type
+                    , a.company_business_item
+                    , a.logo
+                    , a.intro
+                    , a.field
+                    , a.note
+                    , a.init_regi_pic
+                    , a.init_regi_dttm
+                    , a.final_regi_pic
+                    , a.final_regi_dttm
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = a.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note = 'logo'
+                        LIMIT 1) AS logoFilePath
+                    , ( SELECT COUNT(*)
+                        FROM ascdirectors a1
+                        WHERE 1=1
+                        ) AS totalRecords
+               FROM ascdirectors a
+               WHERE 1=1
+               ORDER BY a.company_name
+               ) r
+        LIMIT #{pageNum} , #{rows}
+    </select>
+
+    <select id="selectAscdirectorsSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.AscdirectorsDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectAscdirectorsSingle */
+        SELECT seq
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM ascdirectors
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectAdviserListPaging" parameterType="com.mtf.sipa.dto.AdviserDTO" resultType="com.mtf.sipa.dto.AdviserDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectAdviserListPaging */
+        SELECT r.*
+        FROM ( SELECT a.seq
+                    , a.gbn
+                    , a.position
+                    , a.name
+                    , a.organization
+                    , a.depart
+                    , a.homepage
+                    , a.tel
+                    , a.brief_description
+                    , a.note
+                    , a.init_regi_pic
+                    , a.init_regi_dttm
+                    , a.final_regi_pic
+                    , a.final_regi_dttm
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = a.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note = 'representImage'
+                        LIMIT 1) AS representFilePath
+                    , ( SELECT COUNT(*)
+                        FROM adviser a1
+                        WHERE 1=1
+                        AND a1.gbn = #{gbn}
+                        ) AS totalRecords
+               FROM adviser a
+               WHERE 1=1
+               AND a.gbn = #{gbn}
+               ORDER BY a.name
+               ) r
+        LIMIT #{pageNum} , #{rows}
+    </select>
+
+    <select id="selectAdviserSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.AdviserDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectAdviserSingle */
+        SELECT seq
+             , gbn
+             , position
+             , name
+             , organization
+             , depart
+             , homepage
+             , tel
+             , brief_description
+             , represent_image
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM adviser
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectConsultationListPaging" parameterType="com.mtf.sipa.dto.ConsultationDTO" resultType="com.mtf.sipa.dto.ConsultationDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectConsultationListPaging */
+        SELECT r.*
+        FROM ( SELECT a.seq
+                    , a.gbn
+                    , a.position
+                    , a.name
+                    , a.organization
+                    , a.depart
+                    , a.homepage
+                    , a.tel
+                    , a.brief_description
+                    , a.note
+                    , a.init_regi_pic
+                    , a.init_regi_dttm
+                    , a.final_regi_pic
+                    , a.final_regi_dttm
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = a.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note = 'representImage'
+                        LIMIT 1) AS representFilePath
+                    , ( SELECT COUNT(*)
+                        FROM adviser a1
+                        WHERE 1=1
+                        AND a1.gbn = #{gbn}
+                        ) AS totalRecords
+               FROM adviser a
+               WHERE 1=1
+               AND a.gbn = #{gbn}
+               ORDER BY a.name
+               ) r
+        LIMIT #{pageNum} , #{rows}
+    </select>
+
+    <select id="selectCompanyListPaging" parameterType="com.mtf.sipa.dto.CompanyDTO" resultType="com.mtf.sipa.dto.CompanyDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectCompanyListPaging */
+        SELECT r.*
+        FROM ( SELECT a.seq
+                    , a.company_name
+                    , a.company_ceo
+                    , a.company_homepage
+                    , a.company_tel
+                    , a.company_address
+                    , a.company_business_type
+                    , a.company_business_item
+                    , a.note
+                    , a.init_regi_pic
+                    , a.init_regi_dttm
+                    , a.final_regi_pic
+                    , a.final_regi_dttm
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = a.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note = 'logo'
+                        LIMIT 1) AS logoFilePath
+                    , ( SELECT COUNT(*)
+                        FROM company a1
+                        WHERE 1=1
+                          AND a1.gbn = #{gbn}
+                        ) AS totalRecords
+               FROM company a
+               WHERE 1=1
+                 AND a.gbn = #{gbn}
+               ORDER BY a.company_name
+               ) r
+        LIMIT #{pageNum} , #{rows}
+    </select>
+
+    <select id="selectCompanySingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.CompanyDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectCompanySingle */
+        SELECT seq
+             , gbn
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM company
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectPartnershipListPaging" parameterType="com.mtf.sipa.dto.PartnershipDTO" resultType="com.mtf.sipa.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectPartnershipListPaging */
+        SELECT r.*
+        FROM ( SELECT a.seq
+                    , a.company_name
+                    , a.company_ceo
+                    , a.company_homepage
+                    , a.company_tel
+                    , a.company_address
+                    , a.company_business_type
+                    , a.company_business_item
+                    , a.note
+                    , a.init_regi_pic
+                    , a.init_regi_dttm
+                    , a.final_regi_pic
+                    , a.final_regi_dttm
+                    , ( SELECT f.full_file_path
+                        FROM file f
+                        WHERE f.user_id = a.seq
+                          AND f.file_yn = 'Y'
+                          AND f.note = 'logo'
+                        LIMIT 1) AS logoFilePath
+                    , ( SELECT COUNT(*)
+                        FROM partnership a1
+                        WHERE 1=1
+                        ) AS totalRecords
+               FROM partnership a
+               WHERE 1=1
+               ORDER BY a.company_name
+               ) r
+        LIMIT #{pageNum} , #{rows}
+    </select>
+
+    <select id="selectPartnershipSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.PartnershipDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectPartnershipSingle */
+        SELECT seq
+             , company_name
+             , company_ceo
+             , company_homepage
+             , company_tel
+             , company_address
+             , company_business_type
+             , company_business_item
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM partnership
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectFaqListPaging" parameterType="com.mtf.sipa.dto.FaqDTO" resultType="com.mtf.sipa.dto.FaqDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectFaqListPaging */
+        SELECT r.*
+        FROM ( SELECT a.seq
+                    , a.title
+                    , a.content
+                    , a.writer
+                    , a.write_date
+                    , a.note
+                    , a.init_regi_pic
+                    , a.init_regi_dttm
+                    , a.final_regi_pic
+                    , a.final_regi_dttm
+                    , ( SELECT COUNT(*)
+                        FROM faq a1
+                        WHERE 1=1
+                          AND lang = #{lang}
+                        ) AS totalRecords
+               FROM faq a
+               WHERE 1=1
+               AND lang = #{lang}
+               ORDER BY a.write_date
+               ) r
+        LIMIT #{pageNum} , #{rows}
+    </select>
+
+    <select id="selectBizanmListPaging" parameterType="com.mtf.sipa.dto.BizanmDTO" resultType="com.mtf.sipa.dto.BizanmDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectBizanmListPaging */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                   , LISTA.*
+              FROM ( SELECT @ROWNUM := 0) R
+                 , ( SELECT a.seq
+                          , a.support_field
+                          , a.support_biz_name
+                          , a.apply_start_date
+                          , a.apply_end_date
+                          , a.business_organization
+                          , a.ministry_competent
+                          , a.business_overview
+                          , a.apply_way
+                          , a.contact_tel
+                          , a.content
+                          , a.note
+                          , a.init_regi_pic
+                          , a.init_regi_dttm
+                          , a.final_regi_pic
+                          , a.final_regi_dttm
+                          , ( SELECT COUNT(*)
+                              FROM bizanm a1
+                              WHERE 1=1
+                                <if test='supportField != "분야"'>
+                                    AND a1.support_field = #{supportField}
+                                </if>
+                                <if test='searchText != null and searchText != ""'>
+                                    <if test='condition == "NAME"'>
+                                        AND a.support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                                    </if>
+                                    <if test='condition == "ORG"'>
+                                        AND a.business_organization LIKE CONCAT('%',#{searchText},'%')
+                                    </if>
+                                    <if test='condition == "CONTENT"'>
+                                        AND a.content LIKE CONCAT('%',#{searchText},'%')
+                                    </if>
+                                </if>
+                              ) AS totalRecords
+                     FROM bizanm a
+                     WHERE 1=1
+                       <if test='supportField != "분야"'>
+                       AND a.support_field = #{supportField}
+                       </if>
+                       <if test='searchText != null and searchText != ""'>
+                           <if test='condition == "NAME"'>
+                               AND a.support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                           </if>
+                           <if test='condition == "ORG"'>
+                               AND a.business_organization LIKE CONCAT('%',#{searchText},'%')
+                           </if>
+                           <if test='condition == "CONTENT"'>
+                               AND a.content LIKE CONCAT('%',#{searchText},'%')
+                           </if>
+                       </if>
+                     ) LISTA
+              ORDER BY LISTA.apply_start_date asc
+              ) LISTB
+        ORDER BY LISTB.rownum desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectBizanmSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.BizanmDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectBizanmSingle */
+        SELECT seq
+             , support_field
+             , support_biz_name
+             , apply_start_date
+             , apply_end_date
+             , business_organization
+             , ministry_competent
+             , business_overview
+             , apply_way
+             , apply_detail_link
+             , contact_tel
+             , content
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM bizanm
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectBidanmListPaging" parameterType="com.mtf.sipa.dto.BidanmDTO" resultType="com.mtf.sipa.dto.BidanmDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectBidanmListPaging */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                   , LISTA.*
+              FROM ( SELECT @ROWNUM := 0) R
+                 , ( SELECT a.seq
+                          , a.support_biz_name
+                          , a.apply_start_date
+                          , a.apply_end_date
+                          , a.business_organization
+                          , a.ministry_competent
+                          , a.business_overview
+                          , a.apply_way
+                          , a.contact_tel
+                          , a.content
+                          , a.note
+                          , a.init_regi_pic
+                          , a.init_regi_dttm
+                          , a.final_regi_pic
+                          , a.final_regi_dttm
+                          , ( SELECT COUNT(*)
+                              FROM bidanm a1
+                              WHERE 1=1
+                                <if test='searchText != null and searchText != ""'>
+                                    <if test='condition == "NAME"'>
+                                        AND a.support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                                    </if>
+                                    <if test='condition == "ORG"'>
+                                        AND a.business_organization LIKE CONCAT('%',#{searchText},'%')
+                                    </if>
+                                    <if test='condition == "CONTENT"'>
+                                        AND a.content LIKE CONCAT('%',#{searchText},'%')
+                                    </if>
+                                </if>
+                              ) AS totalRecords
+                     FROM bidanm a
+                     WHERE 1=1
+                       <if test='searchText != null and searchText != ""'>
+                           <if test='condition == "NAME"'>
+                               AND a.support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                           </if>
+                           <if test='condition == "ORG"'>
+                               AND a.business_organization LIKE CONCAT('%',#{searchText},'%')
+                           </if>
+                           <if test='condition == "CONTENT"'>
+                               AND a.content LIKE CONCAT('%',#{searchText},'%')
+                           </if>
+                       </if>
+                     ) LISTA
+              ORDER BY LISTA.apply_start_date asc
+              ) LISTB
+        ORDER BY LISTB.rownum desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectBidanmSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.BidanmDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectBidanmSingle */
+        SELECT seq
+             , support_biz_name
+             , apply_start_date
+             , apply_end_date
+             , business_organization
+             , ministry_competent
+             , business_overview
+             , apply_way
+             , apply_detail_link
+             , contact_tel
+             , content
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM bidanm
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectIssueListPaging" parameterType="com.mtf.sipa.dto.IssueDTO" resultType="com.mtf.sipa.dto.IssueDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectIssueListPaging */
+        SELECT LISTB.*
+        FROM (SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                   , LISTA.*
+              FROM ( SELECT @ROWNUM := 0) R
+                 , ( SELECT a.seq
+                          , a.support_field
+                          , a.support_biz_name
+                          , a.ministry_competent
+                          , a.content
+                          , a.note
+                          , a.init_regi_pic
+                          , a.init_regi_dttm
+                          , a.final_regi_pic
+                          , a.final_regi_dttm
+                          , ( SELECT COUNT(*)
+                              FROM issue a1
+                              WHERE 1=1
+                                <if test='supportField != "전체"'>
+                                    AND a.support_field = #{supportField}
+                                </if>
+                                <if test='searchText != null and searchText != ""'>
+                                    <if test='condition == "TITLE"'>
+                                        AND a.support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                                    </if>
+                                    <if test='condition == "CONTENT"'>
+                                        AND a.content LIKE CONCAT('%',#{searchText},'%')
+                                    </if>
+                                    <if test='condition == "ALL"'>
+                                        AND ( a.support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                                                  OR a.content LIKE CONCAT('%',#{searchText},'%') )
+                                    </if>
+                                </if>
+                              ) AS totalRecords
+                     FROM issue a
+                     WHERE 1=1
+                       <if test='supportField != "전체"'>
+                       AND a.support_field = #{supportField}
+                       </if>
+                       <if test='searchText != null and searchText != ""'>
+                           <if test='condition == "TITLE"'>
+                               AND a.support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                           </if>
+                           <if test='condition == "CONTENT"'>
+                               AND a.content LIKE CONCAT('%',#{searchText},'%')
+                           </if>
+                           <if test='condition == "ALL"'>
+                               AND ( a.support_biz_name LIKE CONCAT('%',#{searchText},'%')
+                                         OR a.content LIKE CONCAT('%',#{searchText},'%') )
+                           </if>
+                       </if>
+                     ) LISTA
+              ORDER BY LISTA.init_regi_dttm asc
+              ) LISTB
+        ORDER BY LISTB.rownum desc
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+            LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectIssueSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.IssueDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectIssueSingle */
+        SELECT seq
+             , support_field
+             , support_biz_name
+             , ministry_competent
+             , content
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM issue
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectNoticeListPaging" parameterType="com.mtf.sipa.dto.NoticeDTO" resultType="com.mtf.sipa.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectNoticeListPaging */
+        SELECT LISTB.*
+        FROM ( SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+               FROM ( SELECT @ROWNUM := 0) R
+                  , ( SELECT seq
+                           , notice_gbn
+                           , title
+                           , writer
+                           , write_date
+                           , view_cnt
+                           , ( SELECT COUNT(*)
+                               FROM notice
+                               WHERE lang = #{lang}
+                                 <if test='searchText != null and searchText != ""'>
+                                     <if test='condition == "TITLE"'>
+                                     AND title LIKE CONCAT('%',#{searchText},'%')
+                                     </if>
+                                     <if test='condition == "CONTENT"'>
+                                     AND content LIKE CONCAT('%',#{searchText},'%')
+                                     </if>
+                                     <if test='condition == "ALL"'>
+                                     AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                               OR content LIKE CONCAT('%',#{searchText},'%') )
+                                     </if>
+                                 </if> ) AS totalRecords
+                      FROM notice
+                      WHERE lang = #{lang}
+                        <if test='searchText != null and searchText != ""'>
+                            <if test='condition == "TITLE"'>
+                            AND title LIKE CONCAT('%',#{searchText},'%')
+                            </if>
+                            <if test='condition == "CONTENT"'>
+                            AND content LIKE CONCAT('%',#{searchText},'%')
+                            </if>
+                            <if test='condition == "ALL"'>
+                            AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                      OR content LIKE CONCAT('%',#{searchText},'%') )
+                            </if>
+                        </if> ) LISTA
+               ORDER BY LISTA.notice_gbn ASC, LISTA.write_date ASC
+               ) LISTB
+        ORDER BY LISTB.rownum DESC
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+        LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectNoticeSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.NoticeDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectNoticeSingle */
+        SELECT seq
+             , lang
+             , notice_gbn
+             , title
+             , content
+             , writer
+             , write_date
+             , view_cnt
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM notice
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectNewsListPaging" parameterType="com.mtf.sipa.dto.SipaNewsDTO" resultType="com.mtf.sipa.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectNewsListPaging */
+        SELECT LISTB.*
+        FROM ( SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+               FROM ( SELECT @ROWNUM := 0) R
+                  , ( SELECT seq
+                           , title
+                           , write_date
+                           , ( SELECT f.full_file_path
+                               FROM file f
+                               WHERE f.user_id = seq
+                               ORDER BY f.id
+                               LIMIT 1 ) AS fullFilePath
+                           , ( SELECT COUNT(*)
+                               FROM sipa_news
+                               WHERE lang = #{lang}
+                                 <if test='searchText != null and searchText != ""'>
+                                     <if test='condition == "TITLE"'>
+                                     AND title LIKE CONCAT('%',#{searchText},'%')
+                                     </if>
+                                     <if test='condition == "CONTENT"'>
+                                     AND content LIKE CONCAT('%',#{searchText},'%')
+                                     </if>
+                                     <if test='condition == "ALL"'>
+                                     AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                               OR content LIKE CONCAT('%',#{searchText},'%') )
+                                     </if>
+                                 </if> ) AS totalRecords
+                      FROM sipa_news
+                      WHERE lang = #{lang}
+                        <if test='searchText != null and searchText != ""'>
+                            <if test='condition == "TITLE"'>
+                            AND title LIKE CONCAT('%',#{searchText},'%')
+                            </if>
+                            <if test='condition == "CONTENT"'>
+                            AND content LIKE CONCAT('%',#{searchText},'%')
+                            </if>
+                            <if test='condition == "ALL"'>
+                            AND ( title LIKE CONCAT('%',#{searchText},'%')
+                                      OR content LIKE CONCAT('%',#{searchText},'%') )
+                            </if>
+                        </if> ) LISTA
+               ORDER BY LISTA.write_date ASC
+               ) LISTB
+        ORDER BY LISTB.rownum DESC
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+        LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectNewsSingle" parameterType="java.lang.String" resultType="com.mtf.sipa.dto.SipaNewsDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectNewsSingle */
+        SELECT seq
+             , title
+             , content
+             , writer
+             , write_date
+             , file_id_list
+             , note
+             , init_regi_pic
+             , init_regi_dttm
+             , final_regi_pic
+             , final_regi_dttm
+        FROM sipa_news
+        WHERE seq = #{seq}
+    </select>
+
+    <select id="selectEventListPaging" parameterType="com.mtf.sipa.dto.EventDTO" resultType="com.mtf.sipa.dto.EventDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectEventListPaging */
+        SELECT LISTB.*
+        FROM ( SELECT @ROWNUM := @ROWNUM + 1 AS rownum
+                    , LISTA.*
+               FROM ( SELECT @ROWNUM := 0) R
+                  , ( SELECT seq
+                           , title
+                           , writer
+                           , write_date
+                           , location
+                           , year
+                           , start_date
+                           , end_date
+                           , ( SELECT COUNT(*)
+                               FROM event
+                               WHERE lang = #{lang}
+                                 <if test='searchText != null and searchText != ""'>
+                                     AND start_date LIKE CONCAT(#{searchText},'%')
+                                 </if> ) AS totalRecords
+                      FROM event
+                      WHERE lang = #{lang}
+                        <if test='searchText != null and searchText != ""'>
+                            AND start_date LIKE CONCAT(#{searchText},'%')
+                        </if> ) LISTA
+               ORDER BY LISTA.write_date ASC
+               ) LISTB
+        ORDER BY LISTB.rownum DESC
+        <if test='pageNum != null and !pageNum.equals("") and rows != null and !rows.equals("")'>
+        LIMIT #{pageNum} , #{rows}
+        </if>
+    </select>
+
+    <select id="selectEventCalendarList" parameterType="com.mtf.sipa.dto.EventDTO" resultType="com.mtf.sipa.dto.EventDTO">
+        /* com.mtf.sipa.mapper.SipaMapper.selectEventCalendarList */
+        SELECT title
+             , start_date
+             , end_date
+        FROM event
+        WHERE lang = #{lang}
     </select>
 
     <select id="selectFileIdSingle" parameterType="com.mtf.sipa.dto.FileDTO" resultType="com.mtf.sipa.dto.FileDTO">

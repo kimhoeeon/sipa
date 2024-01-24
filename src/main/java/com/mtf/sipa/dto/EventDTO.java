@@ -26,6 +26,5 @@ public class EventDTO extends AbstractPagingRequestVo {
     String finalRegiPic; //최종 변경 담당자
     String finalRegiDttm; //최종 변경 일시
 
-    String prevId;
-    String nextId;
+    String searchText;
 }

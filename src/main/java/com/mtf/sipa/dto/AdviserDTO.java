@@ -30,4 +30,6 @@ public class AdviserDTO extends AbstractPagingRequestVo {
 
     String prevId;
     String nextId;
+
+    String representFilePath;
 }

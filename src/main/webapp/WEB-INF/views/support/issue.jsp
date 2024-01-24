@@ -59,26 +59,43 @@
     <!-- support_list -->
     <div class="support_list padding_tb">
         <div class="inner">
-            <form class="search_box">
-                <select>
-                    <option>제목</option>
-                    <option>내용</option>
-                    <option>제목+내용</option>
+            <form class="search_box" onsubmit="return false;">
+                <select id="search_box">
+                    <option value="TITLE" selected>제목</option>
+                    <option value="CONTENT">내용</option>
+                    <option value="ALL">제목+내용</option>
                 </select>
                 <div class="input">
-                    <input type="text" placeholder="검색어를 입력해주세요.">
-                    <button type="submit"><img src="<%request.getContextPath();%>/static/img/icon_search.png"></button>
+                    <input type="text" id="search_text" placeholder="검색어를 입력해주세요.">
+                    <button type="button" onclick="issueList(1, '전체')"><img src="<%request.getContextPath();%>/static/img/icon_search.png"></button>
                 </div>
             </form>
 
             <ul class="sp_cate_list">
-                <li class="on"><a href="#">전체</a></li>
-                <li><a href="#">기술정책동향</a></li>
-                <li><a href="#">언론보도</a></li>
-                <li><a href="#">칼럼</a></li>
+                <li class="on">
+                    <a class="cate" data-value="전체" onclick="f_issue_cate_search(this, '전체')" style="cursor: pointer">
+                        전체
+                    </a>
+                </li>
+                <li>
+                    <a class="cate" data-value="기술정책동향" onclick="f_issue_cate_search(this, '기술정책동향')" style="cursor: pointer">
+                        기술정책동향
+                    </a>
+                </li>
+                <li>
+                    <a class="cate" data-value="언론보도" onclick="f_issue_cate_search(this, '언론보도')" style="cursor: pointer">
+                        언론보도
+                    </a>
+                </li>
+                <li>
+                    <a class="cate" data-value="칼럼" onclick="f_issue_cate_search(this, '칼럼')" style="cursor: pointer">
+                        칼럼
+                    </a>
+                </li>
             </ul>
 
             <div class="sp_list_box board_list_box">
+                <span class="total" style="display: none;"></span>
                 <ul class="thead">
                     <li>
                         <div class="number">번호</div>
@@ -89,122 +106,29 @@
                     </li>
                 </ul>
                 <ul class="tbody">
-                    <li>
+                    <%--<li>
                         <div class="number">15</div>
                         <div class="cate">기술정책동향</div>
                         <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
                         <div class="pub">경기도일자리재단</div>
                         <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">14</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">13</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">12</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">11</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">10</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">09</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">08</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">07</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">06</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">05</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">04</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">03</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">02</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
-                    <li>
-                        <div class="number">01</div>
-                        <div class="cate">기술정책동향</div>
-                        <div class="tit" onclick="location.href='/support/issue/detail.do'">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                        <div class="pub">경기도일자리재단</div>
-                        <div class="date">2023.08.03</div>
-                    </li>
+                    </li>--%>
                 </ul>
             </div>
 
             <div class="paging">
-                <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                 <ol>
-                    <li><a href="" class="this">1</a></li>
-                    <li><a href="" class="other">2</a></li>
-                    <li><a href="" class="other">3</a></li>
+                    <%--<li>
+                      <a class="this">1</a>
+                    </li>
+                    <li>
+                      <a class="other">2</a>
+                    </li>--%>
                 </ol>
-                <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
             </div>
         </div>
     </div>
@@ -225,6 +149,8 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/issue.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

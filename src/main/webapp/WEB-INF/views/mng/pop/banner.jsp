@@ -1031,6 +1031,7 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-150px">타이틀</th>
                                                     <th class="text-center min-w-75px">노출순서</th>
                                                     <th class="text-center min-w-75px">등록자</th>
+                                                    <th class="text-center min-w-150px">작성일시</th>
                                                     <th class="text-center min-w-150px">등록일시</th>
                                                     <th class="text-center min-w-150px">수정일시</th>
                                                     <th class="text-center min-w-100px">기능</th>
@@ -1038,6 +1039,7 @@ if (document.documentElement) {
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>

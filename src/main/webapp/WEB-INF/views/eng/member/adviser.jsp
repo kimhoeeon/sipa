@@ -62,8 +62,9 @@
     <!-- member_list -->
     <div class="member_s padding_tb">
         <div class="inner">
+            <span class="total" style="display: none;"></span>
             <ul class="member_list guide5">
-                <li>
+                <%--<li>
                     <a href="/eng/member/detailB.do">
                         <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser01.jpg" class="thumbImg"></div>
                         <div class="txt">
@@ -73,160 +74,22 @@
                             </div>
                         </div>
                     </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser02.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 김영호</div>
-                            <div class="info">
-                                <p><span class="cont">전, 산업자원부 장관, 현,서울시 고문</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser03.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 김정부</div>
-                            <div class="info">
-                                <p><span class="cont">진웅텔레콤 회장, 전 한전 전무</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser04.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 김종규</div>
-                            <div class="info">
-                                <p><span class="cont">문화유산국민신탁 이사장</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser05.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 김춘호</div>
-                            <div class="info">
-                                <p><span class="cont">한국 뉴욕주립대학교 총장</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser06.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 남경필</div>
-                            <div class="info">
-                                <p><span class="cont">경기도지사</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser07.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 문국현</div>
-                            <div class="info">
-                                <p><span class="cont">한솔섬유 대표, 전 창조한국당 대표</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser08.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 손풍삼</div>
-                            <div class="info">
-                                <p><span class="cont">전,순천향대학교 총장</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser09.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 오 명</div>
-                            <div class="info">
-                                <p><span class="cont">전, 경제부총리</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser10.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 원희룡</div>
-                            <div class="info">
-                                <p><span class="cont">제주도지사</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser11.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 장세강</div>
-                            <div class="info">
-                                <p><span class="cont">HLT 회장, 전 동방그룹 대표</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser12.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 전홍태</div>
-                            <div class="info">
-                                <p><span class="cont">전,대한전자공학회장</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser13.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 최갑홍</div>
-                            <div class="info">
-                                <p><span class="cont">전, 한국표준협회 회장</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/eng/member/detailB.do">
-                        <div class="img thumb34 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_adviser14.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">고문위원 황희융</div>
-                            <div class="info">
-                                <p><span class="cont">전, 서울벤처정보대학원대학교 총장</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
+                </li>--%>
             </ul>
 
             <div class="paging">
-                <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                 <ol>
-                    <li><a href="" class="this">1</a></li>
-                    <li><a href="" class="other">2</a></li>
-                    <li><a href="" class="other">3</a></li>
+                    <%--<li>
+                      <a class="this">1</a>
+                    </li>
+                    <li>
+                      <a class="other">2</a>
+                    </li>--%>
                 </ol>
-                <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
             </div>
         </div>
     </div>
@@ -247,6 +110,8 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/adviser.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

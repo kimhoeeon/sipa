@@ -82,6 +82,7 @@ public class SipaMngController {
         // 연도, 월(문자열, 숫자), 일, 일(year 기준), 요일(문자열, 숫자)
         String fullYear = String.valueOf(now.getYear() + 1);
         /* 커밋 테스트 231011-2 */
+
         mv.setViewName("/mng/main");
         return mv;
     }

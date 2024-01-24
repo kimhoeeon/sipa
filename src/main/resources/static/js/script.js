@@ -1,6 +1,4 @@
-
-
-$(document).ready(function () {
+$(function () {
     // dept1 메뉴 아이템에 대한 마우스 오버
     $('.nav .dept1 > li').mouseover(function () {
         $(this).find('.dept2').addClass('on');
@@ -38,7 +36,7 @@ $(document).ready(function () {
         $('.site_map_nav .dept1 > li').on('click', handleDept1Click);
     });
 
-    $(".sub_top_tab").click(function () {
+    $('.sub_top_tab').on('click', function () {
         if ($(window).width() <= 768) {
             var selectedMenu = $(this).find(".tabOptSel");
             if (selectedMenu.is(':visible')) {
@@ -51,17 +49,17 @@ $(document).ready(function () {
     });
 
 
-    $('.sp_cate_icon li, .sp_cate_list li').on('click', function () {
+    /*$('.sp_cate_icon li, .sp_cate_list li').on('click', function () {
         // Remove "on" class from all other li elements
         $('li').not(this).removeClass('on');
 
         // Toggle "on" class on the clicked li element
         $(this).toggleClass('on');
-    });
+    });*/
 
     //자주묻는 질문
-    $(".board_faq .ask").click(function () {
-        var answer = $(this).next("div");
+    $(document).on('click', '.board_faq .ask', function() {
+        let answer = $(this).next("div");
         $(this).toggleClass('on');
 
         if (answer.is(":visible")) {

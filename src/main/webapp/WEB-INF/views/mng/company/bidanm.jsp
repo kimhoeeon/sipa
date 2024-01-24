@@ -1238,6 +1238,17 @@ if (document.documentElement) {
                             <!--end::Input group-->
 
                             <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">공고 자세히 보기 링크</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_apply_detail_link" placeholder="공고 자세히 보기 링크" readonly>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
                             <div id="file_list">
                                 <!--begin::Label-->
                                 <label class="form-label">첨부파일</label>

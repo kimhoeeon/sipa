@@ -151,6 +151,7 @@ function f_company_bizanm_detail_modal_set(seq){
     $('#md_contact_tel').val(resData.contactTel);
     $('#md_business_overview').html(resData.businessOverview);
     $('#md_apply_way').html(resData.applyWay);
+    $('#md_apply_detail_link').val(resData.applyDetailLink);
     $('#md_content').html(resData.content);
 
     /* TM 및 잠재DB 목록 상세 조회 */
@@ -338,6 +339,8 @@ function f_company_bizanm_form_data_setting(){
 
     form.uploadFile = '';
 
+    form.applyDetailLink = getRightURL(form.applyDetailLink);
+
     return JSON.stringify(form);
 }
 
@@ -358,4 +361,22 @@ function f_company_bizanm_valid(){
     if(nvl(content,'') === ''){ showMessage('', 'error', '[등록 정보]', '내용을 입력해 주세요.', ''); return false; }
 
     return true;
+}
+
+function getRightURL(n) {
+    let tmpURL = n.replace(/\s/g, "")
+    let tmp = tmpURL.toLowerCase();
+    if( tmp.indexOf("http://") === 0 ||
+        tmp.indexOf("https://") === 0 ||
+        tmp.indexOf("ftp://") === 0 ||
+        tmp.indexOf("mailto://") === 0 ||
+        tmp.indexOf("mms://") === 0 ||
+        tmp.indexOf("pnm://") === 0 ||
+        tmp.indexOf("telnet://") === 0 ||
+        tmp.indexOf("rlogin://") === 0 ||
+        tmp.indexOf("news://") === 0 ||
+        tmp.indexOf("file://") === 0)
+        return tmpURL;
+    else
+        return "http://"+tmpURL;
 }

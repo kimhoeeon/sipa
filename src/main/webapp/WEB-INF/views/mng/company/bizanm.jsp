@@ -1211,7 +1211,7 @@ if (document.documentElement) {
                                 <label class="form-label">문의처</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_contact_tel" placeholder="문의처" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_contact_tel" placeholder="문의처" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->
@@ -1245,6 +1245,17 @@ if (document.documentElement) {
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <div class="form-control form-control-solid-bg resize-none h-250px overflow-y-auto" id="md_content"></div>
+                                <!--end::Input-->
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label">공고 자세히 보기 링크</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg" id="md_apply_detail_link" placeholder="공고 자세히 보기 링크" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->

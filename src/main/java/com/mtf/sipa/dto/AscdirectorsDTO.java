@@ -31,4 +31,6 @@ public class AscdirectorsDTO extends AbstractPagingRequestVo {
 
     String prevId;
     String nextId;
+
+    String logoFilePath;
 }

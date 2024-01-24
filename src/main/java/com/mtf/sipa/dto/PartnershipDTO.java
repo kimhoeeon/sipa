@@ -31,4 +31,6 @@ public class PartnershipDTO extends AbstractPagingRequestVo {
 
     String prevId;
     String nextId;
+
+    String logoFilePath;
 }

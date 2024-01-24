@@ -89,27 +89,17 @@
                 <div class="board_box">
                     <div class="main_tit">
                         <div class="txt">SIPA NEWS</div>
-                        <a href="" class="more"><span>더보기</span></a>
+                        <a href="/community/news.do" class="more"><span>더보기</span></a>
                     </div>
                     <ul class="board_list">
-                        <li>
-                            <a href="">
-                                <div class="title">[파이오링크]파이오링크, 역대 최대 3분기 매출 달성, 전년比 17% 증가</div>
-                                <div class="date">2023-07-23</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <div class="title">[파루] 파루, 농업과 태양광 병행 AI 영농형 트랙커 출시</div>
-                                <div class="date">2023-07-23</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <div class="title">[카네비컴]카네비컴, ‘카네비모빌리티’로 사명 변경</div>
-                                <div class="date">2023-07-23</div>
-                            </a>
-                        </li>
+                        <c:forEach var="mainNews" items="${sipaNewsList}" begin="0" end="${sipaNewsList.size()}" step="1" varStatus="status">
+                            <li>
+                                <a href="/community/news/detail.do?seq=${mainNews.seq}">
+                                    <div class="title">${mainNews.title}</div>
+                                    <div class="date">${fn:split(mainNews.writeDate,' ')[0]}</div>
+                                </a>
+                            </li>
+                        </c:forEach>
                     </ul>
                 </div>
                 <!-- //main_box -->
@@ -118,27 +108,17 @@
                 <div class="board_box">
                     <div class="main_tit">
                         <div class="txt">공지사항</div>
-                        <a href="" class="more"><span>더보기</span></a>
+                        <a href="/community/notice.do" class="more"><span>더보기</span></a>
                     </div>
                     <ul class="board_list">
-                        <li>
-                            <a href="">
-                                <div class="title">[파이오링크]파이오링크, 역대 최대 3분기 매출 달성, 전년比 17% 증가</div>
-                                <div class="date">2023-07-23</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <div class="title">[파루] 파루, 농업과 태양광 병행 AI 영농형 트랙커 출시</div>
-                                <div class="date">2023-07-23</div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <div class="title">[카네비컴]카네비컴, ‘카네비모빌리티’로 사명 변경</div>
-                                <div class="date">2023-07-23</div>
-                            </a>
-                        </li>
+                        <c:forEach var="mainNotice" items="${noticeList}" begin="0" end="${noticeList.size()}" step="1" varStatus="status">
+                            <li>
+                                <a href="/community/notice/detail.do?seq=${mainNotice.seq}">
+                                    <div class="title">${mainNotice.title}</div>
+                                    <div class="date">${fn:split(mainNotice.writeDate,' ')[0]}</div>
+                                </a>
+                            </li>
+                        </c:forEach>
                     </ul>
                 </div>
                 <!-- //main_box -->
@@ -149,75 +129,23 @@
             <div class="main_company">
                 <div class="main_tit">
                     <div class="txt">회원사 소개</div>
-                    <a href="" class="more"><span>더보기</span></a>
+                    <a href="/member/ascdirectors.do" class="more"><span>더보기</span></a>
                 </div>
                 <div class="swiper_box">
                     <div class="swiper swiper_main_company">
                         <ul class="swiper-wrapper">
-                            <li class="swiper-slide">
-                                <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors01.jpg" class="thumbImg"></div>
-                                <div class="txt_box">
-                                    <div class="company">YPP(주)</div>
-                                    <div class="name">백종만 대표</div>
-                                    <div class="major">전기전자분과</div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors02.jpg" class="thumbImg"></div>
-                                <div class="txt_box">
-                                    <div class="company">(주)시스원</div>
-                                    <div class="name">이갑수 대표</div>
-                                    <div class="major">정보통신분과</div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors03.jpg" class="thumbImg"></div>
-                                <div class="txt_box">
-                                    <div class="company">(주)에니텍시스</div>
-                                    <div class="name">홍사혁 대표</div>
-                                    <div class="major">그린IT분과</div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors04.jpg" class="thumbImg"></div>
-                                <div class="txt_box">
-                                    <div class="company">(주)지비엠아이엔씨</div>
-                                    <div class="name">방기석 대표</div>
-                                    <div class="major">환경시스템분과</div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors05.jpg" class="thumbImg"></div>
-                                <div class="txt_box">
-                                    <div class="company">(주)데스코</div>
-                                    <div class="name">이상혁 대표</div>
-                                    <div class="major">장비시스템분과</div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors06.jpg" class="thumbImg"></div>
-                                <div class="txt_box">
-                                    <div class="company">(주)유캐스트</div>
-                                    <div class="name">김재형 대표</div>
-                                    <div class="major">정보통신분과</div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors07.jpg" class="thumbImg"></div>
-                                <div class="txt_box">
-                                    <div class="company">(주)KT</div>
-                                    <div class="name">황창규 대표</div>
-                                    <div class="major">통합시스템분과</div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide">
-                                <div class="thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors08.jpg" class="thumbImg"></div>
-                                <div class="txt_box">
-                                    <div class="company">(주)씨티코어</div>
-                                    <div class="name">김완식 대표</div>
-                                    <div class="major">소프트웨어분과</div>
-                                </div>
-                            </li>
+                            <c:forEach var="mainCompany" items="${companyList}" begin="0" end="${companyList.size()}" step="1" varStatus="status">
+                                <c:set var="companyFilePathSrc" value="${fn:replace(mainCompany.logoFilePath, './tomcat/webapps', '../../..')}" />
+                                <li class="swiper-slide">
+                                    <div class="thumb169 thumbBox"><img src="${companyFilePathSrc}" class="thumbImg" alt="회원사_소개_슬라이드_${status.index+1}"></div>
+                                    <div class="txt_box">
+                                        <div class="company">${mainCompany.companyName}</div>
+                                        <c:set var="companyCeo" value="${fn:replace(mainCompany.companyCeo,',',' / ')}" />
+                                        <div class="name">${companyCeo} 대표</div>
+                                        <div class="major">${mainCompany.companyBusinessItem}</div>
+                                    </div>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </div>
                 </div>

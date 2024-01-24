@@ -62,8 +62,9 @@
     <!-- member_list -->
     <div class="member_s padding_tb">
         <div class="inner">
+            <span class="total" style="display: none;"></span>
             <ul class="member_list guide4">
-                <li>
+                <%--<li>
                     <a href="/member/detailA.do">
                         <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors01.jpg" class="thumbImg"></div>
                         <div class="txt">
@@ -75,108 +76,22 @@
                             </div>
                         </div>
                     </a>
-                </li>
-                <li>
-                    <a href="/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors02.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)시스원</div>
-                            <div class="info">
-                                <p><span class="gubun">대표자</span><span class="cont">홍길동</span></p>
-                                <p><span class="gubun">주요사업</span><span class="cont">그린IT분과</span></p>
-                                <p><span class="gubun">전화번호</span><span class="cont">02-0000-0000</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors03.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)에니텍시스</div>
-                            <div class="info">
-                                <p><span class="gubun">대표자</span><span class="cont">홍길동</span></p>
-                                <p><span class="gubun">주요사업</span><span class="cont">그린IT분과</span></p>
-                                <p><span class="gubun">전화번호</span><span class="cont">02-0000-0000</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors04.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)지비엠아이엔씨</div>
-                            <div class="info">
-                                <p><span class="gubun">대표자</span><span class="cont">홍길동</span></p>
-                                <p><span class="gubun">주요사업</span><span class="cont">그린IT분과</span></p>
-                                <p><span class="gubun">전화번호</span><span class="cont">02-0000-0000</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors05.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)데스코</div>
-                            <div class="info">
-                                <p><span class="gubun">대표자</span><span class="cont">홍길동</span></p>
-                                <p><span class="gubun">주요사업</span><span class="cont">그린IT분과</span></p>
-                                <p><span class="gubun">전화번호</span><span class="cont">02-0000-0000</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors06.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)유캐스트</div>
-                            <div class="info">
-                                <p><span class="gubun">대표자</span><span class="cont">홍길동</span></p>
-                                <p><span class="gubun">주요사업</span><span class="cont">그린IT분과</span></p>
-                                <p><span class="gubun">전화번호</span><span class="cont">02-0000-0000</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors07.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)KT</div>
-                            <div class="info">
-                                <p><span class="gubun">대표자</span><span class="cont">홍길동</span></p>
-                                <p><span class="gubun">주요사업</span><span class="cont">그린IT분과</span></p>
-                                <p><span class="gubun">전화번호</span><span class="cont">02-0000-0000</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/member/detailA.do">
-                        <div class="img thumb169 thumbBox"><img src="<%request.getContextPath();%>/static/img/img_ascdirectors08.jpg" class="thumbImg"></div>
-                        <div class="txt">
-                            <div class="name">(주)씨티코어</div>
-                            <div class="info">
-                                <p><span class="gubun">대표자</span><span class="cont">홍길동</span></p>
-                                <p><span class="gubun">주요사업</span><span class="cont">그린IT분과</span></p>
-                                <p><span class="gubun">전화번호</span><span class="cont">02-0000-0000</span></p>
-                            </div>
-                        </div>
-                    </a>
-                </li>
+                </li>--%>
             </ul>
 
             <div class="paging">
-                <a href="" class="prev"><img src="<%request.getContextPath();%>/static/img/btn_prev.gif"></a>
+                <span class="first" id="first_page"><a><img src="<%request.getContextPath();%>/static/img/btn_first.gif" style="cursor: pointer"></a></span>
+                <span class="prev" id="prev_page"><a><img src="<%request.getContextPath();%>/static/img/btn_prev.gif" style="cursor: pointer"></a></span>
                 <ol>
-                    <li><a href="" class="this">1</a></li>
-                    <li><a href="" class="other">2</a></li>
-                    <li><a href="" class="other">3</a></li>
+                    <%--<li>
+                      <a class="this">1</a>
+                    </li>
+                    <li>
+                      <a class="other">2</a>
+                    </li>--%>
                 </ol>
-                <a href="" class="next"><img src="<%request.getContextPath();%>/static/img/btn_next.gif"></a>
+                <span class="next" id="next_page"><a><img src="<%request.getContextPath();%>/static/img/btn_next.gif" style="cursor: pointer"></a></span>
+                <span class="last" id="last_page"><a><img src="<%request.getContextPath();%>/static/img/btn_last.gif" style="cursor: pointer"></a></span>
             </div>
         </div>
     </div>
@@ -197,6 +112,8 @@
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>
+
+<script src="<%request.getContextPath();%>/static/js/front/ascdirectors.js?ver=<%=System.currentTimeMillis()%>"></script>
 
 </body>
 </html>

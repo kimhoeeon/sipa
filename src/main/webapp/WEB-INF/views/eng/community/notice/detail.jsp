@@ -63,18 +63,31 @@
 
             <div class="board_view_box">
                 <div class="board_view_top">
-                    <div class="tit">2023 산업통상자원부-에너지 공기업 기술나눔 연장 공고</div>
-                    <div class="date">2023.08.03</div>
+                    <div class="tit">${info.title}</div>
+                    <div class="date">${fn:replace(fn:split(info.writeDate,' ')[0], '-', '.')}</div>
                 </div>
                 <div class="board_view_cont border_top_gray">
-                    <img src="<%request.getContextPath();%>/static/img/img_sample.jpg">
+                    <c:choose>
+                        <c:when test="${info.content ne null and info.content ne ''}">
+                            ${info.content}
+                        </c:when>
+                        <c:otherwise>
+                            -
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <div class="board_view_info">
                     <div class="board_view_info_box">
                         <p class="gubun">Attachment</p>
                         <p class="txt">
-                            <a href="" class="file">파일명.pdf</a>
-                            <a href="" class="file">파일명.pdf</a>
+                            <c:if test="${not empty fileList}">
+                                <c:forEach var="fileInfo" items="${fileList}" begin="0" end="${fileList.size()}" step="1" varStatus="status">
+                                    <a href="/file/download.do?path=board/${fileInfo.folderPath}&fileName=${fileInfo.fullFileName}" class="file">${fileInfo.fileName}</a>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${empty fileList}">
+                                첨부파일 없음
+                            </c:if>
                         </p>
                     </div>
                 </div>
