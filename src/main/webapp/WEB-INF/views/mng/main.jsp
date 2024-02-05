@@ -26,9 +26,9 @@ License: For each use you must have a valid license purchased only from above li
     <meta property="og:locale" content="ko_KR"/>
     <meta property="og:type" content="article"/>
     <meta property="og:title" content="SIPA"/>
-    <meta property="og:url" content="http://sipakuei.cafe24.com/main.do"/>
+    <meta property="og:url" content="https://sipa.or.kr/main.do"/>
     <meta property="og:site_name" content="2024 SIPA | 스마트산업진흥협회"/>
-    <link rel="canonical" href="http://sipakuei.cafe24.com/main.do"/>
+    <link rel="canonical" href="https://sipa.or.kr/main.do"/>
 
     <!-- 캐시를 바로 만료시킴. -->
     <meta http-equiv="Expires" content="-1" />
@@ -897,7 +897,7 @@ if (document.documentElement) {
                 <!--end::sidebar menu-->
                 <!--begin::Footer-->
                 <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-                    <a href="http://sipakuei.cafe24.com"
+                    <a href="https://sipakuei.cafe24.com"
                        class="btn btn-flex flex-center btn-primary overflow-hidden text-nowrap px-0 h-40px w-100"
                        data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
                        title="홈페이지 바로가기" target="_blank">

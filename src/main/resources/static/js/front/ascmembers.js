@@ -115,7 +115,7 @@ function searchPosts(pageNum) {
                 str += '<a href="/eng/member/detailC.do?seq=' + seq + '">';
             }
                     str += '<div class="img thumb169 thumbBox">';
-                        str += '<img src="' + logoFilePath + '" class="thumbImg" alt="회원_로고_이미지_' + (i+1) + '">';
+                        str += '<img src="' + logoFilePath + '" class="thumbImg thumbLogo" alt="회원_로고_이미지_' + (i+1) + '">';
                     str += '</div>';
                     str += '<div class="txt">';
                         str += '<div class="name">';
