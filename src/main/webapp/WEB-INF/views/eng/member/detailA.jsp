@@ -93,6 +93,10 @@
                                 <div class="cont">${info.companyCeo}</div>
                             </li>
                             <li>
+                                <div class="gubun">Position</div>
+                                <div class="cont">${info.companyPosition}</div>
+                            </li>
+                            <li>
                                 <div class="gubun">Homepage</div>
                                 <div class="cont">
                                     <a href="${info.companyHomepage}" target="_blank">${info.companyHomepage}</a>

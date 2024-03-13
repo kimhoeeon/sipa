@@ -1041,6 +1041,18 @@ if (document.documentElement) {
                                             <!--begin::Input group-->
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
+                                                <label class="col-lg-4 col-form-label fw-semibold fs-6 required">직위</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-8">
+                                                    <input type="text" id="companyPosition" name="companyPosition" class="form-control form-control-lg form-control-solid-bg" placeholder="직위" value="${info.companyPosition}"/>
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
                                                 <label class="col-lg-4 col-form-label fw-semibold fs-6">홈페이지 주소</label>
                                                 <!--end::Label-->
                                                 <!--begin::Col-->

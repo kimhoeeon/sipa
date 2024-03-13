@@ -95,6 +95,10 @@
                                 <div class="cont">${info.companyCeo}</div>
                             </li>
                             <li>
+                                <div class="gubun">직위</div>
+                                <div class="cont">${info.companyPosition}</div>
+                            </li>
+                            <li>
                                 <div class="gubun">홈페이지</div>
                                 <div class="cont">
                                     <a href="${info.companyHomepage}" target="_blank">${info.companyHomepage}</a>

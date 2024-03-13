@@ -168,6 +168,7 @@
         SELECT seq
              , company_name
              , company_ceo
+             , ifnull(company_position,'-') as companyPosition
              , company_homepage
              , company_tel
              , company_address
@@ -305,8 +306,8 @@
                FROM company a
                WHERE 1=1
                  AND a.gbn = #{gbn}
-               ORDER BY a.company_name
                ) r
+        ORDER BY REPLACE(REPLACE(r.company_name,'(사)',''),'(주)','')
         LIMIT #{pageNum} , #{rows}
     </select>
 

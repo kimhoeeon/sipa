@@ -110,7 +110,7 @@
                         </p>
                     </div>
                     <div class="btn_box">
-                        <a href="" class="btn_detail btnSt01" target="_blank">공고 자세히보기</a>
+                        <a href="javascript:f_anm_detail('${info.applyDetailLink}')" class="btn_detail btnSt01">공고 자세히보기</a>
                     </div>
                 </div>
                 <div class="board_view_btn">

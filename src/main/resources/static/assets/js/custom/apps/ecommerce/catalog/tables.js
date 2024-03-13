@@ -931,7 +931,11 @@ let KTAppMemberAscdirectors = function () {
                     }
                 },
                 {
-                    'targets': 8,
+                    'targets': 5,
+                    'render': function (data, type, row) { return renderCompanyPositionCell(data, type, row); }
+                },
+                {
+                    'targets': 9,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -943,12 +947,21 @@ let KTAppMemberAscdirectors = function () {
                 { data: 'lang'},
                 { data: 'companyName'},
                 { data: 'companyCeo'},
+                { data: 'companyPosition'},
                 { data: 'companyBusinessType'},
                 { data: 'companyBusinessItem'},
                 { data: 'finalRegiDttm' },
                 { data: 'actions' }
             ]
         });
+    }
+
+    function renderCompanyPositionCell(data, type, row){
+        let renderHTML = '-';
+        if(nvl(row.companyPosition,'') !== ''){
+            renderHTML = row.companyPosition;
+        }
+        return renderHTML;
     }
 
     function renderActionsCell(data, type, row){

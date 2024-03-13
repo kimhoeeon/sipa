@@ -14,6 +14,7 @@ public class AscdirectorsDTO extends AbstractPagingRequestVo {
     String seq; //ID
     String lang; //언어
     String companyName; //회사명
+    String companyPosition; //협회내직위
     String companyCeo; //대표자명
     String companyHomepage; //홈페이지주소
     String companyTel; //전화번호

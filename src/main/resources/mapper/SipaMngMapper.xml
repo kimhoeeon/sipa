@@ -1045,6 +1045,7 @@
              , lang
              , company_name
              , company_ceo
+             , company_position
              , company_homepage
              , company_tel
              , company_address
@@ -1075,6 +1076,7 @@
              , lang
              , company_name
              , company_ceo
+             , company_position
              , company_homepage
              , company_tel
              , company_address
@@ -1104,6 +1106,7 @@
         SET lang = #{lang}
           , company_name = #{companyName}
           , company_ceo = #{companyCeo}
+          , company_position = #{companyPosition}
           , company_homepage = <![CDATA[#{companyHomepage}]]>
           , company_tel = #{companyTel}
           , company_address = <![CDATA[#{companyAddress}]]>
@@ -1126,6 +1129,7 @@
         , lang
         , company_name
         , company_ceo
+        , company_position
         , company_homepage
         , company_tel
         , company_address
@@ -1145,6 +1149,7 @@
             , #{lang}
             , #{companyName}
             , #{companyCeo}
+            , #{companyPosition}
             , <![CDATA[#{companyHomepage}]]>
             , #{companyTel}
             , <![CDATA[#{companyAddress}]]>

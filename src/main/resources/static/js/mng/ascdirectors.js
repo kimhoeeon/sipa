@@ -83,6 +83,7 @@ function f_member_ascdirectors_detail_modal_set(seq){
 
     document.querySelector('#md_company_name').value = resData.companyName;
     document.querySelector('#md_company_ceo').value = resData.companyCeo;
+    document.querySelector('#md_company_position').value = resData.companyPosition;
     document.querySelector('#md_company_homepage').value = resData.companyHomepage;
     document.querySelector('#md_company_tel').value = resData.companyTel;
     document.querySelector('#md_company_address').value = resData.companyAddress;

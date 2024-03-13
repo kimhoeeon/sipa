@@ -428,7 +428,14 @@ function f_community_contact_mail_send(lang){
 
 }
 
-
+function f_anm_detail(link){
+    link = link.trim();
+    if(link === 'https://' || link === 'http://'){
+        alert('등록된 링크가 없습니다');
+    }else{
+        opener.location.href = link;
+    }
+}
 
 function f_phone_number_check(phone_num){
     let flag = true;
