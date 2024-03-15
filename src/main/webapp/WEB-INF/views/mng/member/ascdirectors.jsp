@@ -1046,7 +1046,7 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-50px">언어</th>
                                                     <th class="text-center min-w-100px">회사명</th>
                                                     <th class="text-center min-w-50px">대표자</th>
-                                                    <th class="text-center min-w-75px">직위</th>
+                                                    <th class="text-center min-w-75px">직책</th>
                                                     <th class="text-center min-w-125px">주요사업</th>
                                                     <th class="text-center min-w-175px">주요생산품</th>
                                                     <th class="text-center min-w-150px">최종수정일시</th>
@@ -1168,10 +1168,10 @@ if (document.documentElement) {
                             <!--begin::Input group-->
                             <div class="mb-10">
                                 <!--begin::Label-->
-                                <label class="form-label">직위</label>
+                                <label class="form-label">직책</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_position" placeholder="직위" readonly>
+                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_company_position" placeholder="직책" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->

@@ -133,6 +133,7 @@
         FROM ( SELECT a.seq
                     , a.company_name
                     , a.company_ceo
+                    , a.company_position
                     , a.company_homepage
                     , a.company_tel
                     , a.company_address
@@ -158,8 +159,8 @@
                         ) AS totalRecords
                FROM ascdirectors a
                WHERE 1=1
-               ORDER BY a.company_name
                ) r
+        ORDER BY r.company_position = '회장' desc, r.company_position = '부회장' desc, r.company_position = '이사' desc
         LIMIT #{pageNum} , #{rows}
     </select>
 

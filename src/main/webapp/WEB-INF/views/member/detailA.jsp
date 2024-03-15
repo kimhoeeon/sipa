@@ -95,7 +95,7 @@
                                 <div class="cont">${info.companyCeo}</div>
                             </li>
                             <li>
-                                <div class="gubun">직위</div>
+                                <div class="gubun">직책</div>
                                 <div class="cont">${info.companyPosition}</div>
                             </li>
                             <li>

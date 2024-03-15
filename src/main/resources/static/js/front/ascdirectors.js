@@ -98,7 +98,7 @@ function searchPosts(pageNum) {
             let companyName = results[i].companyName;
             let companyCeo = results[i].companyCeo;
             let companyBusinessType = results[i].companyBusinessType;
-            let companyTel = results[i].companyTel;
+            let companyPosition = results[i].companyPosition;
 
             let logoFilePath = results[i].logoFilePath;
             if(nvl(logoFilePath,"") !== ""){
@@ -136,6 +136,18 @@ function searchPosts(pageNum) {
                             str += '<p>';
                                 str += '<span class="gubun">';
                                 if(lang === 'KO'){
+                                    str += '직책';
+                                }else{
+                                    str += 'Position';
+                                }
+                                str += '</span>';
+                                str += '<span class="cont">';
+                                    str += companyPosition;
+                                str += '</span>';
+                            str += '</p>';
+                            str += '<p>';
+                                str += '<span class="gubun">';
+                                if(lang === 'KO'){
                                     str += '주요사업';
                                 }else{
                                     str += 'Business';
@@ -143,18 +155,6 @@ function searchPosts(pageNum) {
                                 str += '</span>';
                                 str += '<span class="cont">';
                                     str += companyBusinessType;
-                                str += '</span>';
-                            str += '</p>';
-                            str += '<p>';
-                                str += '<span class="gubun">';
-                                if(lang === 'KO'){
-                                    str += '전화번호';
-                                }else{
-                                    str += 'Phone number';
-                                }
-                                str += '</span>';
-                                str += '<span class="cont">';
-                                    str += companyTel;
                                 str += '</span>';
                             str += '</p>';
                         str += '</div>';
