@@ -6,7 +6,7 @@
     <div class="hd_top">
         <div class="hd_top_inner">
             <h1 class="hd_logo">
-                <a href="/">
+                <a href="/eng/index.do">
                     <img src="<%request.getContextPath();%>/static/img/logo.png">
                 </a>
             </h1>
@@ -77,8 +77,8 @@
     <div class="hd_site_map">
         <div class="side_top_box">
             <div class="side_top_txt">MENU</div>
-            <a href="" class="language kor">KOR</a>
-            <a href="" class="language eng">ENG</a>
+            <a href="/" class="language kor">KOR</a>
+            <a href="/eng/index.do" class="language eng">ENG</a>
             <a href="#a" class="side_menu_close">
                 <span>Close</span>
             </a>

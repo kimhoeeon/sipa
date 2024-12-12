@@ -85,8 +85,8 @@
     <div class="hd_site_map">
         <div class="side_top_box">
             <div class="side_top_txt">전체메뉴</div>
-            <a href="" class="language kor">KOR</a>
-            <a href="" class="language eng">ENG</a>
+            <a href="/" class="language kor">KOR</a>
+            <a href="/eng/index.do" class="language eng">ENG</a>
             <a href="#a" class="side_menu_close">
                 <span>닫기</span>
             </a>
