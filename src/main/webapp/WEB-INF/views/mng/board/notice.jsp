@@ -903,7 +903,7 @@ if (document.documentElement) {
                     <!--end::sidebar menu-->
                     <!--begin::Footer-->
                     <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-                        <a href="https://sipakuei.cafe24.com"
+                        <a href="https://sipa.or.kr/main.do"
                            class="btn btn-flex flex-center btn-primary overflow-hidden text-nowrap px-0 h-40px w-100"
                            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
                            title="홈페이지 바로가기" target="_blank">
@@ -1049,13 +1049,11 @@ if (document.documentElement) {
                                                     <th class="text-center min-w-125px">작성자</th>
                                                     <th class="text-center min-w-150px">작성일시</th>
                                                     <th class="text-center min-w-150px">수정일시</th>
-                                                    <th class="text-center min-w-50px">조회수</th>
                                                     <th class="text-center min-w-100px">기능</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
                                                 <tr>
-                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -1204,17 +1202,6 @@ if (document.documentElement) {
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <div id="md_content" class="form-control form-control-solid-bg resize-none h-250px overflow-y-auto" placeholder="내용" readonly></div>
-                                <!--end::Input-->
-                            </div>
-                            <!--end::Input group-->
-
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label">조회수</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control form-control-lg form-control-solid-bg mb-2" id="md_view_cnt" placeholder="조회수" readonly>
                                 <!--end::Input-->
                             </div>
                             <!--end::Input group-->

@@ -221,6 +221,8 @@ public class SipaController {
         System.out.println("SipaController > community_news_detail");
         ModelAndView mv = new ModelAndView();
 
+        //
+
         SipaNewsDTO info = sipaService.processSelectNewsSingle(seq);
         mv.addObject("info", info);
 

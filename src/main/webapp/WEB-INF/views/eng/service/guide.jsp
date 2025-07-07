@@ -22,7 +22,7 @@
     <meta name="naver-site-verification" content="d1598bdda3bf9c08314b7c0af9ef66a5ff1dff9d" />
 
     <!-- swiper 외부 라이브러리 -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <%-- sweetalert CDN --%>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.5/dist/sweetalert2.min.css" rel="stylesheet">
@@ -160,13 +160,13 @@
                     </tr>
                     <tr>
                         <td>More than 50 billion won to less than 100 billion won</td>
-                        <td>1,500,000won</td>
-                        <td>1,500,000won</td>
+                        <td>2,000,000won</td>
+                        <td>2,000,000won</td>
                     </tr>
                     <tr>
                         <td>More than 100 billion won</td>
-                        <td>2,000,000won</td>
-                        <td>2,000,000won</td>
+                        <td>3,000,000won</td>
+                        <td>4,000,000won</td>
                     </tr>
                     </tbody>
                 </table>
@@ -232,7 +232,7 @@
 <script src="<%request.getContextPath();%>/static/js/jquery.cookie.min.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery.ui.touch-punch.min.js"></script>
 <script src="<%request.getContextPath();%>/static/js/jquery.number.min.js"></script>
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="<%request.getContextPath();%>/static/js/script.js?ver=<%=System.currentTimeMillis()%>"></script>
 <script src="<%request.getContextPath();%>/static/js/swiper.js"></script>
 <script src="<%request.getContextPath();%>/static/js/main.js?ver=<%=System.currentTimeMillis()%>"></script>

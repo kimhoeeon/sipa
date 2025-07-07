@@ -92,7 +92,7 @@ function f_board_sipa_news_detail_modal_set(seq){
     }
 
     document.querySelector('#md_content').innerHTML = resData.content;
-    document.querySelector('#md_view_cnt').value = resData.viewCnt;
+    //document.querySelector('#md_view_cnt').value = resData.viewCnt;
 
     /* TM 및 잠재DB 목록 상세 조회 */
     let jsonObj2 = {

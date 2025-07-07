@@ -40,7 +40,7 @@ let KTAppBoardNotice = function () {
                     }
                 },
                 {
-                    'targets': 9,
+                    'targets': 8,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -55,7 +55,6 @@ let KTAppBoardNotice = function () {
                 { data: 'writer' },
                 { data: 'writeDate' },
                 { data: 'finalRegiDttm' },
-                { data: 'viewCnt' },
                 { data: 'actions' }
             ]
         });
@@ -151,7 +150,7 @@ let KTAppBoardSipaNews = function () {
                     }
                 },
                 {
-                    'targets': 9,
+                    'targets': 8,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -166,7 +165,6 @@ let KTAppBoardSipaNews = function () {
                 { data: 'writer' },
                 { data: 'writeDate' },
                 { data: 'finalRegiDttm' },
-                { data: 'viewCnt' },
                 { data: 'actions' }
             ]
         });
@@ -355,7 +353,7 @@ let KTAppBoardFaq = function () {
                     }
                 },
                 {
-                    'targets': 8,
+                    'targets': 7,
                     'data': 'actions',
                     'render': function (data, type, row) { return renderActionsCell(data, type, row); }
                 },
@@ -369,7 +367,6 @@ let KTAppBoardFaq = function () {
                 { data: 'writer' },
                 { data: 'writeDate' },
                 { data: 'finalRegiDttm' },
-                { data: 'viewCnt' },
                 { data: 'actions' }
             ]
         });
